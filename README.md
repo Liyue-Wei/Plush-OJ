@@ -2,14 +2,22 @@
 **An open-source software project.**
 
 ## Your Customizable Online Judge System
-
 **Plush::OJ** is an open-source project for building an easy-to-modify Online Judge System. It provides a simple and free way to create your own Online Judge for personal use or within your organization.
 
-### Native Application for Windows
+## Technology
 
-### Web UI Service
+### Software as a Service 
 
-### Discord API
+### Cluster Computing
+
+### Database
+
+### Security
+1. SQL Injection Protection
+
+## Server 
+
+## Web UI Design
 
 ---
 ### Developed by [Liyue Wei](https://github.com/Liyue-Wei) on GitHub.
