@@ -1,0 +1,103 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f4f6;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #4a90e2;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar .nav-links li {
+    margin: 0 15px;
+}
+
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-links a:hover {
+    color: #ffdd57;
+}
+
+.content {
+    flex: 1; /* 让内容区域填充剩余空间 */
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.problem-list h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #4a90e2;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+    font-size: 1em;
+}
+
+table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    color: #555;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f7ff;
+    transition: background-color 0.3s ease;
+}
+
+.footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #4a90e2;
+    color: white;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+}
