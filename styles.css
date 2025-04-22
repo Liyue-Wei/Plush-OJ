@@ -1,103 +1,115 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f3f4f6;
+    background-color: #f8f9fa;
     color: #333;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
 .navbar {
-    background-color: #4a90e2;
+    background-color: #343a40;
     color: white;
-    padding: 15px 20px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .navbar .logo {
-    font-size: 1.8em;
+    font-size: 1.5em;
     font-weight: bold;
-    letter-spacing: 1px;
 }
 
 .navbar .nav-links {
     list-style: none;
     display: flex;
+    gap: 15px;
     margin: 0;
     padding: 0;
 }
 
-.navbar .nav-links li {
-    margin: 0 15px;
-}
-
-.navbar .nav-links a {
+.navbar .nav-links li a {
     color: white;
     text-decoration: none;
     font-size: 1em;
-    transition: color 0.3s ease;
 }
 
-.navbar .nav-links a:hover {
-    color: #ffdd57;
+.navbar .nav-links li a:hover {
+    text-decoration: underline;
 }
 
 .content {
-    flex: 1; /* 让内容区域填充剩余空间 */
-    padding: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 20px;
+}
+
+.problem-list {
+    max-width: 800px; /* 限制表格的最大寬度 */
+    margin: 0 auto; /* 居中顯示 */
 }
 
 .problem-list h1 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 2em;
-    color: #4a90e2;
 }
 
-table {
+.problem-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 0 auto;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-table th, table td {
-    border: 1px solid #ddd;
-    padding: 15px;
-    text-align: center;
-    font-size: 1em;
+.problem-table th, .problem-table td {
+    padding: 10px; /* 減少內邊距 */
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
-table th {
-    background-color: #f4f4f4;
+.problem-table th {
+    background-color: #f1f1f1;
     font-weight: bold;
-    color: #555;
 }
 
-table tr:nth-child(even) {
+.problem-table tr:hover {
     background-color: #f9f9f9;
 }
 
-table tr:hover {
-    background-color: #f1f7ff;
-    transition: background-color 0.3s ease;
+.problem-table .easy {
+    color: green;
+    font-weight: bold;
+}
+
+.problem-table .medium {
+    color: orange;
+    font-weight: bold;
+}
+
+.problem-table .hard {
+    color: red;
+    font-weight: bold;
 }
 
 .footer {
     text-align: center;
-    padding: 15px;
-    background-color: #4a90e2;
+    padding: 5px; /* 減少內邊距 */
+    background-color: #343a40;
     color: white;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 0.9em;
+    position: relative;
+    bottom: 0;
+    /*width: 100%;
+    font-size: 0.9em; /* 減小字體大小 */
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .problem-table th, .problem-table td {
+        font-size: 0.9em; /* 減小字體大小 */
+    }
+    .problem-list {
+        padding: 0 10px; /* 增加左右內邊距 */
+    }
 }
