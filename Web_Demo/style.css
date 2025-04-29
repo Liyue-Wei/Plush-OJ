@@ -45,17 +45,17 @@ body, h1, ul, li, a {
     color: lightcyan;
 }
 
-/* 底部资讯栏样式 */
+/* fixed footer */
 .footer {
-    bottom: 0; /* 紧贴页面底部 */
+    bottom: 0; 
     left: 0;
-    width: 100%; /* 占满页面宽度 */
-    height: 60px; /* 高度为 60px */
+    width: 100%;
+    height: 60px; 
     background-color: rgb(82, 82, 82);
-    color: white; /* 白色文字 */
-    display: flex; /* 使用 Flexbox 布局 */
-    align-items: center; /* 垂直居中对齐内容 */
-    justify-content: center; /* 水平居中对齐内容 */
-    font-size: 14px; /* 字体大小 */
-    z-index: 999; /* 确保在最上层 */
+    color: white;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 14px;
+    z-index: 999; 
 }
