@@ -1,0 +1,46 @@
+/* initialize elements */
+body, h1, ul, li, a {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: 'Arial', sans-serif;
+}
+
+/* floating title bar */
+.header {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.87);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.header .logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.header .nav {
+    display: flex;
+    gap: 20px;
+}
+
+.header .nav a {
+    color: white;
+    font-size: 18px;
+    transition: color 0.2s;
+}
+
+.header .nav a:hover {
+    color: lightcyan;
+}
