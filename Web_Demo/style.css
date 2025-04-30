@@ -141,6 +141,12 @@ body, h1, ul, li, a {
     background-color: #ffffff; /* 白色背景 */
 }
 
+/* 灰白格子悬停效果 */
+.problem-item:hover {
+    background-color: #e0e0e0; /* 鼠标悬停时的背景颜色 */
+    transition: background-color 0.1s ease; /* 添加平滑过渡效果 */
+}
+
 .problem-id {
     width: 50px;
     font-weight: bold;
@@ -148,9 +154,9 @@ body, h1, ul, li, a {
 }
 
 .problem-title {
-    text-decoration: none;
-    color: #0073e6;
-    transition: color 0.2s;
+    text-decoration: none; /* 移除下划线 */
+    color: #0073e6; /* 默认颜色 */
+    transition: color 0.1s ease; /* 添加颜色变化的过渡效果 */
 }
 
 .problem-title:hover {
