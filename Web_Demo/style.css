@@ -80,7 +80,7 @@ body, h1, ul, li, a {
     padding-right: 35px;
     padding-top: 5px;
     padding-bottom: 20px;
-    margin: 100px;
+    margin: 100px 100px 50px 100px;
     border-radius: 8px; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
@@ -108,4 +108,13 @@ body, h1, ul, li, a {
     font-size: 16px;
     padding: 5px;
     color: #555;
+}
+
+/* title style */
+.title {
+    text-align: left; /* 文字右对齐 */
+    margin-left: 100px; /* 与 bulletin 的右边距一致 */
+    margin-right: 100px; /* 与 bulletin 的左边距一致 */
+    padding-bottom: 12px; /* 底部留白 */
+    border-bottom: 3px double #000; /* 添加双横线到文字下方 */
 }
