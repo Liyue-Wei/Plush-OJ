@@ -45,6 +45,18 @@ body, h1, ul, li, a {
     color: lightcyan;
 }
 
+/* header mask */ 
+.header-mask {
+    position: fixed; 
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 80px;
+    background-color: white; 
+    display: flex; 
+    z-index: 999; 
+}
+
 /* fixed footer */
 .footer {
     bottom: 0; 
@@ -58,4 +70,17 @@ body, h1, ul, li, a {
     justify-content: center; 
     font-size: 14px;
     z-index: 999; 
+}
+
+/* bulletin board */
+.bulletin {
+    background-color: #e9e9e9;
+    color: #000;
+    padding-left: 35px; 
+    padding-right: 35px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    margin: 100px;
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
