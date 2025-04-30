@@ -162,3 +162,29 @@ body, h1, ul, li, a {
 .problem-title:hover {
     color: #005bb5; /* 鼠标悬停时的颜色 */
 }
+
+/* 難易度樣式 */
+.problem-difficulty {
+    margin-left: auto; /* 将难易度标签推到右侧 */
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+/* 簡單（綠色） */
+.problem-difficulty.easy {
+    background-color: #4caf50; /* 綠色 */
+}
+
+/* 中等（黃色） */
+.problem-difficulty.medium {
+    background-color: #ff9800; /* 黃色 */
+}
+
+/* 困難（紅色） */
+.problem-difficulty.hard {
+    background-color: #f44336; /* 紅色 */
+}
