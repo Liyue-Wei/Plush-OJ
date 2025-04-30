@@ -118,3 +118,41 @@ body, h1, ul, li, a {
     padding-bottom: 12px; /* 底部留白 */
     border-bottom: 3px double #000; /* 添加双横线到文字下方 */
 }
+
+.problem-list {
+    margin: 20px 100px; /* 与 bulletin 的左右边距一致 */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden; /* 确保圆角效果 */
+}
+
+.problem-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+.problem-item.odd {
+    background-color: #f9f9f9; /* 灰色背景 */
+}
+
+.problem-item.even {
+    background-color: #ffffff; /* 白色背景 */
+}
+
+.problem-id {
+    width: 50px;
+    font-weight: bold;
+    color: #555;
+}
+
+.problem-title {
+    text-decoration: none;
+    color: #0073e6;
+    transition: color 0.2s;
+}
+
+.problem-title:hover {
+    color: #005bb5; /* 鼠标悬停时的颜色 */
+}
