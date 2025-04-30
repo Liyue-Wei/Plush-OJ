@@ -119,6 +119,7 @@ body, h1, ul, li, a {
     border-bottom: 3px double #000; /* 添加双横线到文字下方 */
 }
 
+/* problem list style */
 .problem-list {
     margin: 20px 100px; /* 与 bulletin 的左右边距一致 */
     border: 1px solid #ddd;
