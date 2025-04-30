@@ -84,3 +84,28 @@ body, h1, ul, li, a {
     border-radius: 8px; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
+
+/* announcement */
+.announcement {
+    margin-left: 120px;
+    margin-right: 120px;
+    margin-bottom: 40px;
+    background-color: #f9f9f9;
+    color: rgb(0, 0, 0);
+    display: flex; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    z-index: 999;
+    padding: 15px;
+}
+
+.announcement ul {
+    list-style-type: disc;
+    padding-left: 10px;
+}
+
+.announcement li {
+    font-size: 16px;
+    padding: 5px;
+    color: #555;
+}
