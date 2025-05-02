@@ -1,0 +1,73 @@
+/* initialize elements */
+body, h1, ul, li, a {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* floating title bar */
+.header {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: rgb(82, 82, 82);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.header .logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.header .nav {
+    display: flex;
+    gap: 20px;
+}
+
+.header .nav a {
+    background-color: rgb(82, 82, 82);
+    color: white;
+    font-size: 18px;
+    transition: color 0.2s;
+}
+
+.header .nav a:hover {
+    color: lightcyan;
+}
+
+/* header mask */ 
+.header-mask {
+    position: fixed; 
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 80px;
+    background-color: #f4f4f4;
+    display: flex; 
+    z-index: 999; 
+}
+
+/* question number & title */
+.question-number {
+    background-color: #fff; /* 白色背景 */
+    color: #333;
+    padding-left: 35px; 
+    padding-right: 35px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    margin: 100px 100px 50px 100px;
+    border-radius: 8px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+}
