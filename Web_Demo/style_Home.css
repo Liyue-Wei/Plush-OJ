@@ -5,6 +5,7 @@ body, h1, ul, li, a {
     list-style: none;
     text-decoration: none;
     font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
 }
 
 /* floating title bar */
@@ -36,6 +37,7 @@ body, h1, ul, li, a {
 }
 
 .header .nav a {
+    background-color: rgb(82, 82, 82);
     color: white;
     font-size: 18px;
     transition: color 0.2s;
@@ -52,7 +54,7 @@ body, h1, ul, li, a {
     left: 0px;
     right: 0px;
     height: 80px;
-    background-color: white; 
+    background-color: #f4f4f4;
     display: flex; 
     z-index: 999; 
 }
@@ -74,7 +76,7 @@ body, h1, ul, li, a {
 
 /* bulletin board */
 .bulletin {
-    background-color: #e9e9e9;
+    background-color: white;
     color: #000;
     padding-left: 35px; 
     padding-right: 35px;
@@ -82,7 +84,7 @@ body, h1, ul, li, a {
     padding-bottom: 20px;
     margin: 100px 100px 50px 100px;
     border-radius: 8px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* announcement */
@@ -90,24 +92,27 @@ body, h1, ul, li, a {
     margin-left: 120px;
     margin-right: 120px;
     margin-bottom: 40px;
-    background-color: #f9f9f9;
+    background-color: white;
     color: rgb(0, 0, 0);
     display: flex; 
     border: 1px solid #ddd;
     border-radius: 8px;
     z-index: 999;
     padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .announcement ul {
+    background-color: white;
     list-style-type: disc;
     padding-left: 10px;
 }
 
 .announcement li {
+    background-color: white;
     font-size: 16px;
     padding: 5px;
-    color: #555;
+    color: black;
 }
 
 /* title style */
@@ -125,6 +130,7 @@ body, h1, ul, li, a {
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden; /* 确保圆角效果 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .problem-item {
@@ -135,7 +141,7 @@ body, h1, ul, li, a {
 }
 
 .problem-item.odd {
-    background-color: #f9f9f9; /* 灰色背景 */
+    background-color: #f0f0f0; /* 灰色背景 */
 }
 
 .problem-item.even {
@@ -155,6 +161,7 @@ body, h1, ul, li, a {
 }
 
 .problem-title {
+    background: fixed;
     text-decoration: none; /* 移除下划线 */
     color: #0073e6; /* 默认颜色 */
     transition: color 0.1s ease; /* 添加颜色变化的过渡效果 */
