@@ -1,3 +1,19 @@
+/* 淡入動畫 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px); /* 向上偏移 */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* 回到原位 */
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-in-out; /* 動畫持續 0.8 秒 */
+}
+
 /* initialize elements */
 body, h1, ul, li, a {
     margin: 0;
@@ -59,15 +75,55 @@ body, h1, ul, li, a {
     z-index: 999; 
 }
 
-/* question number & title */
-.question-number {
-    background-color: #fff; /* 白色背景 */
-    color: #333;
-    padding-left: 35px; 
-    padding-right: 35px;
-    padding-top: 5px;
-    padding-bottom: 20px;
-    margin: 100px 100px 50px 100px;
-    border-radius: 8px; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+/* 主容器布局 */
+.main-container {
+    display: flex; /* 使用 Flexbox 布局 */
+    justify-content: space-between; /* 左右分布 */
+    padding: 20px;
+    margin-top: 80px; /* 确保与导航栏有足够间距 */
+    height: calc(100vh - 80px); /* 视口高度减去导航栏高度 */
+    /* max-width: 1200px; /* 限制容器宽度 */
+    box-sizing: border-box;
+}
+
+/* 左侧栏样式 */
+.left-column {
+    border: 1px solid #ddd;
+    flex: 1; /* 左侧栏占据剩余空间 */
+    margin-right: 0px; /* 与右侧栏的间距 */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 如果内容超出，添加滚动条 */
+}
+
+/* 右侧栏容器样式 */
+.right-column {
+    display: flex; /* 使用 Flexbox 布局 */
+    flex-direction: column; /* 垂直排列 */
+    flex: 1; /* 占据剩余空间 */
+    margin-left: 10px; /* 与左侧栏的间距 */
+    gap: 10px; /* 上下两部分之间的间距 */
+}
+
+/* 右侧栏顶部样式 */
+.right-top {
+    flex: 1; /* 占据一半空间 */
+    border: 1px solid #ddd; /* 添加边框 */
+    border-radius: 8px; /* 独立圆角 */
+    background-color: #ffffff;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 如果内容超出，添加滚动条 */
+}
+
+/* 右侧栏底部样式 */
+.right-bottom {
+    flex: 1; /* 占据另一半空间 */
+    border: 1px solid #ddd; /* 添加边框 */
+    border-radius: 8px; /* 独立圆角 */
+    background-color: #ffffff;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 如果内容超出，添加滚动条 */
 }

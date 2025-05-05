@@ -11,7 +11,7 @@
 }
 
 .fade-in {
-    animation: fadeIn 0.8s ease-in-out; /* 動畫持續 0.8 秒 */
+    animation: fadeIn 0.6s ease-in-out; /* 動畫持續 0.8 秒 */
 }
 
 /* 整體容器 */
