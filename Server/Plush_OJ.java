@@ -6,6 +6,5 @@ public class Plush_OJ {
 
         File Path = new File("");
         String rootPath = new String(Path.getAbsolutePath());
-        System.out.println(rootPath);
     }
 }
