@@ -138,7 +138,7 @@ body, h1, ul, li, a {
     font-size: 18px;
     float: right; /* 按钮靠右对齐 */
     margin: 6px;
-    padding: 6px 12px;
+    padding: 8px 12px;
     background-color: #999999;
     color: white;
     border: none;
