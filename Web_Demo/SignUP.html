@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Plush::OJ</title>
-    <link rel="stylesheet" href="style_Login.css">
+    <link rel="stylesheet" href="style_SighUP.css">
 </head>
 <body>
     <div class="header">
@@ -15,19 +15,27 @@
     </div>
     <div class="login-container">
         <div class="login-box fade-in">
-            <form action="Home.html" method="POST">
+            <h2>Plush::OJ 帳號註冊中心</h2>
+            <form action="Home.html" method="POST">              
                 <div class="input-group">
                     <label for="email">電子郵件</label>
                     <input type="text" id="email" name="email" placeholder="輸入電子郵件" required>
                 </div>
                 <div class="input-group">
+                    <label for="username">帳號</label>
+                    <input type="text" id="username" name="username" placeholder="輸入帳號" required>
+                </div>
+                <div class="input-group">
                     <label for="password">密碼</label>
                     <input type="password" id="password" name="password" placeholder="輸入密碼" required>
                 </div>
-                <button type="submit" class="login-button">登入</button>
+                <div class="input-group">
+                    <label for="confirm-password">確認密碼</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="再次輸入密碼" required>
+                </div>
+                <button type="submit" class="login-button">註冊</button>
                 <div class="login-footer">
-                    <a href="#">忘記密碼？</a>
-                    <a href="SignUP.html">註冊新帳號</a>
+                    <a href="Login.html">已有帳號 ? 登入</a>
                 </div>
             </form>
         </div>
