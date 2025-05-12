@@ -25,6 +25,22 @@
             <div class="right-column">
                 <div class="right-top">
                     <textarea class="full-width-textarea" placeholder=""></textarea>
+                    <script>
+                        const textarea = document.querySelector('.full-width-textarea');
+                        textarea.addEventListener('keydown', function (e) {
+                            if (e.key === 'Tab') {
+                                e.preventDefault(); // 阻止默认行为（跳到下一项）
+                                const start = this.selectionStart;
+                                const end = this.selectionEnd;
+                            
+                                // 插入 4 个空格
+                                this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                            
+                                // 将光标移动到插入的空格之后
+                                this.selectionStart = this.selectionEnd = start + 4;
+                            }
+                        });
+                    </script>
                     <!-- 其他内容 -->
                 </div>
 

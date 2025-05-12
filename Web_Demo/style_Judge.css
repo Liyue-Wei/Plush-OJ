@@ -127,7 +127,12 @@ body, h1, ul, li, a {
     border-radius: 5px; /* 圆角 */
     box-sizing: border-box; /* 包括内边距和边框在内计算宽度和高度 */
     resize: none; /* 禁止用户调整大小 */
+    font-family: Arial, sans-serif; /* 更改字体 */
+    font-size: 18px; /* 更改字体大小 */
 }
+/*
+    後續新增代碼補全與語法高亮
+*/
 
 .full-width-textarea:focus {
     outline: none; /* 去掉默认的聚焦样式 */
