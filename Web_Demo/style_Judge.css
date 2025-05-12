@@ -143,7 +143,7 @@ body, h1, ul, li, a {
     background-color: #ffffff;
     padding: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    overflow-y: auto; /* 如果内容超出，添加滚动条 */
+    overflow-y: hidden; /* 如果内容超出，添加滚动条 */
 }
 
 /* console 區按鈕 */
@@ -168,6 +168,22 @@ body, h1, ul, li, a {
     background-color: rgb(82, 82, 82);
 }
 
+.left-bottom-btn {
+    font-size: 18px;
+    float: left; /* 按钮靠右对齐 */
+    margin: 6px;
+    padding: 8px 12px;
+    background-color: #999999;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.left-bottom-btn:hover {
+    background-color: rgb(82, 82, 82);
+}
+
 /* 下拉選單 */
 .dropdown-menu {
     font-size: 16px;
@@ -184,4 +200,22 @@ body, h1, ul, li, a {
 
 .dropdown-menu:hover {
     border-color: #999;
+}
+
+.console-textarea {
+    width: 100%; /* 占满父容器宽度 */
+    height: calc(100% - 60px); /* 减去按钮的高度，确保按钮可见 */
+    margin-top: 10px; /* 上边距 */
+    padding: 10px; /* 内边距 */
+    font-size: 16px; /* 字体大小 */
+    border: 1px solid #ddd; /* 边框 */
+    border-radius: 5px; /* 圆角 */
+    box-sizing: border-box; /* 包括内边距和边框在内计算宽度和高度 */
+    resize: none; /* 禁止用户调整大小 */
+}
+
+.console-textarea:focus {
+    outline: none; /* 去掉默认的聚焦样式 */
+    border-color: #007bff; /* 聚焦时的边框颜色 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 聚焦时的阴影效果 */
 }
