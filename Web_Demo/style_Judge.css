@@ -221,6 +221,6 @@ body, h1, ul, li, a {
 
 .console-textarea:focus {
     outline: none; /* 去掉默认的聚焦样式 */
-    border-color: #007bff; /* 聚焦时的边框颜色 */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 聚焦时的阴影效果 */
+    border-color: #c0c0c0; /* 聚焦时的边框颜色 */
+    box-shadow: 0 0 5px rgba(212, 212, 212, 0.5); /* 聚焦时的阴影效果 */
 }
