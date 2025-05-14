@@ -4,13 +4,26 @@
 #include <fstream>
 #include <cstdlib>
 
-struct funcIO {
+struct TempCase {
     std::string tcPath;  // Temp Code Path
-    std::vector<std::vector<std::string>> tdARR;  // Test DATA Array 
+    std::string tdPath;  // Test DATA Path
+
+    void parseArgs(char* argv[]) {
+        tcPath = argv[1];
+        tdPath = argv[2];
+
+        std::cout << tcPath << std::endl << tdPath <<std::endl;
+    }
 };
 
-int main() {
-    std::cout << "Hello World\n";
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        std::cout << "Invalid args Input\nTerminated...\n";
+        return 0;
+    }
 
+    TempCase TC;
+    TC.parseArgs(argv);
+    
     return 0;
 }
