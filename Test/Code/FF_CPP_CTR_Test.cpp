@@ -1,11 +1,12 @@
 #include <iostream>
 #include <cstring>
+#include <vector>
 #include <fstream>
 #include <cstdlib>
 
 struct funcIO {
     std::string tcPath;  // Temp Code Path
-    std::string tdARR[];  // Test DATA Array
+    std::vector<std::vector<std::string>> tdARR;  // Test DATA Array 
 };
 
 int main() {
