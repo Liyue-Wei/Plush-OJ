@@ -10,8 +10,6 @@ struct TempCase {
     void parseArgs(char* argv[]) {
         tcPath = argv[1];
         tdPath = argv[2];
-
-        std::cout << tcPath << std::endl << tdPath <<std::endl;
     }
 };
 
@@ -23,6 +21,12 @@ int main(int argc, char* argv[]) {
 
     TempCase TC;
     TC.parseArgs(argv);
+
+    // std::ifstream inFile_TC(TC.tcPath, std::ios::in);
+    // std::ifstream inFile_TD(TC.tdPath, std::ios::in);
+
+    std::string command = TC.tcPath + " \"| 1 2 3";
+    std::system(command.c_str());
     
     return 0;
 }
