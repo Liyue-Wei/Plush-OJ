@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     // std::ifstream inFile_TC(TC.tcPath, std::ios::in);
     // std::ifstream inFile_TD(TC.tdPath, std::ios::in);
 
-    std::string command = TC.tcPath + " < " + TC.tdPath;
+    std::string command = TC.tcPath + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
     std::system(command.c_str());
     
     return 0;
