@@ -6,11 +6,13 @@
 
 struct TempCase {
     std::string tcPath;  // Temp Code Path
+    int tdQTY;  // Test DATA Quantity
     std::string tdPath;  // Test DATA Path
 
     void parseArgs(char* argv[]) {
         tcPath = argv[1];
-        tdPath = argv[2];
+        tdQTY = int(argv[2]);
+        tdPath = argv[3];
     }
 };
 
@@ -34,7 +36,7 @@ bool prohibited_check(const std::string& Temp_Code, const std::vector<std::strin
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 3) {
+    if (argc != 4) {
         std::cout << "Invalid args Input\nTerminated...\n";
         return 1;  // Error Code 1
     }
