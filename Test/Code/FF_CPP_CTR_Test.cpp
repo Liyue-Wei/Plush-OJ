@@ -71,10 +71,10 @@ int main(int argc, char* argv[]) {
 }
 
 /*
-Error Code 1 : 
-Error Code 2 : 
-Error Code 3 : 
-Error Code 4 : 
+Error Code 1 : Invalid args Input
+Error Code 2 : Reading Temp Code
+Error Code 3 : Prohibited Header Detected
+Error Code 4 : Compile Error
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
 C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json
