@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <fstream>
 #include <cstdlib>
 
@@ -13,6 +14,27 @@ struct TempCase {
     }
 };
 
+std::vector<std::string> prohibited_header = {
+        "<fstream>",
+        "<cstdio>", 
+        "<stdio.h>",
+        "<filesystem>",
+        "<process.h>", 
+        "<unistd.h>",   
+        "<winsock2.h>", 
+        "<sys/socket.h>",
+        "<netinet/in.h>",
+};
+
+bool prohibited_check(const std::string& Temp_Code, const std::vector<std::string>& prohibited_header) {
+    for (const auto& header : prohibited_header) {
+        if (Temp_Code.find(header) != std::string::npos) {
+            return false;  // Prohibited Header Detected
+        }
+    }
+    return true;
+}
+
 int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::cout << "Invalid args Input\nTerminated...\n";
@@ -21,7 +43,7 @@ int main(int argc, char* argv[]) {
 
     TempCase TC;
     TC.parseArgs(argv);
-    
+
     std::ifstream inFile_TC(TC.tcPath, std::ios::in);
     if (!inFile_TC) {
         std::cout << "An Error occured when reading Temp Code, Terminated...\n";
