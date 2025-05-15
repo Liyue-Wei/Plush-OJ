@@ -49,12 +49,13 @@ int main(int argc, char* argv[]) {
     if (!inFile_TC) {
         std::cout << "An Error occured when reading Temp Code, Terminated...\n";
         return 2;  // Error Code 2
-    } else {
-        std::string str;
-        while (std::getline(inFile_TC, str)) {
-            // std::cout << str << std::endl;
-        }
-    }
+    } 
+    // else {
+    //     std::string str;
+    //     while (std::getline(inFile_TC, str)) {
+    //         std::cout << str << std::endl;
+    //     }
+    // }
 
     std::string Temp_Code((std::istreambuf_iterator<char>(inFile_TC)), (std::istreambuf_iterator<char>()));
     inFile_TC.close();
