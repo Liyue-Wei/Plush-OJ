@@ -13,7 +13,6 @@ struct TempCase {
         tcPath = argv[1];
         tdQTY = std::atoi(argv[2]);
         tdPath = argv[3];
-        // std::cout << tcPath << std::endl << tdQTY << std::endl << tdPath << std::endl;
     }
 };
 
@@ -50,12 +49,6 @@ int main(int argc, char* argv[]) {
         std::cout << "An Error occured when reading Temp Code, Terminated...\n";
         return 2;  // Error Code 2
     } 
-    // else {
-    //     std::string str;
-    //     while (std::getline(inFile_TC, str)) {
-    //         std::cout << str << std::endl;
-    //     }
-    // }
 
     std::string Temp_Code((std::istreambuf_iterator<char>(inFile_TC)), (std::istreambuf_iterator<char>()));
     inFile_TC.close();
