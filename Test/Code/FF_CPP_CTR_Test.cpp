@@ -6,6 +6,7 @@
 struct TempCase {
     std::string tcPath;  // Temp Code Path
     std::string tdPath;  // Test DATA Path
+
     void parseArgs(char* argv[]) {
         tcPath = argv[1];
         tdPath = argv[2];
@@ -20,6 +21,7 @@ int main(int argc, char* argv[]) {
 
     TempCase TC;
     TC.parseArgs(argv);
+    
     std::ifstream inFile_TC(TC.tcPath, std::ios::in);
     if (!inFile_TC) {
         std::cout << "An Error occured when reading Temp Code, Terminated...\n";
