@@ -13,7 +13,7 @@ struct TempCase {
         tcPath = argv[1];
         tdQTY = std::atoi(argv[2]);
         tdPath = argv[3];
-        std::cout << tcPath << std::endl << tdQTY << std::endl << tdPath << std::endl;
+        // std::cout << tcPath << std::endl << tdQTY << std::endl << tdPath << std::endl;
     }
 };
 
@@ -38,7 +38,7 @@ bool prohibited_check(const std::string& Temp_Code, const std::vector<std::strin
 
 int main(int argc, char* argv[]) {
     if (argc != 4) {
-        std::cout << "Invalid args Input\nTerminated...\n";
+        std::cout << "Invalid args Input, Terminated...\n";
         return 1;  // Error Code 1
     }
 
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
     } else {
         std::string str;
         while (std::getline(inFile_TC, str)) {
-            std::cout << str << std::endl;
+            // std::cout << str << std::endl;
         }
     }
 
@@ -70,8 +70,8 @@ int main(int argc, char* argv[]) {
         return 4;  // Error Code 4
     }
 
-    // std::string command = TC.tcPath + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
-    // std::system(command.c_str());
+    std::string command = std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello.exe") + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
+    std::system(command.c_str());
     
     return 0;
 }
