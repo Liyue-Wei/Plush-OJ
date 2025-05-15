@@ -15,9 +15,9 @@ struct TempCase {
 };
 
 std::vector<std::string> prohibited_header = {
-        "<fstream>",
-        "<cstdio>", 
-        "<stdio.h>",
+        "<fstream>", 
+        "<cstdlib>",
+        "<stdlib.h>",
         "<filesystem>",
         "<process.h>", 
         "<unistd.h>",   
@@ -28,9 +28,7 @@ std::vector<std::string> prohibited_header = {
 
 bool prohibited_check(const std::string& Temp_Code, const std::vector<std::string>& prohibited_header) {
     for (const auto& header : prohibited_header) {
-        if (Temp_Code.find(header) != std::string::npos) {
-            return false;  // Prohibited Header Detected
-        }
+        if (Temp_Code.find(header) != std::string::npos) { return false; }
     }
     return true;
 }
@@ -53,6 +51,13 @@ int main(int argc, char* argv[]) {
         while (std::getline(inFile_TC, str)) {
             std::cout << str << std::endl;
         }
+    }
+
+    std::string Temp_Code((std::istreambuf_iterator<char>(inFile_TC)), (std::istreambuf_iterator<char>()));
+    inFile_TC.close();
+    if (!prohibited_check(Temp_Code, prohibited_header)) {
+        std::cout << "Prohibited Header Detected, Terminated...\n";
+        return 3;  // Error Code 3
     }
 
     // std::string command = TC.tcPath + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
