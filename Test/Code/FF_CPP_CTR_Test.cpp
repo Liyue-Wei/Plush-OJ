@@ -28,7 +28,7 @@ std::vector<std::string> prohibited_header = {
         "<netinet/in.h>",
 };
 
-bool prohibited_check(const std::string& Temp_Code, const std::vector<std::string>& prohibited_header) {
+bool PCP(const std::string& Temp_Code, const std::vector<std::string>& prohibited_header) {  // prohibited_checking_process
     for (const auto& header : prohibited_header) {
         if (Temp_Code.find(header) != std::string::npos) { return false; }
     }
@@ -45,17 +45,22 @@ int main(int argc, char* argv[]) {
     TC.parseArgs(argv);
 
     std::ifstream inFile_TC(TC.tcPath, std::ios::in);
-    if (!inFile_TC) {
+    std::ifstream inFile_TD(TC.tdPath, std::ios::in);
+    if (!inFile_TC || !inFile_TD) {
         std::cout << "An Error occured when reading Temp Code, Terminated...\n";
         return 2;  // Error Code 2
     } 
 
     std::string Temp_Code((std::istreambuf_iterator<char>(inFile_TC)), (std::istreambuf_iterator<char>()));
     inFile_TC.close();
-    if (!prohibited_check(Temp_Code, prohibited_header)) {
+    if (!PCP(Temp_Code, prohibited_header)) {
         std::cout << "Prohibited Header Detected, Terminated...\n";
         return 3;  // Error Code 3
     }
+
+    // 先將Test DATA讀進來，再進行分裝
+    std::string TestDATA((std::istreambuf_iterator<char>(inFile_TD)), (std::istreambuf_iterator<char>()));
+    inFile_TD.close();
 
     try {
         std::string command_compile = "g++ -o " + std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Code\\FF_CPP_CTR_Test") + TC.tcPath;
