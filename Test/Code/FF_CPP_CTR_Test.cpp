@@ -13,6 +13,7 @@ struct TempCase {
         tcPath = argv[1];
         tdQTY = int(argv[2]);
         tdPath = argv[3];
+        std::cout << tcPath << std::endl << tdQTY << std::endl << tdPath << std::endl;
     }
 };
 
@@ -62,11 +63,25 @@ int main(int argc, char* argv[]) {
         return 3;  // Error Code 3
     }
 
+    try {
+        std::string command_compile = "g++ -o " + std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Code\\FF_CPP_CTR_Test") + TC.tcPath;
+    } catch (std::exception e) {
+        std::cout << "Compile Error, Terminated...\n";
+        return 4;  // Error Code 4
+    }
+
     // std::string command = TC.tcPath + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
     // std::system(command.c_str());
     
     return 0;
 }
 
-// g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
-// C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json
+/*
+Error Code 1 : 
+Error Code 2 : 
+Error Code 3 : 
+Error Code 4 : 
+
+g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
+C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json
+*/
