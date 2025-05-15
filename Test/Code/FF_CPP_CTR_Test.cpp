@@ -11,7 +11,7 @@ struct TempCase {
 
     void parseArgs(char* argv[]) {
         tcPath = argv[1];
-        tdQTY = int(argv[2]);
+        tdQTY = std::atoi(argv[2]);
         tdPath = argv[3];
         std::cout << tcPath << std::endl << tdQTY << std::endl << tdPath << std::endl;
     }
