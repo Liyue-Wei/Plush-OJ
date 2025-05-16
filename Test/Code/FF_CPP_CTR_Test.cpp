@@ -51,15 +51,6 @@ int main(int argc, char* argv[]) {
         return 2;  // Error Code 2
     } 
 
-    try {
-        std::string Temp_Code((std::istreambuf_iterator<char>(inFile_TC)), (std::istreambuf_iterator<char>()));
-        inFile_TC.close();
-        if (!PCP(Temp_Code, prohibited_header)) {
-            std::cout << "Prohibited Header Detected, Terminated...\n";
-            return 3;  // Error Code 3    
-    }
-
-    /*
     std::string Temp_Code((std::istreambuf_iterator<char>(inFile_TC)), (std::istreambuf_iterator<char>()));
     inFile_TC.close();
     if (!PCP(Temp_Code, prohibited_header)) {
@@ -69,8 +60,7 @@ int main(int argc, char* argv[]) {
 
     // 先將Test DATA讀進來，再進行分裝
     std::string TestDATA((std::istreambuf_iterator<char>(inFile_TD)), (std::istreambuf_iterator<char>()));
-    inFile_TD.close();
-    */ 
+    inFile_TD.close(); 
 
     try {
         std::string command_compile = "g++ -o " + std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello") + TC.tcPath;
