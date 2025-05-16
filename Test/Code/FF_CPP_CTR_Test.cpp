@@ -63,7 +63,8 @@ int main(int argc, char* argv[]) {
     inFile_TD.close(); 
 
     try {
-        std::string command_compile = "g++ -o " + std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello") + TC.tcPath;
+        std::string command_compile = "g++ -o " + std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello ") + TC.tcPath;
+        std::cout << command_compile << std::endl;
         std::system(command_compile.c_str());
     } catch (std::exception e) {
         std::cout << "Compile Error, Terminated...\n";
@@ -83,5 +84,5 @@ Error Code 3 : Prohibited Header Detected
 Error Code 4 : Compile Error
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
-C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe 
+C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json
 */
