@@ -83,5 +83,5 @@ Error Code 3 : Prohibited Header Detected
 Error Code 4 : Compile Error
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
-C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json
+C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe 
 */
