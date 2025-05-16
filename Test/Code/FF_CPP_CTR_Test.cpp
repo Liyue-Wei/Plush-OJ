@@ -64,8 +64,11 @@ int main(int argc, char* argv[]) {
 
     try {
         std::string command_compile = "g++ -o " + std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello ") + TC.tcPath;
-        std::cout << command_compile << std::endl;
-        std::system(command_compile.c_str());
+        int compile_result = std::system(command_compile.c_str());
+        if (compile_result != 0) {
+            std::cout << "Compile Error, Terminated...\n";
+            return 4;  // Error Code 4
+        }
     } catch (std::exception e) {
         std::cout << "Compile Error, Terminated...\n";
         return 4;  // Error Code 4
