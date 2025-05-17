@@ -78,6 +78,9 @@ Error Code 1 : Invalid args Input
 Error Code 2 : Reading Temp Code
 Error Code 3 : Prohibited Header Detected
 Error Code 4 : Compile Error
+Error Code 5 : 
+Error Code 6 : 
+Error Code 7 : 
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
 C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json
