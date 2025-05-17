@@ -19,7 +19,7 @@ struct TempCase {
         currPath = argv[0];
         tcPath = argv[1];
         TT = (argv[2] == std::string("OTEST")) ? "OTEST" : "UEOF";
-        tdQTY = std::atoi(argv[2]);
+        tdQTY = (TT != "OTEST") ? std::atoi(argv[2]) : 0;
         tdPath = argv[3];
         QN = argv[4];
         UID = argv[5];
