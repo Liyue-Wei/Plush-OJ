@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <cstdlib>
+#include <sstream>
 
 struct TempCase {
     std::string QN;  // Question Number
@@ -92,9 +93,14 @@ int main(int argc, char* argv[]) {
 
     std::string command_judge = TCFP + ".exe";
     std::FILE *shell;
-    shell = _popen(TCFP.c_str(), "w");
-    fwrite(TestDATA.c_str(), 1, TestDATA.size(), shell);
-    _pclose(shell);
+    std::istringstream iss(TestDATA);
+    std::string line;
+    while (std::getline(iss, line)) {
+        shell = _popen(TCFP.c_str(), "w");
+        std::cout << line << std::endl;
+        fwrite(line.c_str(), 1, line.size(), shell);
+        _pclose(shell);
+    }
 
     /*
     std::string command = std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\QN001A-00001-0000-00-00.exe") + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
