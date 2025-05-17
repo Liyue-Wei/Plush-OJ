@@ -7,6 +7,7 @@
 struct TempCase {
     std::string QN;  // Question Number
     std::string User;
+    std::string Time;
     std::string tcPath;  // Temp Code Path
     std::string tdPath;  // Test DATA Path
     int tdQTY;  // Test DATA Quantity
@@ -15,6 +16,9 @@ struct TempCase {
         tcPath = argv[1];
         tdQTY = std::atoi(argv[2]);
         tdPath = argv[3];
+        QN = argv[4];
+        User = argv[5];
+        Time = argv[6];
     }
 };
 
@@ -39,7 +43,7 @@ bool PCP(const std::string& Temp_Code, const std::vector<std::string>& prohibite
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 4) {
+    if (argc != 7) {
         std::cout << "Invalid args Input, Terminated...\n";
         return 1;  // Error Code 1
     }
@@ -86,5 +90,5 @@ Error Code 6 :
 Error Code 7 : 
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
-C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json
+C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json A001T Admin 0000-00-00
 */
