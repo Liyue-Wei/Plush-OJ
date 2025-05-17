@@ -5,9 +5,11 @@
 #include <cstdlib>
 
 struct TempCase {
+    std::string QN;  // Question Number
+    std::string User;
     std::string tcPath;  // Temp Code Path
-    int tdQTY;  // Test DATA Quantity
     std::string tdPath;  // Test DATA Path
+    int tdQTY;  // Test DATA Quantity
 
     void parseArgs(char* argv[]) {
         tcPath = argv[1];
