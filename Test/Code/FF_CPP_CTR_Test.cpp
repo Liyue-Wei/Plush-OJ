@@ -12,11 +12,13 @@ struct TempCase {
     std::string tcPath;  // Temp Code Path
     std::string tdPath;  // Test DATA Path
     std::string currPath;  // Current Path
+    std::string TT;  // Test Type, OTEST/UEOF, One TestDATA every single time/Until EOF
     int tdQTY;  // Test DATA Quantity
 
     void parseArgs(char* argv[]) {
         currPath = argv[0];
         tcPath = argv[1];
+        TT = (argv[2] == std::string("OTEST")) ? "OTEST" : "UEOF";
         tdQTY = std::atoi(argv[2]);
         tdPath = argv[3];
         QN = argv[4];
