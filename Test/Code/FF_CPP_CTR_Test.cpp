@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <cstdlib>
+#include <filesystem>
 
 struct TempCase {
     std::string QN;  // Question Number
@@ -11,8 +12,10 @@ struct TempCase {
     std::string tcPath;  // Temp Code Path
     std::string tdPath;  // Test DATA Path
     int tdQTY;  // Test DATA Quantity
+    std::filesystem::path currPath;  // Current Path
 
     void parseArgs(char* argv[]) {
+        currPath = std::filesystem::absolute(argv[0]);
         tcPath = argv[1];
         tdQTY = std::atoi(argv[2]);
         tdPath = argv[3];
@@ -67,6 +70,7 @@ int main(int argc, char* argv[]) {
         return 3;  // Error Code 3
     }
 
+    std::string TCFP = "";  // Temp Code File Path
     std::string command_compile = "g++ -o " + std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello ") + TC.tcPath;
     int compile_result = std::system(command_compile.c_str());
     if (compile_result != 0) {
