@@ -23,13 +23,14 @@ struct TempCase {
         Time = argv[6];
     }
 
-    void parsePath(std::string QN, std::string UID, std::string Time) {
+    std::string parsePath(std::string QN, std::string UID, std::string Time) {
         size_t lastSlash = currPath.find_last_of("\\/");
         std::string parentPath = currPath.substr(0, lastSlash);
         lastSlash = parentPath.find_last_of("\\/");
         parentPath = parentPath.substr(0, lastSlash);
         std::string TCFP = parentPath + "\\Temp_Code\\" + QN + "-" + UID + "-" + Time;
-        std::cout << TCFP << std::endl;
+        // std::cout << TCFP << std::endl;
+        return TCFP;
     }
 };
 
@@ -78,9 +79,8 @@ int main(int argc, char* argv[]) {
         return 3;  // Error Code 3
     }
 
-    // std::string TCFP = TC.currPath;  // Temp Code File Path
-    TC.parsePath(TC.QN, TC.UID, TC.Time);
-    std::string command_compile = "g++ -o " + std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello ") + TC.tcPath;
+    std::string TCFP = TC.parsePath(TC.QN, TC.UID, TC.Time);  // Temp Code File Path
+    std::string command_compile = "g++ -o " + TCFP + " " + TC.tcPath;
     int compile_result = std::system(command_compile.c_str());
     if (compile_result != 0) {
         std::cout << "Compile Error, Terminated...\n";
