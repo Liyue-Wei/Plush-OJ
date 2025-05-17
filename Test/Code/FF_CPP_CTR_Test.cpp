@@ -44,7 +44,10 @@ std::vector<std::string> prohibited_header = {
         "<winsock2.h>", 
         "<sys/socket.h>",
         "<netinet/in.h>",
-        "<unistd.h>"
+        "<unistd.h>",
+        "<windows.h>", 
+        "<signal.h>", 
+        "<ctime>"
 };
 
 bool PCP(const std::string& Temp_Code, const std::vector<std::string>& prohibited_header) {  // prohibited_checking_process
