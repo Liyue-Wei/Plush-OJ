@@ -90,10 +90,10 @@ int main(int argc, char* argv[]) {
         return 4;  // Error Code 4
     }
 
-    /*
-    std::string command = std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello.exe") + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
+    
+    std::string command = std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\QN001A-00001-0000-00-00.exe") + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
     std::system(command.c_str());    
-    */
+    
     
     return 0;
 }
@@ -108,5 +108,5 @@ Error Code 6 :
 Error Code 7 : 
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
-C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json A001T Admin 0000-00-00
+C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN001A 00001 0000-00-00
 */
