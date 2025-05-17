@@ -74,8 +74,10 @@ int main(int argc, char* argv[]) {
         return 4;  // Error Code 4
     }
 
+    /*
     std::string command = std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello.exe") + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
-    std::system(command.c_str());
+    std::system(command.c_str());    
+    */
     
     return 0;
 }
