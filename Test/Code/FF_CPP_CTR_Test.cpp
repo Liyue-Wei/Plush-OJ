@@ -91,7 +91,8 @@ int main(int argc, char* argv[]) {
     }
 
     std::string command_judge = TCFP + ".exe";
-    std::FILE *_popen(const char *TCFP);
+    std::FILE *shell;
+    shell = _popen(TCFP.c_str(), "r");
 
     /*
     std::string command = std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\QN001A-00001-0000-00-00.exe") + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
