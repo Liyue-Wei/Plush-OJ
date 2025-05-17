@@ -3,25 +3,33 @@
 #include <vector>
 #include <fstream>
 #include <cstdlib>
-#include <filesystem>
 
 struct TempCase {
     std::string QN;  // Question Number
-    std::string User;
+    std::string UID;  // UserID
     std::string Time;
     std::string tcPath;  // Temp Code Path
     std::string tdPath;  // Test DATA Path
+    std::string currPath;  // Current Path
     int tdQTY;  // Test DATA Quantity
-    std::filesystem::path currPath;  // Current Path
 
     void parseArgs(char* argv[]) {
-        currPath = std::filesystem::absolute(argv[0]);
+        currPath = argv[0];
         tcPath = argv[1];
         tdQTY = std::atoi(argv[2]);
         tdPath = argv[3];
         QN = argv[4];
-        User = argv[5];
+        UID = argv[5];
         Time = argv[6];
+    }
+
+    void parsePath(std::string QN, std::string UID, std::string Time) {
+        size_t lastSlash = currPath.find_last_of("\\/");
+        std::string parentPath = currPath.substr(0, lastSlash);
+        lastSlash = parentPath.find_last_of("\\/");
+        parentPath = parentPath.substr(0, lastSlash);
+        std::string TCFP = parentPath + "\\Temp_Code\\" + QN + "-" + UID + "-" + Time;
+        std::cout << TCFP << std::endl;
     }
 };
 
@@ -70,7 +78,8 @@ int main(int argc, char* argv[]) {
         return 3;  // Error Code 3
     }
 
-    std::string TCFP = "";  // Temp Code File Path
+    // std::string TCFP = TC.currPath;  // Temp Code File Path
+    TC.parsePath(TC.QN, TC.UID, TC.Time);
     std::string command_compile = "g++ -o " + std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\Hello ") + TC.tcPath;
     int compile_result = std::system(command_compile.c_str());
     if (compile_result != 0) {
