@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
     std::FILE *shell;
     std::istringstream iss(TestDATA);
     std::string line;
-    while (std::getline(iss, line)) {
+    while (std::getline(iss, line)) {  // One TestDATA every single time
         shell = _popen(TCFP.c_str(), "w");
         std::cout << line << std::endl;
         fwrite(line.c_str(), 1, line.size(), shell);
