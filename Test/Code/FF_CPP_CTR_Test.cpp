@@ -61,6 +61,14 @@ bool PCP(const std::string& Temp_Code, const std::vector<std::string>& prohibite
     return true;
 }
 
+bool checkShell(FILE* shell) {
+    if (shell == nullptr) {
+        std::cout << "System Error, Terminated...\n";
+        return false;
+    }
+    return true;
+}
+
 int main(int argc, char* argv[]) {
     if (argc != 7) {
         std::cout << "Invalid args Input, Terminated...\n";
@@ -101,20 +109,14 @@ int main(int argc, char* argv[]) {
     if (TC.TT == "OTEST") {
         while (std::getline(iss, line)) {  
             shell = _popen(TCFP.c_str(), "w");
-            if (shell == nullptr) {
-                std::cout << "System Error, Terminated...\n";
-                return 5;  // Error Code 5
-            }
+            if (!checkShell(shell)) return 5;  // Error Code 5
             std::cout << line << std::endl;
             fwrite(line.c_str(), 1, line.size(), shell);
             _pclose(shell);
         }
     } else if (TC.TT == "UEOF") {
         shell = _popen(TCFP.c_str(), "w");
-        if (shell == nullptr) {
-            std::cout << "System Error, Terminated...\n";
-            return 5;  // Error Code 5
-        }
+        if (!checkShell(shell)) return 5;  // Error Code 5
         fwrite(TestDATA.c_str(), 1, TestDATA.size(), shell);
         _pclose(shell);
     } else {
