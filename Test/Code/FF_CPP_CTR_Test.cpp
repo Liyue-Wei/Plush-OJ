@@ -98,8 +98,12 @@ int main(int argc, char* argv[]) {
     std::istringstream iss(TestDATA);
     std::string line;
     if (TC.TT == "OTEST") {
-        while (std::getline(iss, line)) {  // One TestDATA every single time
+        while (std::getline(iss, line)) {  
             shell = _popen(TCFP.c_str(), "w");
+            if (shell == nullptr) {
+                std::cout << "System Error, Terminated...\n";
+                return 5;  // Shell Error
+            }
             std::cout << line << std::endl;
             fwrite(line.c_str(), 1, line.size(), shell);
             _pclose(shell);
@@ -107,14 +111,11 @@ int main(int argc, char* argv[]) {
     } else if (TC.TT == "UEOF") {
         shell = _popen(TCFP.c_str(), "w");
         if (shell == nullptr) {
-            std::cout << "Failed to open process, Terminated...\n";
-            return 5;
+            std::cout << "System Error, Terminated...\n";
+            return 5;  // Shell Error
         }
         fwrite(TestDATA.c_str(), 1, TestDATA.size(), shell);
         _pclose(shell);
-    } else {
-        std::cout << "Unsupported Function, Terminated...\n";
-        return 999;
     }
 
     /*
@@ -130,10 +131,9 @@ Error Code 1 : Invalid args Input
 Error Code 2 : Reading Temp Code
 Error Code 3 : Prohibited Header Detected
 Error Code 4 : Compile Error
-Error Code 5 : 
+Error Code 5 : System Error - Shell can't be opened
 Error Code 6 : 
 Error Code 7 : 
-Error Code 999 : Unsupported Function
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
 C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp OTEST C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN001A 00001 0000-00-00
