@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
             shell = _popen(TCFP.c_str(), "w");
             if (shell == nullptr) {
                 std::cout << "System Error, Terminated...\n";
-                return 5;  // Shell Error
+                return 5;  // Error Code 5
             }
             std::cout << line << std::endl;
             fwrite(line.c_str(), 1, line.size(), shell);
@@ -113,13 +113,13 @@ int main(int argc, char* argv[]) {
         shell = _popen(TCFP.c_str(), "w");
         if (shell == nullptr) {
             std::cout << "System Error, Terminated...\n";
-            return 5;  // Shell Error
+            return 5;  // Error Code 5
         }
         fwrite(TestDATA.c_str(), 1, TestDATA.size(), shell);
         _pclose(shell);
     } else {
         std::cout << "Unknow Error, Terminated...\n";
-        return 9;  // Unknow Test Type
+        return 6;  // Error Code 6
     }
 
     /*
@@ -136,10 +136,10 @@ Error Code 2 : Reading Temp Code
 Error Code 3 : Prohibited Header Detected
 Error Code 4 : Compile Error
 Error Code 5 : System Error - Shell can't be opened
-Error Code 6 : 
+Error Code 6 : Unknow Test Type
 Error Code 7 : 
 Error Code 8 : 
-Error Code 9 : Unknow Test Type
+Error Code 9 : 
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
 C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp OTEST C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN001A 00001 0000-00-00
