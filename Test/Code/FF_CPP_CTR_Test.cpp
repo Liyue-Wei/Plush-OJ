@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) {
         while (std::getline(iss, line)) {  
             shell = _popen(TCFP.c_str(), "w");
             if (!checkShell(shell)) return 5;  // Error Code 5
-            std::cout << line << std::endl;
+            // std::cout << line << std::endl;
             fwrite(line.c_str(), 1, line.size(), shell);
             _pclose(shell);
         }
