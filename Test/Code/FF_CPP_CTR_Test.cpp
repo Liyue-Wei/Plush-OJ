@@ -110,7 +110,6 @@ int main(int argc, char* argv[]) {
             std::cout << "Failed to open process, Terminated...\n";
             return 5;
         }
-        // 一次性把所有測資寫進去
         fwrite(TestDATA.c_str(), 1, TestDATA.size(), shell);
         _pclose(shell);
     } else {
