@@ -97,11 +97,16 @@ int main(int argc, char* argv[]) {
     std::FILE *shell;
     std::istringstream iss(TestDATA);
     std::string line;
-    while (std::getline(iss, line)) {  // One TestDATA every single time
-        shell = _popen(TCFP.c_str(), "w");
-        std::cout << line << std::endl;
-        fwrite(line.c_str(), 1, line.size(), shell);
-        _pclose(shell);
+    if (TC.TT == "OTEST") {
+        while (std::getline(iss, line)) {  // One TestDATA every single time
+            shell = _popen(TCFP.c_str(), "w");
+            std::cout << line << std::endl;
+            fwrite(line.c_str(), 1, line.size(), shell);
+            _pclose(shell);
+        }        
+    } else {
+        std::cout << "Unsupported Function, Terminated...\n";
+        return 999;
     }
 
     /*
@@ -120,6 +125,7 @@ Error Code 4 : Compile Error
 Error Code 5 : 
 Error Code 6 : 
 Error Code 7 : 
+Error Code 999 : Unsupported Function
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
 C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN001A 00001 0000-00-00
