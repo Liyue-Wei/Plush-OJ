@@ -18,7 +18,8 @@ struct TempCase {
     void parseArgs(char* argv[]) {
         currPath = argv[0];
         tcPath = argv[1];
-        TT = (argv[2] == std::string("OTEST")) ? "OTEST" : "UEOF";
+        // TT = (argv[2] == std::string("OTEST")) ? "OTEST" : "UEOF";
+        TT = argv[2];
         // tdQTY = (TT != "OTEST") ? std::atoi(argv[2]) : 0;
         tdPath = argv[3];
         QN = argv[4];
@@ -116,6 +117,9 @@ int main(int argc, char* argv[]) {
         }
         fwrite(TestDATA.c_str(), 1, TestDATA.size(), shell);
         _pclose(shell);
+    } else {
+        std::cout << "Unknow Error, Terminated...\n";
+        return 9;  // Unknow Test Type
     }
 
     /*
@@ -134,8 +138,10 @@ Error Code 4 : Compile Error
 Error Code 5 : System Error - Shell can't be opened
 Error Code 6 : 
 Error Code 7 : 
+Error Code 8 : 
+Error Code 9 : Unknow Test Type
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
 C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp OTEST C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN001A 00001 0000-00-00
-C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\EOF_Test.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN002A 00001 0000-00-00
+C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\EOF_Test.cpp UEOF C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN002A 00001 0000-00-00
 */
