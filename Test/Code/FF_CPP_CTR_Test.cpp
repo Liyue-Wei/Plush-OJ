@@ -69,6 +69,11 @@ bool checkShell(FILE* shell) {
     return true;
 }
 
+// CreateProcess
+std::string Judge(std::string TCFP, std::string TD, std::string TAP) {  // Temp Code File Path, TestDATA, Test Answer Path
+    TCFP = TCFP + ".exe";
+}
+
 int main(int argc, char* argv[]) {
     if (argc != 7) {
         std::cout << "Invalid args Input, Terminated...\n";
@@ -102,6 +107,7 @@ int main(int argc, char* argv[]) {
         return 4;  // Error Code 4
     }
 
+    /*
     std::string command_judge = TCFP + ".exe";
     std::FILE *shell;
     std::istringstream iss(TestDATA);
@@ -123,10 +129,6 @@ int main(int argc, char* argv[]) {
         std::cout << "Unknow Error, Terminated...\n";
         return 6;  // Error Code 6
     }
-
-    /*
-    std::string command = std::string("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\Temp_Code\\QN001A-00001-0000-00-00.exe") + " < " + TC.tdPath;  // 這邊要先把測資獨立成一個檔案，一次一次測
-    std::system(command.c_str());    
     */
     
     return 0;
