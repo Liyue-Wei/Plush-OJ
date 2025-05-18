@@ -103,7 +103,16 @@ int main(int argc, char* argv[]) {
             std::cout << line << std::endl;
             fwrite(line.c_str(), 1, line.size(), shell);
             _pclose(shell);
-        }        
+        }
+    } else if (TC.TT == "UEOF") {
+        shell = _popen(TCFP.c_str(), "w");
+        if (shell == nullptr) {
+            std::cout << "Failed to open process, Terminated...\n";
+            return 5;
+        }
+        // 一次性把所有測資寫進去
+        fwrite(TestDATA.c_str(), 1, TestDATA.size(), shell);
+        _pclose(shell);
     } else {
         std::cout << "Unsupported Function, Terminated...\n";
         return 999;
@@ -128,5 +137,6 @@ Error Code 7 :
 Error Code 999 : Unsupported Function
 
 g++ -o C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.cpp
-C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN001A 00001 0000-00-00
+C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\Hello.cpp OTEST C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN001A 00001 0000-00-00
+C:\Users\eric2\Desktop\Plush-OJ\Test\Code\FF_CPP_CTR_Test.exe C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_Code\EOF_Test.cpp 10 C:\Users\eric2\Desktop\Plush-OJ\Test\Temp_JSON\PL.json QN002A 00001 0000-00-00
 */
