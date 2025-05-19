@@ -72,6 +72,8 @@ bool checkShell(FILE* shell) {
 // CreateProcess
 std::string Judge(std::string TCFP, std::string TD, std::string TAP) {  // Temp Code File Path, TestDATA, Test Answer Path
     TCFP = TCFP + ".exe";
+
+    return nullptr;
 }
 
 int main(int argc, char* argv[]) {
