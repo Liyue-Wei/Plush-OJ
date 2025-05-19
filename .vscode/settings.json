@@ -78,5 +78,6 @@
         "unordered_set": "cpp",
         "variant": "cpp",
         "xhash": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

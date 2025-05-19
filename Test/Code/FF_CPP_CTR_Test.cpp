@@ -71,7 +71,8 @@ bool checkShell(FILE* shell) {
 }
 
 std::string Judge(std::string TCFP, std::string TD, std::string TAP) {  // Temp Code File Path, TestDATA, Test Answer Path
-    STARTUPINFO si;
+    std::string command_judge = TCFP + ".exe";
+    std::FILE* shell = _popen(command_judge.c_str(), "w");
 
     return nullptr;
 }
