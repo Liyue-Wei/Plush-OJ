@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <sstream>
+#include <windows.h>
 
 struct TempCase {
     std::string QN;  // Question Number
@@ -70,7 +71,7 @@ bool checkShell(FILE* shell) {
 }
 
 std::string Judge(std::string TCFP, std::string TD, std::string TAP) {  // Temp Code File Path, TestDATA, Test Answer Path
-    TCFP = TCFP + ".exe";
+    STARTUPINFO si;
 
     return nullptr;
 }
