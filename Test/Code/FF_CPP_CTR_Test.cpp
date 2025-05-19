@@ -34,7 +34,7 @@ struct TempCase {
         parentPath = parentPath.substr(0, lastSlash);
         std::string TCFP = parentPath + "\\Temp_Code\\" + QN + "-" + UID + "-" + Time;
         // std::cout << TCFP << std::endl;
-        return TCFP;
+        return TCFP;  // Temp Code File Path
     }
 };
 
@@ -69,7 +69,6 @@ bool checkShell(FILE* shell) {
     return true;
 }
 
-// CreateProcess
 std::string Judge(std::string TCFP, std::string TD, std::string TAP) {  // Temp Code File Path, TestDATA, Test Answer Path
     TCFP = TCFP + ".exe";
 
