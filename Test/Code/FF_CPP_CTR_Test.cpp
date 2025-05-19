@@ -13,18 +13,18 @@ struct TempCase {
     std::string tdPath;  // Test DATA Path
     std::string currPath;  // Current Path
     std::string TT;  // Test Type, OTEST/UEOF, One TestDATA every single time/Until EOF
+    std::string taPath;  // Test Answer Path
     // int tdQTY;  // Test DATA Quantity
 
-    void parseArgs(char* argv[]) {
+    void parseArgs(char* argv[]) {  // currPath, tcPath, TT, tdPath, taPath, QN, UID, Time
         currPath = argv[0];
         tcPath = argv[1];
-        // TT = (argv[2] == std::string("OTEST")) ? "OTEST" : "UEOF";
         TT = argv[2];
-        // tdQTY = (TT != "OTEST") ? std::atoi(argv[2]) : 0;
         tdPath = argv[3];
-        QN = argv[4];
-        UID = argv[5];
-        Time = argv[6];
+        taPath = argv[4];
+        QN = argv[5];
+        UID = argv[6];
+        Time = argv[7];
     }
 
     std::string parsePath(std::string QN, std::string UID, std::string Time) {
@@ -75,7 +75,7 @@ std::string Judge(std::string TCFP, std::string TD, std::string TAP) {  // Temp 
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 7) {
+    if (argc != 8) {
         std::cout << "Invalid args Input, Terminated...\n";
         return 1;  // Error Code 1
     }
