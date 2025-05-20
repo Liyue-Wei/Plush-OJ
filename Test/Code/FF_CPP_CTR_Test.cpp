@@ -1,3 +1,7 @@
+/*
+2025/05/20 - FF_CPP_CTR 暫停開發，轉向 FF_Python_CTR
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
