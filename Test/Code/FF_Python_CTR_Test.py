@@ -3,7 +3,10 @@ import subprocess
 import os
 import time
 
-def main():
+class CPP_CTR:
+    args = ["currPath", "tcPath", "TT", "tdPath", "taPath", "QN", "UID", "Time"]
+
+def main(argv):
     currPath = os.path.abspath(os.path.dirname(__file__))
 
 if __name__ == '__main__':
