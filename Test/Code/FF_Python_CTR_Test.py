@@ -5,6 +5,19 @@ import os
 import sys
 import subprocess
 
+class CPP_CTR:
+    def __init__(self, tempCodePath, testDataPath, info):
+        self.tempCodePath = tempCodePath
+        self.testDataPath = testDataPath
+        self.info = info
+
+    def run(self):
+        # Run the C++ code with the provided arguments
+        command = f"g++ {self.tempCodePath} -o output && ./output {self.testDataPath} {self.info}"
+        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+        return stdout.decode('utf-8'), stderr.decode('utf-8')
+
 def main():
     currPath = os.path.abspath(os.path.dirname(__file__))
     args = [str(sys.argv[1]), str(sys.argv[2]), str(sys.argv[3])]  # TempCode Path, TestData Path, Info
