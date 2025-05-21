@@ -9,13 +9,21 @@
                 "arg_2": "2",
                 "arg_3": "3"
             },
-            "Input_Type": "int",
+            "Input_Type": {
+                "arg_1": "int",
+                "arg_2": "int",
+                "arg_3": "int"
+            },
             "Answer": {
                 "arg_1": "No\n",
                 "arg_2": "Yes\n",
                 "arg_3": "Yes\n"
             },
-            "Answer_Type": "string"
+            "Answer_Type": {
+                "arg_1": "string",
+                "arg_2": "string",
+                "arg_3": "string"
+            }
         }, 
         {
             "Test_Case": "TC002",
@@ -24,13 +32,21 @@
                 "arg_2": "5",
                 "arg_3": "6"
             },
-            "Input_Type": "int",
+            "Input_Type": {
+                "arg_1": "int",
+                "arg_2": "int",
+                "arg_3": "int"
+            },
             "Answer": {
                 "arg_1": "No\n",
                 "arg_2": "Yes\n",
                 "arg_3": "No\n"
             },
-            "Answer_Type": "string"
+            "Answer_Type": {
+                "arg_1": "string",
+                "arg_2": "string",
+                "arg_3": "string"
+            }
         }, 
         {
             "Test_Case": "TC003",
@@ -39,13 +55,21 @@
                 "arg_2": "8",
                 "arg_3": "9"
             },
-            "Input_Type": "int",
+            "Input_Type": {
+                "arg_1": "int",
+                "arg_2": "int",
+                "arg_3": "int"
+            },
             "Answer": {
                 "arg_1": "Yes\n",
                 "arg_2": "No\n",
                 "arg_3": "No\n"
             },
-            "Answer_Type": "string"
+            "Answer_Type": {
+                "arg_1": "string",
+                "arg_2": "string",
+                "arg_3": "string"
+            }
         }
     ]
 }
