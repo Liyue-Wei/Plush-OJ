@@ -56,7 +56,11 @@ def main():
         return 1  # Error Code 1
     
     currPath = os.path.abspath(os.path.dirname(__file__))
-    print("Current Path: ", currPath)
+    tempDir = currPath.split('\\')[0:-1]
+    tempDir = '\\'.join(tempDir) + '\\Temp\\'
+    if not os.path.exists(tempDir):
+        os.makedirs(tempDir)
+
     args = [str(sys.argv[1]), str(sys.argv[2]), str(sys.argv[3])]  # TempCode Path, TestData Path, Info
     TD = parseTD(args[1])  
     lang = args[0].split('.')[-1]  
@@ -97,5 +101,5 @@ Error Code 8 :
 Error Code 9 : Unexpected System Error
 Error Code 10: Unsupported Language
 
-python Test\Code\FF_Python_CTR_Test.py Test\Temp_Code\QN001A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN001A.json User
+python Test\Code\FF_Python_CTR_Test.py Test\Temp_Code\QN001A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN001A.json QN001A-XXXXX-0000-00-00
 '''
