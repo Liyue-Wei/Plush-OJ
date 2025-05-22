@@ -5,7 +5,20 @@ import os
 import sys
 import subprocess
 
-global currPath, tempCode, testData, info
+prohibited_header = [
+    "<fstream>",
+    "<cstdlib>",
+    "<stdlib.h>",
+    "<filesystem>",
+    "<process.h>",
+    "<unistd.h>",
+    "<winsock2.h>",
+    "<sys/socket.h>",
+    "<netinet/in.h>",
+    "<windows.h>",
+    "<signal.h>",
+    "<ctime>"
+]
 
 def parseTD(TDPath):
     try:
@@ -40,17 +53,26 @@ def main():
     
     currPath = os.path.abspath(os.path.dirname(__file__))
     args = [str(sys.argv[1]), str(sys.argv[2]), str(sys.argv[3])]  # TempCode Path, TestData Path, Info
-    
-    try:
-        with open(args[0], 'r', encoding='utf-8') as TC:
-            tempCode = TC.read()
-            print(tempCode)
-            # for line in tempCode.splitlines():
-            #     print(line)
+    lang = args[0].split('.')[-1]  
 
-    except FileNotFoundError:
-        print("An Error occured when reading Temp Code, Terminated...")
-        return 2  # Error Code 2
+    match lang:
+        case 'cpp':
+            try:
+                with open(args[0], 'r', encoding='utf-8') as TC:
+                    tempCode = TC.read()
+                    print(tempCode)
+                    # for line in tempCode.splitlines():
+                    #     print(line)
+
+            except FileNotFoundError:
+                print("An Error occured when reading Temp Code, Terminated...")
+                return 2  # Error Code 2
+            
+        case 'c':
+            pass
+
+        case 'py':
+            pass
 
 if __name__ == '__main__':
     main()
