@@ -18,9 +18,10 @@ def parseTD(TDPath):
         return 9  # Error Code 9
 
 class CPP_CTR:
-    def __init__(self, tempCode, testData):
+    def __init__(self, tempCode, testData, info):
         self.tempCode = tempCode
         self.testData = testData
+        self.info = info
 
     prohibited_header = [
         "<fstream>",
@@ -42,6 +43,12 @@ class CPP_CTR:
             return True
         else:
             return False
+        
+    def compile(self, *args):
+        try:
+            os.system(f"g++ -o {self.info} {args[0]} -std=c++11")
+        except subprocess.CalledProcessError as e:
+            pass
 
 def main():
     if len(sys.argv) != 4:
@@ -62,11 +69,13 @@ def main():
                 print("An Error occured when reading Temp Code, Terminated...")
                 return 2  # Error Code 2
             
-            if CPP_CTR(tempCode, TD).PCP() == True:
+            if CPP_CTR(tempCode, TD, args[2]).PCP() == True:
                 print("Prohibited Header Detected, Terminated...")
                 return 3  # Error Code 3
-            else:
-                pass
+            
+            if CPP_CTR(tempCode, TD, args[2]).compile() != 0:
+                print("Compile Error, Terminated...")
+                return 4
             
         case 'c':
             pass
