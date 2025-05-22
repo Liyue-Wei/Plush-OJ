@@ -39,10 +39,9 @@ class CPP_CTR:
 
     def PCP(self):  # prohibited_checking_process
         if any(header in self.tempCode for header in CPP_CTR.prohibited_header):
-            print("Prohibited Header Detected, Terminated...")
-            return 3  # Error Code 3
+            return True
         else:
-            return 0
+            return False
 
 def main():
     if len(sys.argv) != 4:
@@ -63,7 +62,11 @@ def main():
                 print("An Error occured when reading Temp Code, Terminated...")
                 return 2  # Error Code 2
             
-            CPP_CTR(tempCode, TD).PCP()
+            if CPP_CTR(tempCode, TD).PCP() == True:
+                print("Prohibited Header Detected, Terminated...")
+                return 3  # Error Code 3
+            else:
+                pass
             
         case 'c':
             pass
