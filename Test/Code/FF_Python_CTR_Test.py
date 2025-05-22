@@ -56,6 +56,7 @@ def main():
         return 1  # Error Code 1
     
     currPath = os.path.abspath(os.path.dirname(__file__))
+    print("Current Path: ", currPath)
     args = [str(sys.argv[1]), str(sys.argv[2]), str(sys.argv[3])]  # TempCode Path, TestData Path, Info
     TD = parseTD(args[1])  
     lang = args[0].split('.')[-1]  
@@ -76,12 +77,6 @@ def main():
             if CPP_CTR(tempCode, TD, args[2]).compile(args[0]) != 0:
                 print("Compile Error, Terminated...")
                 return 4
-            
-        case 'c':
-            pass
-
-        case 'py':
-            pass
 
         case _:
             print("Unsupported Language, Terminated...")
