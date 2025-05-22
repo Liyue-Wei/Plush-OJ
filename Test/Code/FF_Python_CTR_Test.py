@@ -5,21 +5,6 @@ import os
 import sys
 import subprocess
 
-prohibited_header = [
-    "<fstream>",
-    "<cstdlib>",
-    "<stdlib.h>",
-    "<filesystem>",
-    "<process.h>",
-    "<unistd.h>",
-    "<winsock2.h>",
-    "<sys/socket.h>",
-    "<netinet/in.h>",
-    "<windows.h>",
-    "<signal.h>",
-    "<ctime>"
-]
-
 def parseTD(TDPath):
     try:
         with open(TDPath, 'r', encoding='utf-8') as TD:
@@ -30,21 +15,27 @@ def parseTD(TDPath):
     except json.JSONDecodeError:
         return None
 
-def PCP():  # prohibited_checking_process
-    pass
-
 class CPP_CTR:
-    def __init__(self, tempCodePath, testDataPath, info):
-        self.tempCodePath = tempCodePath
-        self.testDataPath = testDataPath
-        self.info = info
+    def __init__(self):
+        pass
 
-    def run(self):
-        # Run the C++ code with the provided arguments
-        command = f"g++ {self.tempCodePath} -o output && ./output {self.testDataPath} {self.info}"
-        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate()
-        return stdout.decode('utf-8'), stderr.decode('utf-8')
+    prohibited_header = [
+        "<fstream>",
+        "<cstdlib>",
+        "<stdlib.h>",
+        "<filesystem>",
+        "<process.h>",
+        "<unistd.h>",
+        "<winsock2.h>",
+        "<sys/socket.h>",
+        "<netinet/in.h>",
+        "<windows.h>",
+        "<signal.h>",
+        "<ctime>"
+    ]
+
+    def PCP():  # prohibited_checking_process
+        pass
 
 def main():
     if len(sys.argv) != 4:
