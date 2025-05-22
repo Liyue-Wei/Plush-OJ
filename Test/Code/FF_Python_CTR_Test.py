@@ -17,6 +17,9 @@ def parseTD(TDPath):
     except json.JSONDecodeError:
         return None
 
+def PCP():  # prohibited_checking_process
+    pass
+
 class CPP_CTR:
     def __init__(self, tempCodePath, testDataPath, info):
         self.tempCodePath = tempCodePath
@@ -31,20 +34,23 @@ class CPP_CTR:
         return stdout.decode('utf-8'), stderr.decode('utf-8')
 
 def main():
-    currPath = os.path.abspath(os.path.dirname(__file__))
-    args = [str(sys.argv[1]), str(sys.argv[2]), str(sys.argv[3])]  # TempCode Path, TestData Path, Info
-    if len(args) != 3:
+    if len(sys.argv) != 4:
         print("Invalid args Input, Terminated...")
         return 1  # Error Code 1
+    
+    currPath = os.path.abspath(os.path.dirname(__file__))
+    args = [str(sys.argv[1]), str(sys.argv[2]), str(sys.argv[3])]  # TempCode Path, TestData Path, Info
     
     try:
         with open(args[0], 'r', encoding='utf-8') as TC:
             tempCode = TC.read()
+            print(tempCode)
+            # for line in tempCode.splitlines():
+            #     print(line)
+
     except FileNotFoundError:
         print("An Error occured when reading Temp Code, Terminated...")
         return 2  # Error Code 2
-    
-    
 
 if __name__ == '__main__':
     main()
@@ -60,4 +66,6 @@ Error Code 7 :
 Error Code 8 : 
 Error Code 9 : 
 Error Code 10: 
+
+python Test\Code\FF_Python_CTR_Test.py Test\Temp_Code\QN001A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN001A.json User
 '''
