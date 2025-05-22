@@ -45,10 +45,11 @@ class CPP_CTR:
             return False
         
     def compile(self, tdPath, tempDir):
-        try:
-            os.system(f"g++ -o {tempDir}\\{self.info} {tdPath} -std=c++23")
-        except subprocess.CalledProcessError as e:
-            pass
+        exitCode = os.system(f"g++ -o {tempDir}\\{self.info} {tdPath} -std=c++23")
+        if exitCode != 0:
+            return False
+        else:
+            return True
 
 def main():
     if len(sys.argv) != 4:
@@ -78,9 +79,9 @@ def main():
                 print("Prohibited Header Detected, Terminated...")
                 return 3  # Error Code 3
             
-            if CPP_CTR(tempCode, TD, args[2]).compile(args[0], tempDir) != 0:
+            if not CPP_CTR(tempCode, TD, args[2]).compile(args[0], tempDir):
                 print("Compile Error, Terminated...")
-                return 4
+                return 4  # Error Code 4
 
         case _:
             print("Unsupported Language, Terminated...")
