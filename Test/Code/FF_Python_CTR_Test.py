@@ -44,9 +44,9 @@ class CPP_CTR:
         else:
             return False
         
-    def compile(self, tdPath):
+    def compile(self, tdPath, tempDir):
         try:
-            os.system(f"g++ -o {self.info} {tdPath} -std=c++11")
+            os.system(f"g++ -o {tempDir}\\{self.info} {tdPath} -std=c++23")
         except subprocess.CalledProcessError as e:
             pass
 
@@ -78,7 +78,7 @@ def main():
                 print("Prohibited Header Detected, Terminated...")
                 return 3  # Error Code 3
             
-            if CPP_CTR(tempCode, TD, args[2]).compile(args[0]) != 0:
+            if CPP_CTR(tempCode, TD, args[2]).compile(args[0], tempDir) != 0:
                 print("Compile Error, Terminated...")
                 return 4
 
