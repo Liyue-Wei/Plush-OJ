@@ -1,0 +1,24 @@
+{
+    "Question_Number": "QN",
+    "Test_Type": "OTEST",
+    "TLE": 1,
+    "MLE": "Null",
+    "Test_Data": [
+        {
+            "Test_Case": "TC001",
+            "Input": {
+                "arg_1": ""
+            },
+            "Input_Type": {
+                "arg_1": ""
+            },
+            "Answer": {
+                "arg_1": ""
+            },
+            "Answer_Type": {
+                "arg_1": ""
+            }
+        }
+
+    ]
+}
