@@ -65,6 +65,10 @@ def main():
         case 'py':
             pass
 
+        case _:
+            print("Unknown Test Type, Terminated...")
+            return 6  # Error Code 6
+
 if __name__ == '__main__':
     main()
 
