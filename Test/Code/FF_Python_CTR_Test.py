@@ -7,15 +7,13 @@ import subprocess
 
 def parseTD(TDPath):
     try:
-        with open(TDPath, 'r') as tdIN:
-            pass
+        with open(TDPath, 'r', encoding='utf-8') as TD:
+            data = json.load(TD)
+
     except FileNotFoundError:
-        print(f"Test data file not found: {TDPath}")
         return None
     except json.JSONDecodeError:
-        print(f"Error decoding JSON from test data file: {TDPath}")
         return None
-
 
 class CPP_CTR:
     def __init__(self, tempCodePath, testDataPath, info):
