@@ -53,14 +53,17 @@ class CPP_CTR:
             return False
         else:
             return True
-        
-    def Comparator(self):
-        pass
 
     def RC(self):  # resource_counter
         pass
 
     def timer(self):
+        pass
+        
+    def Comparator(self):
+        pass
+
+    def execute(self):
         pass
 
 def main():
