@@ -61,7 +61,9 @@ class CPP_CTR:
         pass
         
     def Comparator(self):
-        pass
+        TT = self.testData['Test_Type']
+        TLE = self.testData['Time_Limit']
+        MLE = self.testData['Memory_Limit']
 
     def execute(self):
         pass

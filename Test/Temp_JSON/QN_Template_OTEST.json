@@ -1,8 +1,8 @@
 {
     "Question_Number": "QN",
     "Test_Type": "OTEST",
-    "TLE": 1,
-    "MLE": "Null",
+    "Time_Limit": 1,
+    "Memory_Limit": "Null",
     "Test_Data": [
         {
             "Test_Case": "TC001",
