@@ -62,8 +62,16 @@ class CPP_CTR:
         
     def Comparator(self):
         TT = self.testData['Test_Type']
-        TLE = self.testData['Time_Limit']
-        MLE = self.testData['Memory_Limit']
+        TL = self.testData['Time_Limit']
+        ML = self.testData['Memory_Limit']
+        TD = self.testData['Test_Data']
+        print("Test Type : ", TT, '\n')
+        print("Time Limit : ", TL, '\n')
+        print("Memory Limit : ", ML, '\n')
+        print("Test Data : ")
+        for item in TD:
+            print(item)
+        print('\n')
 
     def execute(self):
         pass
@@ -106,6 +114,8 @@ def main():
             if not CPP_CTR(tempCode, TD, args[2]).compile(args[0], tempDir):
                 print("Compile Error, Terminated...")
                 return 4  # Error Code 4
+            
+            CPP_CTR(tempCode, TD, args[2]).Comparator()
 
         case _:
             print("Unsupported Language, Terminated...")
