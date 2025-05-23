@@ -71,7 +71,6 @@ class CPP_CTR:
         print("Test Data : ")
         for item in TD:
             print(item)
-        print('\n')
 
     def execute(self):
         pass
