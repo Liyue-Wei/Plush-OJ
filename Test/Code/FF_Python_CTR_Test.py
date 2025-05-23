@@ -66,6 +66,9 @@ class CPP_CTR:
     def execute(self):
         pass
 
+    def errorHandler(self):
+        pass
+
 def main():
     if len(sys.argv) != 4:
         print("Invalid args Input, Terminated...")
