@@ -79,7 +79,7 @@ def main():
                 print("An Error occured when reading Temp Code, Terminated...")
                 return 2  # Error Code 2
             
-            if CPP_CTR(tempCode, TD, args[2]).PCP() == True:
+            if CPP_CTR(tempCode, TD, args[2]).PCP():
                 print("Prohibited Header Detected, Terminated...")
                 return 3  # Error Code 3
             
@@ -104,7 +104,7 @@ Error Code 6 :
 Error Code 7 : 
 Error Code 8 : 
 Error Code 9 : Unexpected System Error
-Error Code 10: Unsupported Language
+Error Code 10 : Unsupported Language
 
 python Test\Code\FF_Python_CTR_Test.py Test\Temp_Code\QN001A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN001A.json QN001A-XXXXX-0000-00-00
 '''
