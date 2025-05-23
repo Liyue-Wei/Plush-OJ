@@ -64,6 +64,10 @@ def main():
 
     args = [str(sys.argv[1]), str(sys.argv[2]), str(sys.argv[3])]  # TempCode Path, TestData Path, Info
     TD = parseTD(args[1])  
+    if TD == 9:
+        print("Unexpected System Error, Terminated...")
+        return 9  # Error Code 9
+    
     lang = args[0].split('.')[-1]  
     match lang:
         case 'cpp':
