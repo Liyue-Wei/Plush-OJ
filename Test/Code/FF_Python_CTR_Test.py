@@ -38,6 +38,9 @@ class CPP_CTR:
         "<ctime>"
     ]
 
+    def handlerIO(self):  # IO Handler
+        pass
+
     def PCP(self):  # prohibited_checking_process
         if any(header in self.tempCode for header in CPP_CTR.prohibited_header):
             return True
@@ -50,6 +53,15 @@ class CPP_CTR:
             return False
         else:
             return True
+        
+    def Comparator(self):
+        pass
+
+    def RC(self):  # resource_counter
+        pass
+
+    def timer(self):
+        pass
 
 def main():
     if len(sys.argv) != 4:
