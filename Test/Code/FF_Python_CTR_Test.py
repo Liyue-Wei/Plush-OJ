@@ -82,7 +82,7 @@ class CPP_CTR:
         answer = []
         answerType = []
         execTime = []
-        value = []
+        output = []
         TT, TL, ML, TD = self.JSON_Handler()
         if TT == "OTEST":
             for item in TD:
@@ -101,23 +101,54 @@ class CPP_CTR:
                 answer.append(answers)
                 answerType.append(answerType)
 
+        print("Time Limit : ", TL)
+        print("Memory Limit : ", ML)
         print("Input : ", input)
         print("Answer : ", answer)
         print("Exection Path : ", execPath)
         
-        try:
-            if TT == "OTEST":
-                for arg in input:
-                    start_time = time.time()
-                    with subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                        value = proc.communicate(input=arg, timeout=int(TL))[0]
+        if TT == "OTEST":
+            for arg in input:
+                start_time = time.time()
+                process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                try:
+                    value, _ = process.communicate(input=arg, timeout=int(TL))
                     end_time = time.time()
-                    print(f"Execution Time: {end_time - start_time} seconds")
-                    print(f"DEBUG: repr(value) is {repr(value)}") # 添加这行来查看value的精确内容
-                    print("Output : ", value, end='')
-        except:
-            print("Execution Error, Terminated...")
-            return 9  # Error Code 9
+                    if process.returncode != 0:
+                        print(f"Execution Error: {process.stderr.read()}, Terminated...")
+                        return 9  # Error Code 9
+                    else:
+                        execTime.append(end_time - start_time)
+                        output.append(value.strip())
+                        process.kill()
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    return 5  # Error Code 5
+                except subprocess.CalledProcessError as e:  # Unexpected execution error
+                    print(f"Execution Error: {e}, Terminated...")
+                    return 9  # Error Code 9
+                
+            # for arg in input:
+            #     try:
+            #         start_time = time.time()
+            #         with subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
+            #             value = proc.communicate(input=arg, timeout=1)[0]
+            #         end_time = time.time()
+            #         if proc.returncode != 0:
+            #             print(f"Execution Error: {proc.stderr.read()}, Terminated...")
+            #             return 9  # Error Code 9
+            #         else:
+            #             execTime.append(end_time - start_time)
+            #             output.append(value)
+            #     except subprocess.TimeoutExpired:
+            #         print("Time Limit Exceeded, Terminated...")
+            #     except subprocess.CalledProcessError as e:  # Unexpected execution error
+            #         print(f"Execution Error: {e}, Terminated...")
+            #         return 9  # Error Code 9
+            
+            print("Execution Time : ", execTime)
+            print("Output : ", output)
+            return 0  # Success Code
 
 def main():
     if len(sys.argv) != 4:
@@ -159,7 +190,8 @@ def main():
             errCode = CPP_CTR(tempCode, TD, args[2]).execute(tempDir)   
             match errCode:
                 case 0:
-                    print("Execution Success")
+                    print("Accepted, Terminated...")
+                    return 0  # Success Code
                 case 5:
                     print("Time Limit Exceeded, Terminated...")
                     return 5  # Error Code 5
