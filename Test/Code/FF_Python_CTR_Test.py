@@ -56,11 +56,8 @@ class CPP_CTR:
 
     def RC(self):  # resource_counter
         pass
-
-    def timer(self):
-        pass
         
-    def Comparator(self):
+    def JSON_Handler(self):
         QN = self.testData['Question_Number']
         TT = self.testData['Test_Type']
         TL = self.testData['Time_Limit']
@@ -77,8 +74,31 @@ class CPP_CTR:
         print('\n', "\bTime Limit : ", TL, '\n')
         print("Memory Limit : ", ML, '\n')
 
-    def execute(self):
-        pass
+        return TT, TL, ML, QTD, TD
+
+    def execute(self, execPath):
+        input = []
+        answer = []
+        TT, TL, ML, QTD, TD = self.JSON_Handler()
+        if TT == "OTEST":
+            for item in TD:
+                input.append(item['Input']['arg_1'])
+                answer.append(item['Answer']['arg_1'])
+        elif TT == "UEOF":
+            for item in TD:
+                input.append(item['Input'])
+                answer.append(item['Answer'])
+
+        print("Input : ", input)
+        print("Answer : ", answer)
+
+        time_start = time.time()
+        try:
+            process = subprocess.Popen(f"{execPath}\\{self.info}.exe", stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding="utf-8", text=True)
+
+        except:
+            print("Execution Error, Terminated...")
+            return 7  # Error Code 7
 
     def errorHandler(self):
         pass
@@ -119,8 +139,8 @@ def main():
                 print("Compile Error, Terminated...")
                 return 4  # Error Code 4
 
-            CPP_CTR(tempCode, TD, args[2]).Comparator()
-            errCode = CPP_CTR(tempCode, TD, args[2]).execute()   
+            # CPP_CTR(tempCode, TD, args[2]).JSON_Handler()
+            errCode = CPP_CTR(tempCode, TD, args[2]).execute(tempDir)   
             match errCode:
                 case 0:
                     print("Execution Success")
@@ -148,7 +168,7 @@ Error Code 3 : Prohibited Header Detected
 Error Code 4 : Compile Error
 Error Code 5 : TLE
 Error Code 6 : MLE
-Error Code 7 : 
+Error Code 7 : Execution Error
 Error Code 8 : 
 Error Code 9 : Unexpected System Error
 Error Code 10 : Unsupported Language
