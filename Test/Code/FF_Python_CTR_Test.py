@@ -136,6 +136,7 @@ class CPP_CTR:
             return 0  if output == answer else 7  # Error Code 7 
         
         elif TT == "UEOF":
+            return 10  # UEOF 還不能運作
             for i in range(len(input)):
                 start_time = time.time()
                 process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -211,6 +212,9 @@ def main():
                 case 7:
                     print("Wrong Answer, Terminated...")
                     return 7  # Error Code 7
+                case 10:
+                    print("Unsupported Test Type, Terminated...")
+                    return 10  # Error Code 10
                 case _:
                     print("Unexpected System Error, Terminated...")
                     return 9  # Error Code 9             
