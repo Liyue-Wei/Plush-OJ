@@ -78,18 +78,28 @@ class CPP_CTR:
     def execute(self, execPath):
         execPath = f"{execPath}{self.info}.exe"
         input = []
+        inputType = []
         answer = []
+        answerType = []
+        execTime = []
+        value = []
         TT, TL, ML, TD = self.JSON_Handler()
         if TT == "OTEST":
             for item in TD:
                 input.append(item['Input']['arg_1'])
+                inputType.append(item['Input_Type']['arg_1'])
                 answer.append(item['Answer']['arg_1'])
+                answerType.append(item['Answer_Type']['arg_1'])
         elif TT == "UEOF":
             for item in TD:
                 inputs = list(item['Input'].values())     
+                inputType = list(item['Input_Type'].values())
                 answers = list(item['Answer'].values())   
+                answerType = list(item['Answer_Type'].values())
                 input.append(inputs)
+                inputType.append(inputType)
                 answer.append(answers)
+                answerType.append(answerType)
 
         print("Input : ", input)
         print("Answer : ", answer)
@@ -99,21 +109,15 @@ class CPP_CTR:
             if TT == "OTEST":
                 for arg in input:
                     start_time = time.time()
-                    process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                    value = process.communicate(input=arg)[0]
+                    with subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
+                        value = proc.communicate(input=arg, timeout=int(TL))[0]
                     end_time = time.time()
-                    print("Execution Time:", end_time - start_time, "seconds")
-                    print("Output:", value)
-                    
-                    if process.returncode != 0:
-                        print("Execution Error:", process.stderr)
-                        return 9    
-        except subprocess.TimeoutExpired:
-            print("Time Limit Exceeded")
-            return 5        
-
-    def errorHandler(self):
-        pass
+                    print(f"Execution Time: {end_time - start_time} seconds")
+                    print(f"DEBUG: repr(value) is {repr(value)}") # 添加这行来查看value的精确内容
+                    print("Output : ", value, end='')
+        except:
+            print("Execution Error, Terminated...")
+            return 9  # Error Code 9
 
 def main():
     if len(sys.argv) != 4:
