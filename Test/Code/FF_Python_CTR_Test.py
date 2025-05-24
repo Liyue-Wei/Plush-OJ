@@ -98,6 +98,23 @@ class CPP_CTR:
         
         time_start = time.time()
         process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding="utf-8", text=True)
+        try:
+            if TT == "OTEST":
+                for i in input:
+                    process.stdin.write(i + '\n')
+                    process.stdin.flush()
+            elif TT == "UEOF":
+                for i in input:
+                    process.stdin.write(' '.join(i) + '\n')
+                    process.stdin.flush()
+            process.stdin.close()
+            output, _ = process.communicate(timeout=TL)
+            time_end = time.time()
+            print("Output : ", output)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            print("Time Limit Exceeded")
+            return 5  # Error Code 5
 
     def errorHandler(self):
         pass
