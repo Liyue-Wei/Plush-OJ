@@ -77,6 +77,7 @@ class CPP_CTR:
         return TT, TL, ML, QTD, TD
 
     def execute(self, execPath):
+        execPath = f"{execPath}{self.info}.exe"
         input = []
         answer = []
         TT, TL, ML, QTD, TD = self.JSON_Handler()
@@ -86,15 +87,18 @@ class CPP_CTR:
                 answer.append(item['Answer']['arg_1'])
         elif TT == "UEOF":
             for item in TD:
-                input.append(item['Input'])
-                answer.append(item['Answer'])
+                inputs = list(item['Input'].values())     
+                answers = list(item['Answer'].values())   
+                input.append(inputs)
+                answer.append(answers)
 
         print("Input : ", input)
         print("Answer : ", answer)
-
+        print("Exection Path : ", execPath)
+        
         time_start = time.time()
         try:
-            process = subprocess.Popen(f"{execPath}\\{self.info}.exe", stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding="utf-8", text=True)
+            process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding="utf-8", text=True)
 
         except:
             print("Execution Error, Terminated...")
@@ -174,4 +178,5 @@ Error Code 9 : Unexpected System Error
 Error Code 10 : Unsupported Language
 
 python Test\Code\FF_Python_CTR_Test.py Test\Temp_Code\QN001A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN001A.json QN001A-XXXXX-0000-00-00
+python Test\Code\FF_Python_CTR_Test.py Test\Temp_Code\QN008A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN008A.json QN008A-XXXXX-0000-00-00
 '''
