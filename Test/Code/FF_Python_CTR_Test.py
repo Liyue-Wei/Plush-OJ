@@ -5,6 +5,9 @@ import os
 import sys
 import subprocess
 
+global execTime
+execTime = []
+
 def parseTD(TDPath):
     try:
         with open(TDPath, 'r', encoding='utf-8') as TD:
@@ -81,7 +84,6 @@ class CPP_CTR:
         inputType = []
         answer = []
         answerType = []
-        execTime = []
         output = []
         TT, TL, ML, TD = self.JSON_Handler()
         if TT == "OTEST":
@@ -131,6 +133,7 @@ class CPP_CTR:
             print("Execution Time : ", execTime)
             print("Output : ", output)
             return 0  if output == answer else 7  # Error Code 7 
+        
 def main():
     if len(sys.argv) != 4:
         print("Invalid args Input, Terminated...")
