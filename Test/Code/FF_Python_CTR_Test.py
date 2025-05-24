@@ -204,16 +204,16 @@ def main():
                     return 0, execTime  # Success Code
                 case 5:
                     print("Time Limit Exceeded, Terminated...")
-                    return 5, None  # Error Code 5
+                    return 5  # Error Code 5
                 case 6:
                     print("Memory Limit Exceeded, Terminated...")
-                    return 6, None  # Error Code 6
+                    return 6  # Error Code 6
                 case 7:
                     print("Wrong Answer, Terminated...")
-                    return 7, None  # Error Code 7
+                    return 7  # Error Code 7
                 case _:
                     print("Unexpected System Error, Terminated...")
-                    return 9, None  # Error Code 9             
+                    return 9  # Error Code 9             
             
         case _:
             print("Unsupported Language, Terminated...")
