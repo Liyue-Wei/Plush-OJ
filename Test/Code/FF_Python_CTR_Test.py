@@ -65,14 +65,14 @@ class CPP_CTR:
         TD = self.testData['Test_Data']
         QTD = len(TD)
 
-        print("Question Number : ", QN, '\n')
-        print("Test Type : ", TT, '\n')
-        print("Quantity of Test Data : ", QTD, '\n')
-        print("Test Data : ")
-        for item in TD:
-            print(item)
-        print('\n', "\bTime Limit : ", TL, '\n')
-        print("Memory Limit : ", ML, '\n')
+        # print("Question Number : ", QN, '\n')
+        # print("Test Type : ", TT, '\n')
+        # print("Quantity of Test Data : ", QTD, '\n')
+        # print("Test Data : ")
+        # for item in TD:
+        #     print(item)
+        # print('\n', "\bTime Limit : ", TL, '\n')
+        # print("Memory Limit : ", ML, '\n')
 
         return TT, TL, ML, QTD, TD
 
@@ -97,12 +97,7 @@ class CPP_CTR:
         print("Exection Path : ", execPath)
         
         time_start = time.time()
-        try:
-            process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding="utf-8", text=True)
-
-        except:
-            print("Execution Error, Terminated...")
-            return 7  # Error Code 7
+        process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding="utf-8", text=True)
 
     def errorHandler(self):
         pass
@@ -154,6 +149,9 @@ def main():
                 case 6:
                     print("Memory Limit Exceeded, Terminated...")
                     return 6  # Error Code 6
+                case 7:
+                    print("Execution Error, Terminated...")
+                    return 7  # Error Code 7
                 case _:
                     print("Unexpected System Error, Terminated...")
                     return 9  # Error Code 9             
