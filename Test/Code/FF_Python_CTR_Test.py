@@ -149,9 +149,6 @@ def main():
                 case 6:
                     print("Memory Limit Exceeded, Terminated...")
                     return 6  # Error Code 6
-                case 7:
-                    print("Execution Error, Terminated...")
-                    return 7  # Error Code 7
                 case _:
                     print("Unexpected System Error, Terminated...")
                     return 9  # Error Code 9             
@@ -168,9 +165,9 @@ Error Code 1 : Invalid args Input
 Error Code 2 : Reading Temp Code
 Error Code 3 : Prohibited Header Detected
 Error Code 4 : Compile Error
-Error Code 5 : TLE
-Error Code 6 : MLE
-Error Code 7 : Execution Error
+Error Code 5 : Time Limit Exceeded
+Error Code 6 : Memory Limit Exceeded
+Error Code 7 : 
 Error Code 8 : 
 Error Code 9 : Unexpected System Error
 Error Code 10 : Unsupported Language
