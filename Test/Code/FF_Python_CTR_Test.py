@@ -119,7 +119,7 @@ class CPP_CTR:
                         return 9  # Error Code 9
                     else:
                         execTime.append(end_time - start_time)
-                        output.append(value.strip())
+                        output.append(value)
                         process.kill()
                 except subprocess.TimeoutExpired:
                     process.kill()
@@ -127,29 +127,10 @@ class CPP_CTR:
                 except subprocess.CalledProcessError as e:  # Unexpected execution error
                     print(f"Execution Error: {e}, Terminated...")
                     return 9  # Error Code 9
-                
-            # for arg in input:
-            #     try:
-            #         start_time = time.time()
-            #         with subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-            #             value = proc.communicate(input=arg, timeout=1)[0]
-            #         end_time = time.time()
-            #         if proc.returncode != 0:
-            #             print(f"Execution Error: {proc.stderr.read()}, Terminated...")
-            #             return 9  # Error Code 9
-            #         else:
-            #             execTime.append(end_time - start_time)
-            #             output.append(value)
-            #     except subprocess.TimeoutExpired:
-            #         print("Time Limit Exceeded, Terminated...")
-            #     except subprocess.CalledProcessError as e:  # Unexpected execution error
-            #         print(f"Execution Error: {e}, Terminated...")
-            #         return 9  # Error Code 9
             
             print("Execution Time : ", execTime)
             print("Output : ", output)
-            return 0  # Success Code
-
+            return 0  if output == answer else 7  # Error Code 7 
 def main():
     if len(sys.argv) != 4:
         print("Invalid args Input, Terminated...")
@@ -198,6 +179,9 @@ def main():
                 case 6:
                     print("Memory Limit Exceeded, Terminated...")
                     return 6  # Error Code 6
+                case 7:
+                    print("Wrong Answer, Terminated...")
+                    return 7  # Error Code 7
                 case _:
                     print("Unexpected System Error, Terminated...")
                     return 9  # Error Code 9             
@@ -216,7 +200,7 @@ Error Code 3 : Prohibited Header Detected
 Error Code 4 : Compile Error
 Error Code 5 : Time Limit Exceeded
 Error Code 6 : Memory Limit Exceeded
-Error Code 7 : 
+Error Code 7 : Wrong Answer 
 Error Code 8 : 
 Error Code 9 : Unexpected System Error
 Error Code 10 : Unsupported Language
