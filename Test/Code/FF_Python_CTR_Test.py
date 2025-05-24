@@ -63,7 +63,6 @@ class CPP_CTR:
         TL = self.testData['Time_Limit']
         ML = self.testData['Memory_Limit']
         TD = self.testData['Test_Data']
-        QTD = len(TD)
 
         # print("Question Number : ", QN, '\n')
         # print("Test Type : ", TT, '\n')
@@ -74,13 +73,13 @@ class CPP_CTR:
         # print('\n', "\bTime Limit : ", TL, '\n')
         # print("Memory Limit : ", ML, '\n')
 
-        return TT, TL, ML, QTD, TD
+        return TT, TL, ML, TD
 
     def execute(self, execPath):
         execPath = f"{execPath}{self.info}.exe"
         input = []
         answer = []
-        TT, TL, ML, QTD, TD = self.JSON_Handler()
+        TT, TL, ML, TD = self.JSON_Handler()
         if TT == "OTEST":
             for item in TD:
                 input.append(item['Input']['arg_1'])
@@ -96,25 +95,22 @@ class CPP_CTR:
         print("Answer : ", answer)
         print("Exection Path : ", execPath)
         
-        time_start = time.time()
-        process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding="utf-8", text=True)
         try:
             if TT == "OTEST":
-                for i in input:
-                    process.stdin.write(i + '\n')
-                    process.stdin.flush()
-            elif TT == "UEOF":
-                for i in input:
-                    process.stdin.write(' '.join(i) + '\n')
-                    process.stdin.flush()
-            process.stdin.close()
-            output, _ = process.communicate(timeout=TL)
-            time_end = time.time()
-            print("Output : ", output)
+                for arg in input:
+                    start_time = time.time()
+                    process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                    value = process.communicate(input=arg)[0]
+                    end_time = time.time()
+                    print("Execution Time:", end_time - start_time, "seconds")
+                    print("Output:", value)
+                    
+                    if process.returncode != 0:
+                        print("Execution Error:", process.stderr)
+                        return 9    
         except subprocess.TimeoutExpired:
-            process.kill()
             print("Time Limit Exceeded")
-            return 5  # Error Code 5
+            return 5        
 
     def errorHandler(self):
         pass
