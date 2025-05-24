@@ -65,12 +65,14 @@ class CPP_CTR:
         TL = self.testData['Time_Limit']
         ML = self.testData['Memory_Limit']
         TD = self.testData['Test_Data']
+        lenTD = len(TD)
         print("Test Type : ", TT, '\n')
         print("Time Limit : ", TL, '\n')
         print("Memory Limit : ", ML, '\n')
         print("Test Data : ")
         for item in TD:
             print(item)
+        print(lenTD)
 
     def execute(self):
         pass
@@ -113,8 +115,22 @@ def main():
             if not CPP_CTR(tempCode, TD, args[2]).compile(args[0], tempDir):
                 print("Compile Error, Terminated...")
                 return 4  # Error Code 4
+
+            errCode = CPP_CTR(tempCode, TD, args[2]).execute()   
+            match errCode:
+                case 0:
+                    print("Execution Success")
+                case 5:
+                    print("Time Limit Exceeded, Terminated...")
+                    return 5  # Error Code 5
+                case 6:
+                    print("Memory Limit Exceeded, Terminated...")
+                    return 6  # Error Code 6
+                case _:
+                    print("Unexpected System Error, Terminated...")
+                    return 9  # Error Code 9             
             
-            CPP_CTR(tempCode, TD, args[2]).Comparator()
+            # CPP_CTR(tempCode, TD, args[2]).Comparator()
 
         case _:
             print("Unsupported Language, Terminated...")
@@ -128,8 +144,8 @@ Error Code 1 : Invalid args Input
 Error Code 2 : Reading Temp Code
 Error Code 3 : Prohibited Header Detected
 Error Code 4 : Compile Error
-Error Code 5 : 
-Error Code 6 : 
+Error Code 5 : TLE
+Error Code 6 : MLE
 Error Code 7 : 
 Error Code 8 : 
 Error Code 9 : Unexpected System Error
