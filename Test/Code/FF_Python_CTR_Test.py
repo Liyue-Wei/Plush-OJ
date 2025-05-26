@@ -137,6 +137,7 @@ class CPP_CTR:
         
         elif TT == "UEOF":
             for i in range(len(input)):
+                output_row = []  
                 for arg in input[i]:
                     start_time = time.time()
                     process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -148,7 +149,7 @@ class CPP_CTR:
                             return 9  # Error Code 9
                         else:
                             execTime.append(end_time - start_time)
-                            output.append(value)
+                            output_row.append(value)  
                             process.kill()
                     except subprocess.TimeoutExpired:
                         process.kill()
@@ -156,7 +157,8 @@ class CPP_CTR:
                     except subprocess.CalledProcessError as e:  # Unexpected execution error
                         print(f"Execution Error: {e}, Terminated...")
                         return 9  # Error Code 9
-                    
+                output.append(output_row)  
+            
             print("Execution Time : ", execTime)
             print("Output : ", output)
             return 0  if output == answer else 7  # Error Code 7 
