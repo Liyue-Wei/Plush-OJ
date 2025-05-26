@@ -136,30 +136,30 @@ class CPP_CTR:
             return 0  if output == answer else 7  # Error Code 7 
         
         elif TT == "UEOF":
-            return 10  # UEOF 還不能運作
             for i in range(len(input)):
-                start_time = time.time()
-                process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                try:
-                    value, _ = process.communicate(input=input[i], timeout=int(TL))
-                    end_time = time.time()
-                    if process.returncode != 0:
-                        print(f"Execution Error: {process.stderr.read()}, Terminated...")
-                        return 9  # Error Code 9
-                    else:
-                        execTime.append(end_time - start_time)
-                        output.append(value)
+                for arg in input[i]:
+                    start_time = time.time()
+                    process = subprocess.Popen(execPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                    try:
+                        value, _ = process.communicate(input=arg, timeout=int(TL))
+                        end_time = time.time()
+                        if process.returncode != 0:
+                            print(f"Execution Error: {process.stderr.read()}, Terminated...")
+                            return 9  # Error Code 9
+                        else:
+                            execTime.append(end_time - start_time)
+                            output.append(value)
+                            process.kill()
+                    except subprocess.TimeoutExpired:
                         process.kill()
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    return 5
-                except subprocess.CalledProcessError as e:  # Unexpected execution error
-                    print(f"Execution Error: {e}, Terminated...")
-                    return 9  # Error Code 9
-            
+                        return 5  # Error Code 5
+                    except subprocess.CalledProcessError as e:  # Unexpected execution error
+                        print(f"Execution Error: {e}, Terminated...")
+                        return 9  # Error Code 9
+                    
             print("Execution Time : ", execTime)
             print("Output : ", output)
-            return 0 if output == answer else 7  # Error Code 7
+            return 0  if output == answer else 7  # Error Code 7 
         
 def main():
     if len(sys.argv) != 4:
