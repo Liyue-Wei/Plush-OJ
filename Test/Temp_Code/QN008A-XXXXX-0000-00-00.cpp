@@ -4,20 +4,24 @@ using namespace std;
 // 判斷是否為質數的函式
 bool isPrime(int n) {
     if (n <= 1) return false;
-    for (int i = 2; i * i <= n; ++i) {
+
+    int i = 2;
+    while (i * i <= n) {
         if (n % i == 0) return false;
+        ++i;
     }
+
     return true;
 }
 
 int main() {
     int num;
-    cin >> num;
-
-    if (isPrime(num)) {
-        cout << "Yes\n";
-    } else {
-        cout << "No\n";
+    while (cin >> num) { // 持續從輸入讀取整數
+        if (isPrime(num)) {
+            cout << "Yes\n";
+        } else {
+            cout << "No\n";
+        }
     }
 
     return 0;
