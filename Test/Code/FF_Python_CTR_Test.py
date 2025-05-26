@@ -145,19 +145,19 @@ class CPP_CTR:
                     try:
                         value, _ = process.communicate(input=arg, timeout=int(TL))
                         end_time = time.time()
-                        if process.returncode != 0:
-                            print(f"Execution Error: {process.stderr.read()}, Terminated...")
-                            return 9  # Error Code 9
-                        else:
-                            execTime.append(end_time - start_time)
-                            output_row.append(value)  
-                            process.kill()
+                        output_row.append(value)  
                     except subprocess.TimeoutExpired:
                         process.kill()
                         return 5  # Error Code 5
                     except subprocess.CalledProcessError as e:  # Unexpected execution error
                         print(f"Execution Error: {e}, Terminated...")
                         return 9  # Error Code 9
+                if process.returncode != 0:
+                    print(f"Execution Error: {process.stderr.read()}, Terminated...")
+                    return 9  # Error Code 9
+                else:
+                    execTime.append(end_time - start_time)
+                    process.kill()
                 output.append(output_row)  
             
             print("Execution Time : ", execTime)
