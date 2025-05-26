@@ -104,6 +104,7 @@ class CPP_CTR:
                 answer.append(answers)
                 answerType.append(answerType)
 
+        print("User Info : ", self.info)
         print("Time Limit : ", TL)
         print("Memory Limit : ", ML)
         print("Input : ", input)
