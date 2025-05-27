@@ -136,7 +136,7 @@ class CPP_CTR:
             print("Output : ", output)
             return 0  if output == answer else 7  # Error Code 7 
         
-        elif TT == "UEOF":
+        elif TT == "UEOF":  # 還是有些問題，一般輸入跟while(cin >> i)都可以
             for i in range(len(input)):
                 output_row = []  
                 for arg in input[i]:
