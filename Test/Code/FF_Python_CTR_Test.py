@@ -57,9 +57,6 @@ class CPP_CTR:
             return False
         else:
             return True
-
-    def RC(self):  # resource_counter
-        pass
         
     def JSON_Handler(self):
         QN = self.testData['Question_Number']
@@ -136,7 +133,7 @@ class CPP_CTR:
             print("Output : ", output)
             return 0  if output == answer else 7  # Error Code 7 
         
-        elif TT == "UEOF":  # 還是有些問題，一般輸入跟while(cin >> i)都可以
+        elif TT == "UEOF":  # 還是有些問題，一般輸入跟while(cin >> i)都可以，需要再進行修改
             for i in range(len(input)):
                 output_row = []  
                 for arg in input[i]:
