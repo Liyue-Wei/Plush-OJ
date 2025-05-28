@@ -169,7 +169,7 @@ def main():
     
     currPath = os.path.abspath(os.path.dirname(__file__))
     tempDir = currPath.split('\\')[0:-1]
-    tempDir = '\\'.join(tempDir) + '\\Temp\\'
+    tempDir = '\\'.join(tempDir) + '\\TempCode\\'
     if not os.path.exists(tempDir):
         os.makedirs(tempDir)
 
@@ -239,6 +239,5 @@ Error Code 8 :
 Error Code 9 : Unexpected System Error
 Error Code 10 : Unsupported Language
 
-python Test\Code\FF_Python_CTR_Test.py Test\Temp_Code\QN001A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN001A.json QN001A-XXXXX-0000-00-00
-python Test\Code\FF_Python_CTR_Test.py Test\Temp_Code\QN008A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN008A.json QN008A-XXXXX-0000-00-00
+python Server\FileOnFileExecution_Framework\FF_Container\FF_Python_CTR.py Test\Temp_Code\QN001A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN001A.json QN001A-XXXXX-0000-00-00
 '''
