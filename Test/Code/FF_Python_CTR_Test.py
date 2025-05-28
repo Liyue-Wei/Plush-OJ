@@ -39,7 +39,8 @@ class CPP_CTR:
         "<netinet/in.h>",
         "<windows.h>",
         "<signal.h>",
-        "<ctime>"
+        "<ctime>",
+        "<bits/stdc++.h>"
     ]
 
     def handlerIO(self):  # IO Handler
