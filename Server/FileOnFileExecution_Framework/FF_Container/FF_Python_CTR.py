@@ -227,17 +227,15 @@ def main():
 if __name__ == '__main__':
     main()
 
-'''
-Error Code 1 : Invalid args Input
-Error Code 2 : Reading Temp Code
-Error Code 3 : Prohibited Header Detected
-Error Code 4 : Compile Error
-Error Code 5 : Time Limit Exceeded
-Error Code 6 : Memory Limit Exceeded
-Error Code 7 : Wrong Answer 
-Error Code 8 : 
-Error Code 9 : Unexpected System Error
-Error Code 10 : Unsupported Language
-
-python Server\FileOnFileExecution_Framework\FF_Container\FF_Python_CTR.py Test\Temp_Code\QN001A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN001A.json QN001A-XXXXX-0000-00-00
-'''
+# Error Code 1 : Invalid args Input
+# Error Code 2 : Reading Temp Code
+# Error Code 3 : Prohibited Header Detected
+# Error Code 4 : Compile Error
+# Error Code 5 : Time Limit Exceeded
+# Error Code 6 : Memory Limit Exceeded
+# Error Code 7 : Wrong Answer 
+# Error Code 8 : 
+# Error Code 9 : Unexpected System Error
+# Error Code 10 : Unsupported Language
+# 
+# python Server\FileOnFileExecution_Framework\FF_Container\FF_Python_CTR.py Test\Temp_Code\QN001A-XXXXX-0000-00-00.cpp Test\Temp_JSON\QN001A.json QN001A-XXXXX-0000-00-00
