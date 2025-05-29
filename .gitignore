@@ -1,5 +1,5 @@
 /out
 .idea/
 *.exe
-.vscode/*
+.vscode/
 /.vscode
