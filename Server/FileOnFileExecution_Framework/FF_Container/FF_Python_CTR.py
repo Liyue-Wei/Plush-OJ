@@ -43,9 +43,6 @@ class CPP_CTR:
         "<bits/stdc++.h>"
     ]
 
-    def handlerIO(self):  # IO Handler
-        pass
-
     def PCP(self):  # prohibited_checking_process
         if any(header in self.tempCode for header in CPP_CTR.prohibited_header):
             return True
