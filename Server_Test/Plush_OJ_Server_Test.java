@@ -49,7 +49,10 @@ public class Plush_OJ_Server_Test {
 
             StreamGobbler errorGobbler = new StreamGobbler(
                     new InputStreamReader(process.getErrorStream()),
-                    System.err::println // 將每一行錯誤輸出到控制台
+                    line -> {
+                        consoleOutputBuilder.append(line).append(System.lineSeparator()); // Store the line
+                        System.out.println(line); // Continue printing to console
+                    }
             );
             executor.submit(errorGobbler);
 
