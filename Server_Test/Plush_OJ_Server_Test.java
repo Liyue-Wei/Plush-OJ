@@ -27,8 +27,8 @@ public class Plush_OJ_Server_Test {
             ProcessBuilder commandBuilder = new ProcessBuilder(
                     "python",
                     "Server_Test/FileOnFileExecution_Framework/FF_Python_CTR.py",
-                    "Test/Temp_Code/QN001A-XXXXX-0000-00-00.cpp",
-                    "Test/Temp_JSON/QN001A.json",
+                    "Server_Test/FileOnFileExecution_Framework/TempCode/QN001A-XXXXX-0000-00-00.cpp",
+                    "Server_Test/Database/QuestionDB/TestDATA/QN001A.json",
                     "QN001A-XXXXX-0000-00-00"
             );
 

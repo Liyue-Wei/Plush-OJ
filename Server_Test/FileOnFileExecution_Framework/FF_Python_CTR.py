@@ -193,7 +193,7 @@ def main():
             
             if not CPP_CTR(tempCode, TD, args[2]).compile(args[0], tempDir):
                 print("Compile Error, Terminated...")
-                return 4  # Error Code 4
+                sys.exit(4)  # Error Code 4
 
             # CPP_CTR(tempCode, TD, args[2]).JSON_Handler()
             errCode = CPP_CTR(tempCode, TD, args[2]).execute(tempDir)   
