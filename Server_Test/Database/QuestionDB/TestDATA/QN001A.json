@@ -1,0 +1,53 @@
+{
+    "Question_Number": "QN001A",
+    "Test_Type": "OTEST",
+    "Time_Limit": 1,
+    "Memory_Limit": "Null",
+    "Test_Data": [
+        {
+            "Test_Case": "TC001",
+            "Input": {
+                "arg_1": "World"
+            },
+            "Input_Type": {
+                "arg_1": "string"
+            },
+            "Answer": {
+                "arg_1": "Hello World!\n"
+            },
+            "Answer_Type": {
+                "arg_1": "string"
+            }
+        }, 
+        {
+            "Test_Case": "TC002",
+            "Input": {
+                "arg_1": "Python"
+            },
+            "Input_Type": {
+                "arg_1": "string"
+            },
+            "Answer": {
+                "arg_1": "Hello Python!\n"
+            }, 
+            "Answer_Type": {
+                "arg_1": "string"
+            }
+        }, 
+        {
+            "Test_Case": "TC003",
+            "Input": {
+                "arg_1": "Michael"
+            },
+            "Input_Type": {
+                "arg_1": "string"
+            }, 
+            "Answer": {
+                "arg_1": "Hello Michael!\n"
+            }, 
+            "Answer_Type": {
+                "arg_1": "string"
+            }
+        }
+    ]
+}
