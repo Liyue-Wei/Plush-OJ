@@ -22,7 +22,7 @@ public class Plush_OJ_Server_Test {
         }
     }
 
-    public static void main(String[] args) {
+    public static void FOFE() {
         Process process = null;
         try (java.util.concurrent.ExecutorService executor = Executors.newFixedThreadPool(2)) {
             ProcessBuilder commandBuilder = new ProcessBuilder(
@@ -83,5 +83,9 @@ public class Plush_OJ_Server_Test {
                 process.destroyForcibly(); // 強制終止
             }
         }
+    }
+
+    public static void main(String[] args) {
+        FOFE();
     }
 }
