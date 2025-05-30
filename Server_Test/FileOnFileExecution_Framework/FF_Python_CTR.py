@@ -16,10 +16,10 @@ def parseTD(TDPath):
             return data
     except FileNotFoundError:
         print("Test Data File Not Found, Terminated...")
-        return 9  # Error Code 9
+        sys.exit(9)  # Error Code 9
     except json.JSONDecodeError:
         print("JSON Decode Error, Terminated...")
-        return 9  # Error Code 9
+        sys.exit(9)  # Error Code 9
 
 class CPP_CTR:
     def __init__(self, tempCode, testData, info):
@@ -115,21 +115,21 @@ class CPP_CTR:
                     end_time = time.time()
                     if process.returncode != 0:
                         print(f"Execution Error: {process.stderr.read()}, Terminated...")
-                        return 9  # Error Code 9
+                        sys.exit(9)  # Error Code 9
                     else:
                         execTime.append(end_time - start_time)
                         output.append(value)
                         process.kill()
                 except subprocess.TimeoutExpired:
                     process.kill()
-                    return 5  # Error Code 5
+                    sys.exit(5)  # Error Code 5
                 except subprocess.CalledProcessError as e:  # Unexpected execution error
                     print(f"Execution Error: {e}, Terminated...")
-                    return 9  # Error Code 9
+                    sys.exit(9)  # Error Code 9
             
             print("Execution Time : ", execTime)
             print("Output : ", output)
-            return 0  if output == answer else 7  # Error Code 7 
+            return 0  if output == answer else sys.exit(7)  # Error Code 7 
         
         elif TT == "UEOF":  # 還是有些問題，一般輸入跟while(cin >> i)都可以，需要再進行修改
             for i in range(len(input)):
@@ -143,13 +143,13 @@ class CPP_CTR:
                         output_row.append(value)  
                     except subprocess.TimeoutExpired:
                         process.kill()
-                        return 5  # Error Code 5
+                        sys.exit(5)  # Error Code 5
                     except subprocess.CalledProcessError as e:  # Unexpected execution error
                         print(f"Execution Error: {e}, Terminated...")
-                        return 9  # Error Code 9
+                        sys.exit(9)  # Error Code 9
                 if process.returncode != 0:
                     print(f"Execution Error: {process.stderr.read()}, Terminated...")
-                    return 9  # Error Code 9
+                    sys.exit(9)  # Error Code 9
                 else:
                     execTime.append(end_time - start_time)
                     process.kill()
@@ -157,12 +157,12 @@ class CPP_CTR:
             
             print("Execution Time : ", execTime)
             print("Output : ", output)
-            return 0  if output == answer else 7  # Error Code 7 
+            return 0  if output == answer else sys.exit(7)  # Error Code 7 
         
 def main():
     if len(sys.argv) != 4:
         print("Invalid args Input, Terminated...")
-        return 1  # Error Code 1
+        sys.exit(1)  # Error Code 1
     
     currPath = os.path.abspath(os.path.dirname(__file__))
     tempDir = currPath.split('\\')[0:-1]
@@ -174,7 +174,7 @@ def main():
     TD = parseTD(args[1])  
     if TD == 9:
         print("Unexpected System Error, Terminated...")
-        return 9  # Error Code 9
+        sys.exit(9)  # Error Code 9
     
     lang = args[0].split('.')[-1]  
     match lang:
@@ -185,11 +185,11 @@ def main():
                     TC.close()
             except FileNotFoundError:
                 print("An Error occured when reading Temp Code, Terminated...")
-                return 2  # Error Code 2
+                sys.exit(2)  # Error Code 2
             
             if CPP_CTR(tempCode, TD, args[2]).PCP():
                 print("Prohibited Header Detected, Terminated...")
-                return 3  # Error Code 3
+                sys.exit(3)  # Error Code 3
             
             if not CPP_CTR(tempCode, TD, args[2]).compile(args[0], tempDir):
                 print("Compile Error, Terminated...")
@@ -203,23 +203,23 @@ def main():
                     return 0, execTime  # Success Code
                 case 5:
                     print("Time Limit Exceeded, Terminated...")
-                    return 5  # Error Code 5
+                    sys.exit(5)  # Error Code 5
                 case 6:
                     print("Memory Limit Exceeded, Terminated...")
-                    return 6  # Error Code 6
+                    sys.exit(6)  # Error Code 6
                 case 7:
                     print("Wrong Answer, Terminated...")
-                    return 7  # Error Code 7
+                    sys.exit(7)  # Error Code 7
                 case 10:
                     print("Unsupported Test Type, Terminated...")
-                    return 10  # Error Code 10
+                    sys.exit(10)  # Error Code 10
                 case _:
                     print("Unexpected System Error, Terminated...")
-                    return 9  # Error Code 9             
+                    sys.exit(9)  # Error Code 9             
             
         case _:
             print("Unsupported Language, Terminated...")
-            return 10  # Error Code 10
+            sys.exit(10)  # Error Code 10
 
 if __name__ == '__main__':
     main()

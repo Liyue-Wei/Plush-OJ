@@ -5,5 +5,5 @@ int main() {
     cin >> str;
     cout << "Hello " << str << "!\n";
 
-    return 0
+    return 0;
 }
