@@ -32,7 +32,7 @@ public class Plush_OJ_Server_Test {
                     "QN001A-XXXXX-0000-00-00"
             );
 
-            System.out.println("Starting Python script...");
+            System.out.println("File on File Execution Framework is running...");
             process = commandBuilder.start();
 
             StreamGobbler outputGobbler = new StreamGobbler(
