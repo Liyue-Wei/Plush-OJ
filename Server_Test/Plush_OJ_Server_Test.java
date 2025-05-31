@@ -1,11 +1,11 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class Plush_OJ_Server_Test {
+    public static StringBuffer console_output = new StringBuffer();
     private static class StreamGobbler implements Runnable {
         private final InputStreamReader inputStreamReader;
         private final Consumer<String> consumer;
@@ -21,46 +21,38 @@ public class Plush_OJ_Server_Test {
         }
     }
 
-    public static void FOFE() {
+    public static int FOFE(String QN, String info, String lang) {  // Question Number, Information, Language
         Process process = null;
-        StringBuffer console_output = new StringBuffer();
+        int exitCode;
+        final String TCP = "Server_Test/FileOnFileExecution_Framework/TempCode/" + info + "." + lang;  // Temp Code Path
+        final String QDP = "Server_Test/Database/QuestionDB/TestDATA/" + QN + ".json";  // Question Database Path
 
         try (java.util.concurrent.ExecutorService executor = Executors.newFixedThreadPool(2)) {
             ProcessBuilder commandBuilder = new ProcessBuilder(
                     "python",
                     "Server_Test/FileOnFileExecution_Framework/FF_Python_CTR.py",
-                    "Server_Test/FileOnFileExecution_Framework/TempCode/QN001A-XXXXX-0000-00-00.cpp",
-                    "Server_Test/Database/QuestionDB/TestDATA/QN001A.json",
-                    "QN001A-XXXXX-0000-00-00"
+                    TCP,
+                    QDP,
+                    info
             );
 
-            System.out.println("File on File Execution Framework is running...");
             process = commandBuilder.start();
+            boolean exited = process.waitFor(90, TimeUnit.SECONDS);  // Timeout set to 90 seconds
 
             StreamGobbler outputGobbler = new StreamGobbler(
                     new InputStreamReader(process.getInputStream()),
-                    line -> {
-                        console_output.append(line).append('\n'); // Store the line
-                        // System.out.println(line); // Continue printing to console
-                    }
+                    line -> console_output.append(line).append('\n')
             );
             executor.submit(outputGobbler);
 
             StreamGobbler errorGobbler = new StreamGobbler(
                     new InputStreamReader(process.getErrorStream()),
-                    line -> {
-                        console_output.append(line).append('\n'); // Store the line
-                        // System.out.println(line); // Continue printing to console
-                    }
+                    line -> console_output.append(line).append('\n')
             );
             executor.submit(errorGobbler);
 
-            boolean exited = process.waitFor(60, TimeUnit.SECONDS);
-
             if (exited) {
-                int exitCode = process.exitValue(); // 或者直接使用 waitFor() 的回傳值 (如果沒有超時)
-                // int exitCode = process.waitFor(); // 如果不設定超時
-                System.out.println("\nPython script finished.");
+                exitCode = process.exitValue();
                 System.out.println("Return Code: " + exitCode);
 
                 if (exitCode == 0) {
@@ -69,32 +61,24 @@ public class Plush_OJ_Server_Test {
                     System.err.println("Python script execution failed with error code: " + exitCode);
                 }
             } else {
-                System.err.println("Python script timed out.");
-                // 如果超時，你可能需要強制終止程序
                 process.destroyForcibly();
-                System.err.println("Process forcibly terminated due to timeout.");
+                System.err.println("Unexpected System Error, Terminated...");
             }
 
-        } catch (IOException e) {
-            System.err.println("Error starting or communicating with the process: " + e.getMessage());
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            System.err.println("Process waiting was interrupted: " + e.getMessage());
-            // 當一個執行緒在等待、睡眠或以其他方式被佔用，並且該執行緒被另一個執行緒中斷時，會拋出此異常。
-            // 恢復中斷狀態是一個好習慣。
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
-        } finally {
-            if (process != null && process.isAlive()) {
-                System.err.println("Process is still alive, attempting to destroy it.");
-                process.destroyForcibly(); // 強制終止
+        } catch (Exception e) {
+            if (process != null) {
+                process.destroyForcibly();
             }
-        }
+            e.printStackTrace();
+            System.err.println("Unexpected System Error: " + e.getMessage());
+        } 
 
-        System.out.println(console_output);
+        // System.out.println(console_output);
+        return exitCode;
     }
 
     public static void main(String[] args) {
-        FOFE();
+        FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");
+        System.out.println("Output:\n" + console_output);
     }
 }
