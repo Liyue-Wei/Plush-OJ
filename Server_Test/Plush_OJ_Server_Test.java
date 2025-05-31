@@ -49,7 +49,7 @@ public class Plush_OJ_Server_Test {
             StreamGobbler errorGobbler = new StreamGobbler(
                     new InputStreamReader(process.getErrorStream()),
                     line -> {
-                        console_output.append(line).append(System.lineSeparator()); // Store the line
+                        console_output.append(line).append('\n'); // Store the line
                         // System.out.println(line); // Continue printing to console
                     }
             );
@@ -91,7 +91,7 @@ public class Plush_OJ_Server_Test {
             }
         }
 
-        // System.out.println(console_output);
+        System.out.println(console_output);
     }
 
     public static void main(String[] args) {
