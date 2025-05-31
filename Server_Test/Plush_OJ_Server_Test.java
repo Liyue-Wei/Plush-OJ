@@ -78,6 +78,6 @@ public class Plush_OJ_Server_Test {
     public static void main(String[] args) {
         int i = FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");
         System.out.println("Return Code: " + i);
-        System.out.println("Output:\n" + console_output);
+        // System.out.println("Output:\n" + console_output);
     }
 }
