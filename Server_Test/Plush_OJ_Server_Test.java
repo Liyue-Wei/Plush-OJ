@@ -37,7 +37,7 @@ public class Plush_OJ_Server_Test {
             );
 
             process = commandBuilder.start();
-            boolean exited = process.waitFor(90, TimeUnit.SECONDS);  // Timeout set to 90 seconds
+            boolean exited = process.waitFor(90, TimeUnit.SECONDS);  
 
             StreamGobbler outputGobbler = new StreamGobbler(
                     new InputStreamReader(process.getInputStream()),
@@ -53,11 +53,7 @@ public class Plush_OJ_Server_Test {
 
             if (exited) {
                 exitCode = process.exitValue();
-                if (exitCode == 0) {
-                    return exitCode;  // Successful execution
-                } else {
-                    System.err.println("Python script execution failed with error code: " + exitCode);
-                }
+                return exitCode;
             } else {
                 process.destroyForcibly();
                 System.err.println("Unexpected System Error, Terminated...");
@@ -67,11 +63,8 @@ public class Plush_OJ_Server_Test {
             if (process != null) {
                 process.destroyForcibly();
             }
-            e.printStackTrace();
-            System.err.println("Unexpected System Error: " + e.getMessage());
+            System.err.println("Unexpected System Error, Terminated...");
         } 
-
-        // System.out.println(console_output);
         return exitCode;
     }
 
