@@ -23,7 +23,7 @@ public class Plush_OJ_Server_Test {
 
     public static int FOFE(String QN, String info, String lang) {  // Question Number, Information, Language
         Process process = null;
-        int exitCode;
+        int exitCode = -1;
         final String TCP = "Server_Test/FileOnFileExecution_Framework/TempCode/" + info + "." + lang;  // Temp Code Path
         final String QDP = "Server_Test/Database/QuestionDB/TestDATA/" + QN + ".json";  // Question Database Path
 
@@ -53,10 +53,8 @@ public class Plush_OJ_Server_Test {
 
             if (exited) {
                 exitCode = process.exitValue();
-                System.out.println("Return Code: " + exitCode);
-
                 if (exitCode == 0) {
-                    System.out.println("Python script executed successfully.");
+                    return exitCode;  // Successful execution
                 } else {
                     System.err.println("Python script execution failed with error code: " + exitCode);
                 }
@@ -78,7 +76,8 @@ public class Plush_OJ_Server_Test {
     }
 
     public static void main(String[] args) {
-        FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");
+        int i = FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");
+        System.out.println("Return Code: " + i);
         System.out.println("Output:\n" + console_output);
     }
 }
