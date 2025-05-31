@@ -23,8 +23,7 @@ public class Plush_OJ_Server_Test {
 
     public static void FOFE() {
         Process process = null;
-        String console_output = "";
-        final StringBuilder consoleOutputBuilder = new StringBuilder(); // Used to build the output string
+        StringBuffer console_output = new StringBuffer();
 
         try (java.util.concurrent.ExecutorService executor = Executors.newFixedThreadPool(2)) {
             ProcessBuilder commandBuilder = new ProcessBuilder(
@@ -41,8 +40,8 @@ public class Plush_OJ_Server_Test {
             StreamGobbler outputGobbler = new StreamGobbler(
                     new InputStreamReader(process.getInputStream()),
                     line -> {
-                        consoleOutputBuilder.append(line).append(System.lineSeparator()); // Store the line
-                        System.out.println(line); // Continue printing to console
+                        console_output.append(line).append('\n'); // Store the line
+                        // System.out.println(line); // Continue printing to console
                     }
             );
             executor.submit(outputGobbler);
@@ -50,14 +49,13 @@ public class Plush_OJ_Server_Test {
             StreamGobbler errorGobbler = new StreamGobbler(
                     new InputStreamReader(process.getErrorStream()),
                     line -> {
-                        consoleOutputBuilder.append(line).append(System.lineSeparator()); // Store the line
-                        System.out.println(line); // Continue printing to console
+                        console_output.append(line).append(System.lineSeparator()); // Store the line
+                        // System.out.println(line); // Continue printing to console
                     }
             );
             executor.submit(errorGobbler);
 
             boolean exited = process.waitFor(60, TimeUnit.SECONDS);
-            console_output = consoleOutputBuilder.toString();
 
             if (exited) {
                 int exitCode = process.exitValue(); // 或者直接使用 waitFor() 的回傳值 (如果沒有超時)
@@ -92,6 +90,8 @@ public class Plush_OJ_Server_Test {
                 process.destroyForcibly(); // 強制終止
             }
         }
+
+        // System.out.println(console_output);
     }
 
     public static void main(String[] args) {
