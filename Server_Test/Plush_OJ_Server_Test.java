@@ -69,32 +69,7 @@ public class Plush_OJ_Server_Test {
     }
 
     public static void main(String[] args) {
-        /*
-        int RC = FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");  // Return Code
-        switch (RC) {
-            case 0:
-                System.out.println("Console Output:\n" + console_output);
-                break;
-            case 3:
-                System.out.println("Prohibited Header Detected");
-                break;
-            case 4:
-                System.out.println("Compile Error");
-                break;
-            case 5:
-                System.out.println("Time Limit Exceeded");
-                break;
-            case 6:
-                System.out.println("Memory Limit Exceeded");
-                break;
-            case 7:
-                System.out.println("Wrong Answer");
-                break;
-            default:
-                System.out.println("Unexpected System Error");
-                break;
-        }
-        */
+
     }
 }
 
@@ -109,4 +84,31 @@ Error Code 7 : Wrong Answer
 Error Code 8 :
 Error Code 9 : Unexpected System Error
 Error Code 10 : Unsupported Language
- */
+*/
+
+/*
+int RC = FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");  // Return Code
+switch (RC) {
+    case 0:
+        System.out.println("Console Output:\n" + console_output);
+        break;
+    case 3:
+        System.out.println("Prohibited Header Detected");
+        break;
+    case 4:
+        System.out.println("Compile Error");
+        break;
+    case 5:
+        System.out.println("Time Limit Exceeded");
+        break;
+    case 6:
+        System.out.println("Memory Limit Exceeded");
+        break;
+    case 7:
+        System.out.println("Wrong Answer");
+        break;
+    default:
+        System.out.println("Unexpected System Error");
+        break;
+}
+*/
