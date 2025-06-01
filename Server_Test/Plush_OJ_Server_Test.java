@@ -2,9 +2,10 @@ import com.sun.net.httpserver.*;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
+import java.sql.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
+import java.util.function.Consumer; // 新增
 
 public class Plush_OJ_Server_Test {
     public static StringBuffer console_output = new StringBuffer();
@@ -75,6 +76,7 @@ public class Plush_OJ_Server_Test {
         String baseDir = "Server_Test/WebPages";
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/", new StaticFileHandler(baseDir));
+        server.createContext("/signup", new SignUpHandler()); // 新增註冊處理器
         server.setExecutor(null);
         server.start();
         System.out.println("Server started at http://localhost:" + port + "/");
@@ -97,6 +99,7 @@ public class Plush_OJ_Server_Test {
                 exchange.sendResponseHeaders(200, bytes.length);
                 exchange.getResponseBody().write(bytes);
             } else {
+                System.out.println("找不到檔案：" + file.getAbsolutePath());
                 String notFound = "404 Not Found";
                 exchange.sendResponseHeaders(404, notFound.length());
                 exchange.getResponseBody().write(notFound.getBytes());
@@ -108,6 +111,66 @@ public class Plush_OJ_Server_Test {
             if (filename.endsWith(".css")) return "text/css; charset=UTF-8";
             if (filename.endsWith(".js")) return "application/javascript";
             return "application/octet-stream";
+        }
+    }
+
+    static class SignUpHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                return;
+            }
+            // 解析表單資料
+            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder buf = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) buf.append(line);
+            String formData = buf.toString();
+
+            // 解析欄位
+            String[] pairs = formData.split("&");
+            String email = "", account = "", password = "", confirm = "";
+            for (String pair : pairs) {
+                String[] kv = pair.split("=", 2);
+                String key = java.net.URLDecoder.decode(kv[0], "UTF-8");
+                String value = kv.length > 1 ? java.net.URLDecoder.decode(kv[1], "UTF-8") : "";
+                switch (key) {
+                    case "email": email = value; break;
+                    case "account": account = value; break;
+                    case "password": password = value; break;
+                    case "confirm-password": confirm = value; break;
+                }
+            }
+
+            String response;
+            if (!password.equals(confirm)) {
+                response = "<script>alert('兩次密碼不一致');window.location='/SignUP.html';</script>";
+                exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+                exchange.sendResponseHeaders(200, response.getBytes().length);
+                exchange.getResponseBody().write(response.getBytes());
+                exchange.close();
+                return;
+            }
+
+            // 寫入 SQLite
+            try (Connection conn = DriverManager.getConnection("jdbc:sqlite:Server_Test/Database/UserDB/userdb.db")) {
+                String sql = "INSERT INTO UserInfo (Account, PassWD, Email) VALUES (?, ?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setString(1, account);
+                    pstmt.setString(2, password); // 實際應加密
+                    pstmt.setString(3, email);
+                    pstmt.executeUpdate();
+                }
+                response = "<script>alert('註冊成功，請登入');window.location='/Login.html';</script>";
+            } catch (SQLException e) {
+                response = "<script>alert('註冊失敗，帳號或信箱可能已存在');window.location='/SignUP.html';</script>";
+            }
+            exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            exchange.getResponseBody().write(response.getBytes());
+            exchange.close();
         }
     }
 }
