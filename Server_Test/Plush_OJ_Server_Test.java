@@ -69,8 +69,9 @@ public class Plush_OJ_Server_Test {
     }
 
     public static void main(String[] args) {
-        int i = FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");
-        switch (i) {
+        /*
+        int RC = FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");  // Return Code
+        switch (RC) {
             case 0:
                 System.out.println("Console Output:\n" + console_output);
                 break;
@@ -93,6 +94,9 @@ public class Plush_OJ_Server_Test {
                 System.out.println("Unexpected System Error");
                 break;
         }
+        */
+
+        
     }
 }
 
