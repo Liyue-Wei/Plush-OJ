@@ -87,25 +87,24 @@ public class Plush_OJ_Server_Test {
         public StaticFileHandler(String baseDir) { this.baseDir = baseDir; }
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            try (exchange) {
-                String path = exchange.getRequestURI().getPath();
-                if (path.equals("/") || path.equalsIgnoreCase("/home.html")) {
-                    path = "/Home.html";
-                }
-                File file = new File(baseDir + path);
-                if (file.exists() && file.isFile()) {
-                    String contentType = guessContentType(file.getName());
-                    byte[] bytes = Files.readAllBytes(file.toPath());
-                    exchange.getResponseHeaders().set("Content-Type", contentType);
-                    exchange.sendResponseHeaders(200, bytes.length);
-                    exchange.getResponseBody().write(bytes);
-                } else {
-                    System.out.println("找不到檔案：" + file.getAbsolutePath());
-                    String notFound = "404 Not Found";
-                    exchange.sendResponseHeaders(404, notFound.length());
-                    exchange.getResponseBody().write(notFound.getBytes());
-                }
+            String path = exchange.getRequestURI().getPath();
+            if (path.equals("/") || path.equalsIgnoreCase("/home.html")) {
+                path = "/Home.html";
             }
+            File file = new File(baseDir + path);
+            if (file.exists() && file.isFile()) {
+                String contentType = guessContentType(file.getName());
+                byte[] bytes = Files.readAllBytes(file.toPath());
+                exchange.getResponseHeaders().set("Content-Type", contentType);
+                exchange.sendResponseHeaders(200, bytes.length);
+                exchange.getResponseBody().write(bytes);
+            } else {
+                System.out.println("找不到檔案：" + file.getAbsolutePath());
+                String notFound = "404 Not Found";
+                exchange.sendResponseHeaders(404, notFound.length());
+                exchange.getResponseBody().write(notFound.getBytes());
+            }
+            exchange.close();
         }
         private String guessContentType(String filename) {
             if (filename.endsWith(".html")) return "text/html; charset=UTF-8";
@@ -118,59 +117,61 @@ public class Plush_OJ_Server_Test {
     static class SignUpHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            try (exchange) {
-                if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
-                    exchange.sendResponseHeaders(405, -1); // Method Not Allowed
-                    return;
+            if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                return;
+            }
+            // 解析表單資料
+            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder buf = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) buf.append(line);
+            String formData = buf.toString();
+
+            // 解析欄位
+            String[] pairs = formData.split("&");
+            String email = "", account = "", password = "", confirm = "";
+            for (String pair : pairs) {
+                String[] kv = pair.split("=", 2);
+                String key = java.net.URLDecoder.decode(kv[0], "UTF-8");
+                String value = kv.length > 1 ? java.net.URLDecoder.decode(kv[1], "UTF-8") : "";
+                switch (key) {
+                    case "email": email = value; break;
+                    case "account": account = value; break;
+                    case "password": password = value; break;
+                    case "confirm-password": confirm = value; break;
                 }
-                // 解析表單資料
-                InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
-                BufferedReader br = new BufferedReader(isr);
-                StringBuilder buf = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) buf.append(line);
-                String formData = buf.toString();
-                // 解析欄位
-                String[] pairs = formData.split("&");
-                String email = "", account = "", password = "", confirm = "";
-                for (String pair : pairs) {
-                    String[] kv = pair.split("=", 2);
-                    String key = java.net.URLDecoder.decode(kv[0], "UTF-8");
-                    String value = kv.length > 1 ? java.net.URLDecoder.decode(kv[1], "UTF-8") : "";
-                    switch (key) {
-                        case "email" -> email = value;
-                        case "account" -> account = value;
-                        case "password" -> password = value;
-                        case "confirm-password" -> confirm = value;
-                    }
-                }
-                String response;
-                if (!password.equals(confirm)) {
-                    try (exchange) {
-                        response = "<script>alert('兩次密碼不一致');window.location='/SignUP.html';</script>";
-                        exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, response.getBytes().length);
-                        exchange.getResponseBody().write(response.getBytes());
-                    }
-                    return;
-                }
-                // 寫入 SQLite
-                try (Connection conn = DriverManager.getConnection("jdbc:sqlite:Server_Test/Database/UserDB/userdb.db")) {
-                    String sql = "INSERT INTO UserInfo (Account, PassWD, Email) VALUES (?, ?, ?)";
-                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                        pstmt.setString(1, account);
-                        pstmt.setString(2, password); // 實際應加密
-                        pstmt.setString(3, email);
-                        pstmt.executeUpdate();
-                    }
-                    response = "<script>alert('註冊成功，請登入');window.location='/Login.html';</script>";
-                } catch (SQLException e) {
-                    response = "<script>alert('註冊失敗，帳號或信箱可能已存在');window.location='/SignUP.html';</script>";
-                }
+            }
+
+            String response;
+            if (!password.equals(confirm)) {
+                response = "<script>alert('兩次密碼不一致');window.location='/SignUP.html';</script>";
                 exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 exchange.getResponseBody().write(response.getBytes());
-            }        }
+                exchange.close();
+                return;
+            }
+
+            // 寫入 SQLite
+            try (Connection conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/eric2/Desktop/Plush-OJ/Test/userdb.db")) {
+                String sql = "INSERT INTO UserInfo (Account, PassWD, Email) VALUES (?, ?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setString(1, account);
+                    pstmt.setString(2, password); // 實際應加密
+                    pstmt.setString(3, email);
+                    pstmt.executeUpdate();
+                }
+                response = "<script>alert('註冊成功，請登入');window.location='/Login.html';</script>";
+            } catch (SQLException e) {
+                response = "<script>alert('註冊失敗，帳號或信箱可能已存在');window.location='/SignUP.html';</script>";
+            }
+            exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            exchange.getResponseBody().write(response.getBytes());
+            exchange.close();
+        }
     }
 }
 
