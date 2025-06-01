@@ -1,0 +1,152 @@
+/* 淡入動畫 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px); /* 向上偏移 */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* 回到原位 */
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-in-out; /* 動畫持續 0.8 秒 */
+}
+
+/* 整體容器 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* floating title bar */
+.header {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: rgb(82, 82, 82);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.header .logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.header .nav {
+    display: flex;
+    gap: 20px;
+}
+
+.header .nav a {
+    background-color: rgb(82, 82, 82);
+    color: white;
+    font-size: 18px;
+    text-decoration: none; 
+    transition: color 0.2s;
+}
+
+.header .nav a:hover {
+    color: lightcyan;
+}
+
+/* 登入頁面容器 */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px); /* 扣除 header 的高度 */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 登入框 */
+.login-box {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* 標題 */
+.login-box h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #333;
+}
+
+/* 輸入框組 */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #0073e6;
+    outline: none;
+}
+
+/* 登入按鈕 */
+.login-button {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: rgb(82, 82, 82);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: rgb(37, 37, 37);
+}
+
+/* 登入頁腳 */
+.login-footer {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.login-footer a {
+    color: #0073e6;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: color 0.3s ease;
+}
+
+.login-footer a:hover {
+    color: #005bb5;
+}

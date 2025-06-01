@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Plush::OJ</title>
+        <link rel="stylesheet" href="style_Judge.css">
+    </head>
+
+    <body>
+        <div class="header-mask"></div>
+        <div class="header">
+            <div class="logo">Plush::OJ</div>
+            <nav class="nav">
+                <a href="Home.html">首頁</a>
+                <a href="Login.html">登入</a>
+            </nav>
+        </div>
+
+        <div class="main-container fade-in">
+            <div class="left-column">
+                <!-- 題目內容區 -->
+            </div>
+
+            <div class="right-column">
+                <div class="right-top">
+                    <textarea class="full-width-textarea" placeholder=""></textarea>
+                    <script>
+                        const textarea = document.querySelector('.full-width-textarea');
+                        textarea.addEventListener('keydown', function (e) {
+                            if (e.key === 'Tab') {
+                                e.preventDefault(); // 阻止默认行为（跳到下一项）
+                                const start = this.selectionStart;
+                                const end = this.selectionEnd;
+                            
+                                // 插入 4 个空格
+                                this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                            
+                                // 将光标移动到插入的空格之后
+                                this.selectionStart = this.selectionEnd = start + 4;
+                            }
+                        });
+                    </script>
+                    <!-- 其他内容 -->
+                </div>
+
+                <div class="right-bottom">
+                    <button class="right-bottom-btn">Submit</button>
+                    <button class="right-bottom-btn">Test</button>
+                    <button class="left-bottom-btn">Output</button>
+                    <button class="left-bottom-btn">Console</button>
+                    <button class="left-bottom-btn">History</button>
+                    <select class="dropdown-menu">
+                        <option value="C">C</option>
+                        <option value="CPP">C++</option>
+                        <option value="CS">C#</option>
+                        <option value="PY">Python</option>
+                        <option value="JAVA">Java</option>
+                        <option value="JS">JavaScript</option>
+                        <option value="RS">Rust</option>
+                        <option value="KT">Kotlin</option>
+                        <option value="R">R</option>
+                        <option value="GO">Go</option>
+                        <option value="JL">Julia</option>                        
+                    </select>
+                    <textarea class="console-textarea" readonly placeholder=""></textarea>
+                    <!-- console -->
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
