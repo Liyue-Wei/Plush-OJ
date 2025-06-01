@@ -72,7 +72,7 @@ public class Plush_OJ_Server_Test {
         int i = FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");
         switch (i) {
             case 0:
-                System.out.println("Accepted");
+                System.out.println("Console Output:\n" + console_output);
                 break;
             case 3:
                 System.out.println("Prohibited Header Detected");
@@ -93,7 +93,6 @@ public class Plush_OJ_Server_Test {
                 System.out.println("Unexpected System Error");
                 break;
         }
-        // System.out.println("Output:\n" + console_output);
     }
 }
 
