@@ -1,5 +1,7 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import com.sun.net.httpserver.*;
+import java.io.*;
+import java.net.InetSocketAddress;
+import java.nio.file.Files;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -68,8 +70,45 @@ public class Plush_OJ_Server_Test {
         return exitCode;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        int port = 8080;
+        String baseDir = "Server_Test/WebPages";
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        server.createContext("/", new StaticFileHandler(baseDir));
+        server.setExecutor(null);
+        server.start();
+        System.out.println("Server started at http://localhost:" + port + "/");
+    }
 
+    static class StaticFileHandler implements HttpHandler {
+        private final String baseDir;
+        public StaticFileHandler(String baseDir) { this.baseDir = baseDir; }
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            String path = exchange.getRequestURI().getPath();
+            if (path.equals("/") || path.equalsIgnoreCase("/home.html")) {
+                path = "/Home.html";
+            }
+            File file = new File(baseDir + path);
+            if (file.exists() && file.isFile()) {
+                String contentType = guessContentType(file.getName());
+                byte[] bytes = Files.readAllBytes(file.toPath());
+                exchange.getResponseHeaders().set("Content-Type", contentType);
+                exchange.sendResponseHeaders(200, bytes.length);
+                exchange.getResponseBody().write(bytes);
+            } else {
+                String notFound = "404 Not Found";
+                exchange.sendResponseHeaders(404, notFound.length());
+                exchange.getResponseBody().write(notFound.getBytes());
+            }
+            exchange.close();
+        }
+        private String guessContentType(String filename) {
+            if (filename.endsWith(".html")) return "text/html; charset=UTF-8";
+            if (filename.endsWith(".css")) return "text/css; charset=UTF-8";
+            if (filename.endsWith(".js")) return "application/javascript";
+            return "application/octet-stream";
+        }
     }
 }
 
