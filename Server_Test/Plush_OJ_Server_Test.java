@@ -70,7 +70,42 @@ public class Plush_OJ_Server_Test {
 
     public static void main(String[] args) {
         int i = FOFE("QN001A", "QN001A-XXXXX-0000-00-00", "cpp");
-        System.out.println("Return Code: " + i);
+        switch (i) {
+            case 0:
+                System.out.println("Accepted");
+                break;
+            case 3:
+                System.out.println("Prohibited Header Detected");
+                break;
+            case 4:
+                System.out.println("Compile Error");
+                break;
+            case 5:
+                System.out.println("Time Limit Exceeded");
+                break;
+            case 6:
+                System.out.println("Memory Limit Exceeded");
+                break;
+            case 7:
+                System.out.println("Wrong Answer");
+                break;
+            default:
+                System.out.println("Unexpected System Error");
+                break;
+        }
         // System.out.println("Output:\n" + console_output);
     }
 }
+
+/*
+Error Code 1 : Invalid args Input
+Error Code 2 : Reading Temp Code
+Error Code 3 : Prohibited Header Detected
+Error Code 4 : Compile Error
+Error Code 5 : Time Limit Exceeded
+Error Code 6 : Memory Limit Exceeded
+Error Code 7 : Wrong Answer
+Error Code 8 :
+Error Code 9 : Unexpected System Error
+Error Code 10 : Unsupported Language
+ */
