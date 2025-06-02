@@ -125,8 +125,8 @@ Error Code 8 :
 Error Code 9 : Unexpected System Error
 Error Code 10 : Unsupported Language
 
-javac -cp ".;sqlite-jdbc-3.49.0.1.jar" Plush_OJ_Server_Test.java
-java -cp ".;sqlite-jdbc-3.36.0.3.jar" Plush_OJ_Server_Test
+javac -cp ".;sqlite-jdbc-3.49.1.0.jar" Plush_OJ_Server_Test.java
+java -cp ".;sqlite-jdbc-3.49.1.0.jar" Plush_OJ_Server_Test
 */
 
 /*
