@@ -108,6 +108,11 @@ public class Plush_OJ_Server_Test {
             if (filename.endsWith(".html")) return "text/html; charset=UTF-8";
             if (filename.endsWith(".css")) return "text/css; charset=UTF-8";
             if (filename.endsWith(".js")) return "application/javascript";
+            if (filename.endsWith(".png")) return "image/png";
+            if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) return "image/jpeg";
+            if (filename.endsWith(".txt")) return "text/plain; charset=UTF-8";
+            if (filename.endsWith(".json")) return "application/json; charset=UTF-8";
+            if (filename.endsWith(".md")) return "text/markdown; charset=UTF-8";
             return "application/octet-stream";
         }
     }
