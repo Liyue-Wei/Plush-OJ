@@ -84,6 +84,7 @@ public class Plush_OJ_Server_Test {
         private final String baseDir;
         public StaticFileHandler(String baseDir) { this.baseDir = baseDir; }
         @Override
+        @SuppressWarnings("ConvertToTryWithResources")
         public void handle(HttpExchange exchange) throws IOException {
             String path = exchange.getRequestURI().getPath();
             if (path.equals("/") || path.equalsIgnoreCase("/home.html")) {
