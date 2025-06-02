@@ -334,7 +334,7 @@ public class Plush_OJ_Server_Test {
                 }
             }
             String basePath = "Database/QuestionDB/Questions/";
-            String filePath = basePath + qn + ".txt"; // 假設題目為純文字檔
+            String filePath = basePath + qn + ".md"; 
             File file = new File(filePath);
             String response;
             if (qn == null) {

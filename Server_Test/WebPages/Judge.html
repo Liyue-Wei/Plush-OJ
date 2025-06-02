@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Plush::OJ</title>
         <link rel="stylesheet" href="style_Judge.css">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     </head>
 
     <body>
@@ -90,16 +91,24 @@
                 document.cookie = 'account=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
                 location.reload();
             }
-            // 顯示題號
+            // 顯示題目內容（markdown）
             function getQueryParam(name) {
                 const url = new URL(window.location.href);
                 return url.searchParams.get(name);
             }
             const qn = getQueryParam('qn');
+            const leftColumn = document.querySelector('.left-column');
             if (qn) {
-                document.querySelector('.left-column').innerText = qn;
+                fetch(`/question?qn=${encodeURIComponent(qn)}`)
+                    .then(res => res.ok ? res.text() : Promise.reject('找不到題目'))
+                    .then(md => {
+                        leftColumn.innerHTML = marked.parse(md);
+                    })
+                    .catch(err => {
+                        leftColumn.innerText = err;
+                    });
             } else {
-                document.querySelector('.left-column').innerText = "未指定題號";
+                leftColumn.innerText = "未指定題號";
             }
         </script>
     </body>
