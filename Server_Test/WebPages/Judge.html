@@ -70,24 +70,27 @@
         </div>
 
         <script>
+            // 取得 cookie
             function getCookie(name) {
                 const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
                 return value ? value.pop() : '';
             }
+            // 登入檢查
             const account = getCookie('account');
+            if (!account) {
+                alert('請先登入！');
+                window.location.href = 'Login.html';
+            }
+            // 顯示登入狀態
             const userInfo = document.getElementById('user-info');
-            if (account) {
+            if (userInfo) {
                 userInfo.innerHTML = `${account} | <a href="#" onclick="logout()">登出</a>`;
-            } else {
-                userInfo.innerHTML = `<a href="Login.html">登入</a>`;
             }
             function logout() {
                 document.cookie = 'account=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
                 location.reload();
             }
-        </script>
-
-        <script>
+            // 顯示題號
             function getQueryParam(name) {
                 const url = new URL(window.location.href);
                 return url.searchParams.get(name);
