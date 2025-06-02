@@ -299,7 +299,8 @@ public class Plush_OJ_Server_Test {
                         }
                     }
                 } catch (Exception e) {
-                    response = """
+                    response = 
+                    """
                         <script>
                             alert('登入失敗：系統錯誤，請稍後再試！');
                             window.location.href = '/Login.html';
