@@ -84,6 +84,7 @@ public class Plush_OJ_Server_Test {
         server.createContext("/", new StaticFileHandler(baseDir));
         server.createContext("/signup", new SignupHandler());
         server.createContext("/login", new LoginHandler());
+        server.createContext("/question", new QuestionHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("Server started at http://localhost:" + port + "/");
@@ -317,7 +318,38 @@ public class Plush_OJ_Server_Test {
         }
     }
 
-    
+    static class QuestionHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            String qn = null;
+            String query = exchange.getRequestURI().getQuery();
+            if (query != null) {
+                for (String param : query.split("&")) {
+                    String[] kv = param.split("=", 2);
+                    if (kv.length == 2 && kv[0].equals("qn")) {
+                        qn = java.net.URLDecoder.decode(kv[1], "UTF-8");
+                    }
+                }
+            }
+            String basePath = "Database/QuestionDB/Questions/";
+            String filePath = basePath + qn + ".txt"; // 假設題目為純文字檔
+            File file = new File(filePath);
+            String response;
+            if (qn == null) {
+                response = "未指定題號";
+                exchange.sendResponseHeaders(400, response.getBytes("UTF-8").length);
+            } else if (!file.exists()) {
+                response = "找不到題目：" + qn;
+                exchange.sendResponseHeaders(404, response.getBytes("UTF-8").length);
+            } else {
+                response = new String(java.nio.file.Files.readAllBytes(file.toPath()), "UTF-8");
+                exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+                exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
+            }
+            exchange.getResponseBody().write(response.getBytes("UTF-8"));
+            exchange.close();
+        }
+    }
 }
 
 /*

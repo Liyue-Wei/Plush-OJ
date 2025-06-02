@@ -86,5 +86,18 @@
                 location.reload();
             }
         </script>
+
+        <script>
+            function getQueryParam(name) {
+                const url = new URL(window.location.href);
+                return url.searchParams.get(name);
+            }
+            const qn = getQueryParam('qn');
+            if (qn) {
+                document.querySelector('.left-column').innerText = qn;
+            } else {
+                document.querySelector('.left-column').innerText = "未指定題號";
+            }
+        </script>
     </body>
 </html>
