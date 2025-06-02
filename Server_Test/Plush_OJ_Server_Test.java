@@ -320,6 +320,7 @@ public class Plush_OJ_Server_Test {
 
     static class QuestionHandler implements HttpHandler {
         @Override
+        @SuppressWarnings("ConvertToTryWithResources")
         public void handle(HttpExchange exchange) throws IOException {
             String qn = null;
             String query = exchange.getRequestURI().getQuery();
