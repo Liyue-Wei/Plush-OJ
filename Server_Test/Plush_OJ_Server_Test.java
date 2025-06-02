@@ -4,9 +4,11 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer; 
+import java.util.function.Consumer;
 
 public class Plush_OJ_Server_Test {
     public static StringBuffer console_output = new StringBuffer();
@@ -261,16 +263,22 @@ public class Plush_OJ_Server_Test {
                                 String dbPasswd = rs.getString("PassWD");
                                 if (dbPasswd.equals(passwd)) {
                                     // 登入成功
-                                    response = String.format("""
-                                        <script>
-                                            document.cookie = 'account=%s; path=/';
-                                            alert('登入成功，歡迎 %s！');
-                                            window.location.href = '/Home.html';
-                                        </script>
-                                    """, account, account);
+                                    response = String.format(
+                                        """
+                                            <script>
+                                                document.cookie = 'account=%s; path=/';
+                                                alert('登入成功，歡迎 %s！');
+                                                window.location.href = '/Home.html';
+                                            </script>
+                                        """, 
+                                        account, account
+                                    );
+                                    String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                                    System.out.println(account + " 登入成功 " + now);
                                 } else {
                                     // 密碼錯誤
-                                    response = """
+                                    response = 
+                                    """
                                         <script>
                                             alert('密碼錯誤，請重新輸入！');
                                             window.location.href = '/Login.html';
@@ -279,7 +287,8 @@ public class Plush_OJ_Server_Test {
                                 }
                             } else {
                                 // 帳號不存在
-                                response = """
+                                response = 
+                                """
                                     <script>
                                         alert('帳號不存在，請重新輸入！');
                                         window.location.href = '/Login.html';
