@@ -75,6 +75,7 @@ public class Plush_OJ_Server_Test {
         String baseDir = "WebPages";
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/", new StaticFileHandler(baseDir));
+        server.createContext("/signup", new SignupHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("Server started at http://localhost:" + port + "/");
@@ -115,6 +116,61 @@ public class Plush_OJ_Server_Test {
             if (filename.endsWith(".json")) return "application/json; charset=UTF-8";
             if (filename.endsWith(".md")) return "text/markdown; charset=UTF-8";
             return "application/octet-stream";
+        }
+    }
+
+    static class SignupHandler implements HttpHandler {
+        @Override
+        @SuppressWarnings("ConvertToTryWithResources")
+        public void handle(HttpExchange exchange) throws IOException {
+            if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+                // 讀取表單資料
+                InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder buf = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    buf.append(line);
+                }
+                String formData = buf.toString();
+
+                // 解析表單資料並存到變數
+                String email = null;
+                String account = null;
+                String passwd = null;
+                String[] pairs = formData.split("&");
+                for (String pair : pairs) {
+                    String[] kv = pair.split("=", 2);
+                    String key = java.net.URLDecoder.decode(kv[0], "UTF-8");
+                    String value = kv.length > 1 ? java.net.URLDecoder.decode(kv[1], "UTF-8") : "";
+                    switch (key) {
+                        case "email" -> email = value;
+                        case "account" -> account = value;
+                        case "password" -> passwd = value;
+                    }
+                }
+                System.out.println("email = " + email);
+                System.out.println("account = " + account);
+                System.out.println("passwd = " + passwd);
+
+                // 回應前端
+                String response = String.format(
+                    """
+                    <script>
+                        alert('註冊成功！歡迎 %s');
+                        window.location.href = '/Home.html';
+                    </script>
+                    """,
+                    account
+                );
+                exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+                exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
+                exchange.getResponseBody().write(response.getBytes("UTF-8"));
+                exchange.close();
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.close();
+            }
         }
     }
 }
