@@ -2,12 +2,17 @@ import com.sun.net.httpserver.*;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer; 
 
 public class Plush_OJ_Server_Test {
     public static StringBuffer console_output = new StringBuffer();
+    private static final String DB_PATH = "Database/UserDB/userdb.db";
+    private static final String DB_URL = "jdbc:sqlite:" + DB_PATH;
+    
     private static class StreamGobbler implements Runnable {
         private final InputStreamReader inputStreamReader;
         private final Consumer<String> consumer;
@@ -170,6 +175,14 @@ public class Plush_OJ_Server_Test {
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
                 exchange.close();
+            }
+
+            // Connect to SQLite database
+            try (Connection conn = DriverManager.getConnection(DB_URL)) {
+                System.out.println("資料庫連線成功！");
+                // 這裡暫時不做任何操作，等你指令
+            } catch (Exception e) {
+                System.err.println("資料庫連線失敗：" + e.getMessage());
             }
         }
     }
