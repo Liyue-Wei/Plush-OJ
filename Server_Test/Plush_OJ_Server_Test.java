@@ -81,6 +81,7 @@ public class Plush_OJ_Server_Test {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/", new StaticFileHandler(baseDir));
         server.createContext("/signup", new SignupHandler());
+        server.createContext("/login", new LoginHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("Server started at http://localhost:" + port + "/");
@@ -139,7 +140,7 @@ public class Plush_OJ_Server_Test {
                 }
                 String formData = buf.toString();
 
-                // 解析表單資料並存到變數
+                // 解析表單資料
                 String email = null;
                 String account = null;
                 String passwd = null;
@@ -158,16 +159,58 @@ public class Plush_OJ_Server_Test {
                 System.out.println("account = " + account);
                 System.out.println("passwd = " + passwd);
 
-                // 回應前端
-                String response = String.format(
-                    """
-                    <script>
-                        alert('註冊成功！歡迎 %s');
-                        window.location.href = '/Home.html';
-                    </script>
-                    """,
-                    account
-                );
+                String response;
+                // 資料庫操作
+                try (Connection conn = DriverManager.getConnection(DB_URL)) {
+                    System.out.println("資料庫連線成功！");
+                    // 1. 檢查帳號是否已存在
+                    String checkSql = "SELECT COUNT(*) FROM UserInfo WHERE Account = ?";
+                    try (var pstmt = conn.prepareStatement(checkSql)) {
+                        pstmt.setString(1, account);
+                        try (var rs = pstmt.executeQuery()) {
+                            if (rs.next() && rs.getInt(1) > 0) {
+                                // 帳號已存在
+                                response = """
+                                    <script>
+                                        alert('註冊失敗：帳號已存在，請重新輸入！');
+                                        window.location.href = '/SignUP.html';
+                                    </script>
+                                    """;
+                                exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+                                exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
+                                exchange.getResponseBody().write(response.getBytes("UTF-8"));
+                                exchange.close();
+                                return;
+                            }
+                        }
+                    }
+                    // 2. 新增帳號
+                    String insertSql = "INSERT INTO UserInfo (Account, PassWD, Email) VALUES (?, ?, ?)";
+                    try (var pstmt = conn.prepareStatement(insertSql)) {
+                        pstmt.setString(1, account);
+                        pstmt.setString(2, passwd);
+                        pstmt.setString(3, email);
+                        pstmt.executeUpdate();
+                    }
+                    // 3. 註冊成功回應
+                    response = String.format(
+                        """
+                        <script>
+                            alert('註冊成功！歡迎 %s');
+                            window.location.href = '/Home.html';
+                        </script>
+                        """,
+                        account
+                    );
+                } catch (Exception e) {
+                    response = """
+                        <script>
+                            alert('註冊失敗：系統錯誤，請稍後再試！');
+                            window.location.href = '/SignUP.html';
+                        </script>
+                        """;
+                    System.err.println("資料庫操作失敗：" + e.getMessage());
+                }
                 exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
                 exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
                 exchange.getResponseBody().write(response.getBytes("UTF-8"));
@@ -176,13 +219,89 @@ public class Plush_OJ_Server_Test {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
                 exchange.close();
             }
+        }
+    }
 
-            // Connect to SQLite database
-            try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                System.out.println("資料庫連線成功！");
-                // 這裡暫時不做任何操作，等你指令
-            } catch (Exception e) {
-                System.err.println("資料庫連線失敗：" + e.getMessage());
+    static class LoginHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+                // 讀取表單資料
+                InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder buf = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    buf.append(line);
+                }
+                String formData = buf.toString();
+
+                // 解析表單資料
+                String account = null;
+                String passwd = null;
+                String[] pairs = formData.split("&");
+                for (String pair : pairs) {
+                    String[] kv = pair.split("=", 2);
+                    String key = java.net.URLDecoder.decode(kv[0], "UTF-8");
+                    String value = kv.length > 1 ? java.net.URLDecoder.decode(kv[1], "UTF-8") : "";
+                    switch (key) {
+                        case "account" -> account = value;
+                        case "password" -> passwd = value;
+                    }
+                }
+
+                String response;
+                try (Connection conn = DriverManager.getConnection(DB_URL)) {
+                    String sql = "SELECT PassWD FROM UserInfo WHERE Account = ?";
+                    try (var pstmt = conn.prepareStatement(sql)) {
+                        pstmt.setString(1, account);
+                        try (var rs = pstmt.executeQuery()) {
+                            if (rs.next()) {
+                                String dbPasswd = rs.getString("PassWD");
+                                if (dbPasswd.equals(passwd)) {
+                                    // 登入成功
+                                    response = String.format("""
+                                        <script>
+                                            alert('登入成功，歡迎 %s！');
+                                            window.location.href = '/Home.html';
+                                        </script>
+                                    """, account);
+                                } else {
+                                    // 密碼錯誤
+                                    response = """
+                                        <script>
+                                            alert('密碼錯誤，請重新輸入！');
+                                            window.location.href = '/Login.html';
+                                        </script>
+                                    """;
+                                }
+                            } else {
+                                // 帳號不存在
+                                response = """
+                                    <script>
+                                        alert('帳號不存在，請重新輸入！');
+                                        window.location.href = '/Login.html';
+                                    </script>
+                                """;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    response = """
+                        <script>
+                            alert('登入失敗：系統錯誤，請稍後再試！');
+                            window.location.href = '/Login.html';
+                        </script>
+                    """;
+                    System.err.println("登入時資料庫操作失敗：" + e.getMessage());
+                }
+                exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+                exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
+                exchange.getResponseBody().write(response.getBytes("UTF-8"));
+                exchange.close();
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.close();
             }
         }
     }
