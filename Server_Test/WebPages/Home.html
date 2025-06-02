@@ -17,7 +17,7 @@
                 <a href="#question">題庫</a>
                 <a href="#contest">比賽</a>
                 <a href="#event">動態</a>
-                <a href="Login.html">登入</a>
+                <span id="user-info"></span>
             </nav>
         </div>
 
@@ -110,5 +110,23 @@
         </div>
 
         <div class="footer">© 2025 Plush::OJ. All rights reserved. Best viewed with Firefox.</div>
+
+        <script>
+            function getCookie(name) {
+                const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+                return value ? value.pop() : '';
+            }
+            const account = getCookie('account');
+            const userInfo = document.getElementById('user-info');
+            if (account) {
+                userInfo.innerHTML = `${account} | <a href="#" onclick="logout()">登出</a>`;
+            } else {
+                userInfo.innerHTML = `<a href="Login.html">登入</a>`;
+            }
+            function logout() {
+                document.cookie = 'account=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+                location.reload();
+            }
+        </script>
     </body>
 </html>

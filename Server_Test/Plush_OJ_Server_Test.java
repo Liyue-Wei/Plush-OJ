@@ -224,6 +224,7 @@ public class Plush_OJ_Server_Test {
 
     static class LoginHandler implements HttpHandler {
         @Override
+        @SuppressWarnings("ConvertToTryWithResources")
         public void handle(HttpExchange exchange) throws IOException {
             if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                 // 讀取表單資料
@@ -262,10 +263,11 @@ public class Plush_OJ_Server_Test {
                                     // 登入成功
                                     response = String.format("""
                                         <script>
+                                            document.cookie = 'account=%s; path=/';
                                             alert('登入成功，歡迎 %s！');
                                             window.location.href = '/Home.html';
                                         </script>
-                                    """, account);
+                                    """, account, account);
                                 } else {
                                     // 密碼錯誤
                                     response = """
