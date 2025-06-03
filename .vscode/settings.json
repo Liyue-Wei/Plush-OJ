@@ -79,5 +79,14 @@
         "variant": "cpp",
         "xhash": "cpp"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "java.project.sourcePaths": [
+        "Server",
+        "Server_Test",
+        "Test"
+    ],
+    "java.project.referencedLibraries": [
+        "Server_Test\\sqlite-jdbc-3.49.1.0.jar",
+        "Server_Test\\json-20250517.jar"
+    ]
 }
