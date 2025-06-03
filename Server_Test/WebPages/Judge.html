@@ -33,11 +33,7 @@
                                 e.preventDefault(); // 阻止默认行为（跳到下一项）
                                 const start = this.selectionStart;
                                 const end = this.selectionEnd;
-                            
-                                // 插入 4 个空格
                                 this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
-                            
-                                // 将光标移动到插入的空格之后
                                 this.selectionStart = this.selectionEnd = start + 4;
                             }
                         });
@@ -46,7 +42,7 @@
                 </div>
 
                 <div class="right-bottom">
-                    <button class="right-bottom-btn">Submit</button>
+                    <button class="right-bottom-btn" id="submit-btn">Submit</button>
                     <button class="right-bottom-btn">Test</button>
                     <button class="left-bottom-btn">Output</button>
                     <button class="left-bottom-btn">Console</button>
@@ -110,6 +106,24 @@
             } else {
                 leftColumn.innerText = "未指定題號";
             }
+
+            document.getElementById('submit-btn').onclick = async function() {
+                const code = document.querySelector('.full-width-textarea').value;
+                const lang = document.querySelector('.dropdown-menu').value;
+                const qn = getQueryParam('qn');
+                const consoleArea = document.querySelector('.console-textarea');
+                if (!code.trim()) {
+                    alert('請輸入程式碼！');
+                    return;
+                }
+                const res = await fetch('/judge', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ code, lang, qn })
+                });
+                const result = await res.text();
+                consoleArea.value = result;
+            };
         </script>
     </body>
 </html>
