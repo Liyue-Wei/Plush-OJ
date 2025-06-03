@@ -360,6 +360,7 @@ public class Plush_OJ_Server_Test {
 
     static class JudgeHandler implements HttpHandler {
         @Override
+        @SuppressWarnings("ConvertToTryWithResources")
         public void handle(HttpExchange exchange) throws IOException {
             if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(405, -1);
