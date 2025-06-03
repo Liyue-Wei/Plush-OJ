@@ -12,6 +12,7 @@ public class DB_Test {
     private static final String DB_FILE_PATH = "C:\\Users\\eric2\\Desktop\\Plush-OJ\\Test\\userdb.db";
     private static final String URL = "jdbc:sqlite:" + DB_FILE_PATH;
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public static void main(String[] args) {
         Connection conn = null; // 資料庫連接物件
 
