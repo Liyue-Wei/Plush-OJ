@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import java.nio.charset.StandardCharsets;
-import org.json.JSONObject; // 需要 org.json 库
+import org.json.JSONObject; // 需要 org.json 庫
 
 public class Plush_OJ_Server_Test {
     public static StringBuffer console_output = new StringBuffer();
@@ -362,52 +362,13 @@ public class Plush_OJ_Server_Test {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-            exchange.sendResponseHeaders(405, -1);
-            return;
-        }
+                exchange.sendResponseHeaders(405, -1);
+                return;
+            }
             // 读取 JSON
             String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-            JSONObject json = new JSONObject(body);
-            String code = json.getString("code");
-            String lang = json.getString("lang");
-            String qn = json.getString("qn");
-
-            // 生成唯一文件名
-            String info = qn + "-" + System.currentTimeMillis();
-
-            // 保存代码到临时文件
-            String ext = switch (lang.toUpperCase()) {
-                case "C" -> "c";
-                case "CPP" -> "cpp";
-                case "PY" -> "py";
-                case "JAVA" -> "java";
-                case "JS" -> "js";
-                // 其他语言...
-                default -> "txt";
-            };
-            String tempPath = "Server_Test/FileOnFileExecution_Framework/TempCode/" + info + "." + ext;
-            try (FileWriter fw = new FileWriter(tempPath, StandardCharsets.UTF_8)) {
-            fw.write(code);
-        }
-
-            // 调用判题
-            console_output.setLength(0); // 清空
-            int rc = FOFE(qn, info, ext);
-
-            // 返回结果
-            String result = switch (rc) {
-                case 0 -> "通過\n" + console_output;
-                case 3 -> "Prohibited Header Detected";
-                case 4 -> "Compile Error";
-                case 5 -> "Time Limit Exceeded";
-                case 6 -> "Memory Limit Exceeded";
-                case 7 -> "Wrong Answer";
-                default -> "Unexpected System Error";
-            };
-            byte[] respBytes = result.getBytes(StandardCharsets.UTF_8);
-            exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-            exchange.sendResponseHeaders(200, respBytes.length);
-            exchange.getResponseBody().write(respBytes);
+            System.out.println("收到的 body: " + body); // 只印出收到的內容
+            exchange.sendResponseHeaders(200, -1); // 回傳 200 OK，無內容
             exchange.close();
         }
     }
