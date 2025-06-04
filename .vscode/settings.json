@@ -86,7 +86,7 @@
         "Test"
     ],
     "java.project.referencedLibraries": [
-        "Server_Test\\sqlite-jdbc-3.49.1.0.jar",
-        "Server_Test\\json-20250517.jar"
+        "Server_Test/sqlite-jdbc-3.49.1.0.jar",
+        "Server_Test/json-20250517.jar"
     ]
 }
