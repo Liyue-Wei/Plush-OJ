@@ -367,8 +367,8 @@ public class Plush_OJ_Server_Test {
                 return;
             }
             // 读取 JSON
-            String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-            System.out.println("收到的 body: " + body); // 只印出收到的內容
+            String code = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+            System.out.println(code); 
             exchange.sendResponseHeaders(200, -1); // 回傳 200 OK，無內容
             exchange.close();
         }
