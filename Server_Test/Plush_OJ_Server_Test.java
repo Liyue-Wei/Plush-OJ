@@ -1,5 +1,6 @@
 import com.sun.net.httpserver.*;
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+// ...existing code...
 // import org.json.JSONObject; // 需要 org.json 庫
 
 public class Plush_OJ_Server_Test {
@@ -78,29 +80,29 @@ public class Plush_OJ_Server_Test {
         return exitCode;
     }
 
-    public static void main(String[] args) throws Exception {
-        String qn = "QN001A";
-        String info = "QN001A-1-20250604-233250";
-        String lang = "cpp";
-        console_output.setLength(0);
-        int rc = FOFE(qn, info, lang);
-        System.out.println("FOFE return code: " + rc);
-        System.out.println("Console Output:\n" + console_output);
-    }
-
     // public static void main(String[] args) throws Exception {
-    //     int port = 8080;
-    //     String baseDir = "WebPages";
-    //     HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-    //     server.createContext("/", new StaticFileHandler(baseDir));
-    //     server.createContext("/signup", new SignupHandler());
-    //     server.createContext("/login", new LoginHandler());
-    //     server.createContext("/question", new QuestionHandler());
-    //     server.createContext("/judge", new JudgeHandler());  
-    //     server.setExecutor(null);
-    //     server.start();
-    //     System.out.println("Server started at http://localhost:" + port + "/");
+    //     String qn = "QN001A";
+    //     String info = "QN001A-1-20250604-233250";
+    //     String lang = "cpp";
+    //     console_output.setLength(0);
+    //     int rc = FOFE(qn, info, lang);
+    //     System.out.println("FOFE return code: " + rc);
+    //     System.out.println("Console Output:\n" + console_output);
     // }
+
+    public static void main(String[] args) throws Exception {
+        int port = 8080;
+        String baseDir = "WebPages";
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        server.createContext("/", new StaticFileHandler(baseDir));
+        server.createContext("/signup", new SignupHandler());
+        server.createContext("/login", new LoginHandler());
+        server.createContext("/question", new QuestionHandler());
+        server.createContext("/judge", new JudgeHandler());  
+        server.setExecutor(null);
+        server.start();
+        System.out.println("Server started at http://localhost:" + port + "/");
+    }
 
     static class StaticFileHandler implements HttpHandler {
         private final String baseDir;
