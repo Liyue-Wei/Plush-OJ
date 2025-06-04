@@ -418,7 +418,9 @@ public class Plush_OJ_Server_Test {
                 exchange.close();
                 return;
             }
-            String info = String.format("%s-%s-0000-00-00", qn, uid); // QN001A-XXXXX-0000-00-00
+            // 取得當前時間（格式：yyyyMMdd-HHmmss）
+            String now = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
+            String info = String.format("%s-%s-%s", qn, uid, now); // QN001A-XXXXX-20240604-153012
             String ext = switch (lang.toUpperCase()) {
                 case "C" -> "c";
                 case "CPP" -> "cpp";
@@ -451,7 +453,6 @@ public class Plush_OJ_Server_Test {
                 return;
             }
 
-            /*
             // 執行評測
             console_output.setLength(0); // 清空
             int rc = FOFE(qn, info, ext);
@@ -474,7 +475,6 @@ public class Plush_OJ_Server_Test {
             exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
             exchange.getResponseBody().write(response.getBytes("UTF-8"));
             exchange.close();
-            */
         }
     }
 }
