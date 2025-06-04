@@ -390,10 +390,9 @@ public class Plush_OJ_Server_Test {
                 }
             }
 
-            // 產生檔名與儲存 code
+            // 產生檔名與儲存 code（正確換行與完整寫入）
             String now = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
             String ext = lang != null ? lang.toLowerCase() : "txt";
-            // QN001A-帳號-UID-時間
             String filename = String.format("%s-%s-%s-%s.%s",
                 qn == null ? "QN" : qn,
                 account == null ? "UNKNOWN" : account,
@@ -401,14 +400,20 @@ public class Plush_OJ_Server_Test {
                 now,
                 ext
             );
-            String dir = "Server_Test/FileOnFileExecution_Framework/TempCode";
+            String dir = "FileOnFileExecution_Framework/TempCode";
             File dirFile = new File(dir);
             if (!dirFile.exists()) dirFile.mkdirs();
             File codeFile = new File(dirFile, filename);
-            try (FileOutputStream fos = new FileOutputStream(codeFile, false)) {
-                fos.write(code != null ? code.getBytes(StandardCharsets.UTF_8) : new byte[0]);
-            } catch (Exception e) {
-                System.err.println("寫入程式碼檔案失敗：" + e.getMessage());
+                    
+            // 處理換行符號，將所有 \r\n 和 \r 轉為 \n，確保跨平台一致
+            if (code != null) {
+                code = code.replace("\r\n", "\n").replace("\r", "\n");
+                try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(codeFile, false), StandardCharsets.UTF_8))) {
+                    writer.write(code);
+                    writer.flush();
+                } catch (Exception e) {
+                    System.err.println("寫入程式碼檔案失敗：" + e.getMessage());
+                }
             }
 
             // 回傳 account 與 uid
