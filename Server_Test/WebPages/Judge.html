@@ -115,6 +115,8 @@
                     alert('請確認已登入、選擇題號並輸入程式碼');
                     return;
                 }
+                // 顯示送出提示
+                alert('已送出，正在進行評分');
                 // 組裝資料
                 const payload = [
                     `account=${encodeURIComponent(account)}`,
@@ -122,7 +124,6 @@
                     `lang=${encodeURIComponent(lang)}`,
                     `code=${encodeURIComponent(code)}`
                 ].join('\n');
-                // 發送 POST 請求
                 try {
                     const res = await fetch('/judge', {
                         method: 'POST',
@@ -131,8 +132,29 @@
                     });
                     const text = await res.text();
                     consoleArea.value = text;
+
+                    // 根據回傳內容彈窗
+                    if (text.includes('Wrong Answer')) {
+                        alert('WA: 答案錯誤');
+                    } else if (text.includes('Compile Error')) {
+                        alert('CE: 編譯錯誤');
+                    } else if (text.includes('Prohibited Header Detected')) {
+                        alert('RF: 禁止標頭');
+                    } else if (text.includes('Time Limit Exceeded')) {
+                        alert('TLE: 超時');
+                    } else if (text.includes('Memory Limit Exceeded')) {
+                        alert('MLE: 記憶體超限');
+                    } else if (text.includes('Unsupported Language')) {
+                        alert('Unsupported Language: 不支援的語言');
+                    } else if (text.includes('Unexpected System Error')) {
+                        alert('Unexpected System Error: 系統錯誤');
+                    } else if (text.includes('AC') || text.includes('Accepted')) {
+                        alert('Accepted!');
+                    }
+                    // 你可根據實際回傳內容再細調
                 } catch (e) {
                     consoleArea.value = '系統錯誤，請稍後再試';
+                    alert('系統錯誤，請稍後再試');
                 }
             });
         </script>
