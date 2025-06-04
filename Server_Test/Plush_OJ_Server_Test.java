@@ -407,7 +407,8 @@ public class Plush_OJ_Server_Test {
                     
             // 處理換行符號，將所有 \r\n 和 \r 轉為 \n，確保跨平台一致
             if (code != null) {
-                code = code.replace("\r\n", "\n").replace("\r", "\n");
+                // 這裡很重要，把字串中的 \n 換成真正的換行
+                code = code.replace("\\r", "\r").replace("\\n", "\n");
                 try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(codeFile, false), StandardCharsets.UTF_8))) {
                     writer.write(code);
                     writer.flush();
@@ -416,20 +417,26 @@ public class Plush_OJ_Server_Test {
                 }
             }
 
-            // 回傳 account 與 uid
-            String jsonResponse = String.format("{\"account\":\"%s\",\"uid\":\"%s\",\"filename\":\"%s\"}",
+            // 回傳 account、uid、lang、qn 用 JSON，code 用單獨字串
+            String jsonResponse = String.format(
+                "{\"account\":\"%s\",\"uid\":\"%s\",\"lang\":\"%s\",\"qn\":\"%s\"}",
                 account == null ? "" : account,
                 uid == null ? "" : uid,
-                filename
+                lang == null ? "" : lang,
+                qn == null ? "" : qn
             );
+
             exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-            exchange.sendResponseHeaders(200, jsonResponse.getBytes(StandardCharsets.UTF_8).length);
-            exchange.getResponseBody().write(jsonResponse.getBytes(StandardCharsets.UTF_8));
+            byte[] jsonBytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
+            byte[] codeBytes = code == null ? new byte[0] : code.getBytes(StandardCharsets.UTF_8);
+            exchange.sendResponseHeaders(200, jsonBytes.length + codeBytes.length);
+            exchange.getResponseBody().write(jsonBytes);
+            exchange.getResponseBody().write(codeBytes);
             exchange.close();
         }
 
         private String extractJsonValue(String json, String key) {
-            String pattern = "\"" + key + "\"\\s*:\\s*\"([^\"]*)\"";
+            String pattern = "\"" + key + "\"\\s*:\\s*\"([\\s\\S]*?)\"";
             java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(pattern).matcher(json);
             return matcher.find() ? matcher.group(1) : null;
         }

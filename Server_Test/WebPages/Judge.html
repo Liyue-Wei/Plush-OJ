@@ -118,6 +118,8 @@
                     alert('請輸入程式碼！');
                     return;
                 }
+                console.log('code:', code);
+                console.log('code length:', code.length);
 
                 const res = await fetch('/judge', {
                     method: 'POST',
@@ -125,6 +127,18 @@
                     body: JSON.stringify({ code, lang, qn, account }) 
                 });
                 const result = await res.text();
+
+                // 解析：前半段為 JSON，後半段為 code
+                const jsonEnd = result.indexOf('}') + 1;
+                const jsonPart = result.slice(0, jsonEnd);
+                const codePart = result.slice(jsonEnd);
+
+                try {
+                    const obj = JSON.parse(jsonPart);
+                    consoleArea.value = `Account: ${obj.account}\nUID: ${obj.uid}\nLang: ${obj.lang}\nQN: ${obj.qn}\n\nCode:\n${codePart}`;
+                } catch {
+                    consoleArea.value = result;
+                }
             };
         </script>
     </body>
