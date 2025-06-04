@@ -1,6 +1,7 @@
 import com.sun.net.httpserver.*;
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,10 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
-import java.nio.charset.StandardCharsets;
-import org.json.JSONObject; // 需要 org.json 庫
+// import org.json.JSONObject; // 需要 org.json 庫
 
 public class Plush_OJ_Server_Test {
     public static StringBuffer console_output = new StringBuffer();
