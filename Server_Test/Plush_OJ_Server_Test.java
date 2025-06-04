@@ -168,7 +168,7 @@ public class Plush_OJ_Server_Test {
                 String response;
                 // 資料庫操作
                 try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                    System.out.println("資料庫連線成功！");
+                    System.out.println("資料庫連線成功!");
                     // 1. 檢查帳號是否已存在
                     String checkSql = "SELECT COUNT(*) FROM UserInfo WHERE Account = ?";
                     try (var pstmt = conn.prepareStatement(checkSql)) {
@@ -178,7 +178,7 @@ public class Plush_OJ_Server_Test {
                                 // 帳號已存在
                                 response = """
                                     <script>
-                                        alert('註冊失敗：帳號已存在，請重新輸入！');
+                                        alert('註冊失敗：帳號已存在，請重新輸入!');
                                         window.location.href = '/SignUP.html';
                                     </script>
                                     """;
@@ -202,7 +202,7 @@ public class Plush_OJ_Server_Test {
                     response = String.format(
                         """
                         <script>
-                            alert('註冊成功！歡迎 %s');
+                            alert('註冊成功! 歡迎 %s');
                             window.location.href = '/Home.html';
                         </script>
                         """,
@@ -211,7 +211,7 @@ public class Plush_OJ_Server_Test {
                 } catch (Exception e) {
                     response = """
                         <script>
-                            alert('註冊失敗：系統錯誤，請稍後再試！');
+                            alert('註冊失敗：系統錯誤，請稍後再試!');
                             window.location.href = '/SignUP.html';
                         </script>
                         """;
@@ -266,12 +266,11 @@ public class Plush_OJ_Server_Test {
                             if (rs.next()) {
                                 String dbPasswd = rs.getString("PassWD");
                                 if (dbPasswd.equals(passwd)) {
-                                    // 登入成功
                                     response = String.format(
                                         """
                                             <script>
                                                 document.cookie = 'account=%s; path=/';
-                                                alert('登入成功，歡迎 %s！');
+                                                alert('登入成功，歡迎 %s!');
                                                 window.location.href = '/Home.html';
                                             </script>
                                         """, 
@@ -280,21 +279,19 @@ public class Plush_OJ_Server_Test {
                                     String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                                     System.out.println(account + " 登入成功 " + now);
                                 } else {
-                                    // 密碼錯誤
                                     response = 
                                     """
                                         <script>
-                                            alert('密碼錯誤，請重新輸入！');
+                                            alert('密碼錯誤，請重新輸入!');
                                             window.location.href = '/Login.html';
                                         </script>
                                     """;
                                 }
                             } else {
-                                // 帳號不存在
                                 response = 
                                 """
                                     <script>
-                                        alert('帳號不存在，請重新輸入！');
+                                        alert('帳號不存在，請重新輸入!');
                                         window.location.href = '/Login.html';
                                     </script>
                                 """;
@@ -305,7 +302,7 @@ public class Plush_OJ_Server_Test {
                     response = 
                     """
                         <script>
-                            alert('登入失敗：系統錯誤，請稍後再試！');
+                            alert('登入失敗：系統錯誤，請稍後再試!');
                             window.location.href = '/Login.html';
                         </script>
                     """;
