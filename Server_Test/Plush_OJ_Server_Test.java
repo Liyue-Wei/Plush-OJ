@@ -364,7 +364,6 @@ public class Plush_OJ_Server_Test {
                 exchange.sendResponseHeaders(405, -1);
                 return;
             }
-            // 读取 JSON
             String code = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
             System.out.println(code); 
             exchange.sendResponseHeaders(200, -1); // 回傳 200 OK，無內容
