@@ -355,7 +355,7 @@ public class Plush_OJ_Server_Test {
 
     static class JudgeHandler implements HttpHandler {
         @Override
-        @SuppressWarnings("ConvertToTryWithResources")
+        @SuppressWarnings({"ConvertToTryWithResources", "CallToPrintStackTrace", "UseSpecificCatch"})
         public void handle(HttpExchange exchange) throws IOException {
             if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
@@ -405,13 +405,18 @@ public class Plush_OJ_Server_Test {
                 case "JL" -> "jl";
                 default -> "txt";
             };
-            String tempCodePath = "Server_Test/FileOnFileExecution_Framework/TempCode/" + info + "." + ext;
+            String tempCodePath = "FileOnFileExecution_Framework/TempCode/" + info + "." + ext;
 
             // 寫入程式碼檔案
-            try (Writer writer = new OutputStreamWriter(new FileOutputStream(tempCodePath), StandardCharsets.UTF_8)) {
-                writer.write(code.replaceAll("\\r\\n", "\n").replaceAll("\\r", "\n"));
+            try {
+                try (Writer writer = new OutputStreamWriter(new FileOutputStream(tempCodePath), StandardCharsets.UTF_8)) {
+                    writer.write(code.replaceAll("\\r\\n", "\n").replaceAll("\\r", "\n"));
+                }
             } catch (Exception e) {
-                response = "系統錯誤：無法寫入程式碼檔案";
+                e.printStackTrace();
+                System.err.println("無法寫入程式碼檔案：" + e.getMessage());
+                response = "系統錯誤：無法寫入程式碼檔案\n" + e.getClass().getName() + ": " + e.getMessage();
+                exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
                 exchange.sendResponseHeaders(500, response.getBytes("UTF-8").length);
                 exchange.getResponseBody().write(response.getBytes("UTF-8"));
                 exchange.close();
