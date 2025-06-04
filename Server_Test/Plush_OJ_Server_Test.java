@@ -389,8 +389,36 @@ public class Plush_OJ_Server_Test {
                 return;
             }
 
-            // 產生唯一檔名
-            String info = String.format("%s-%s-%s", qn, account, System.currentTimeMillis());
+            // 產生唯一檔名（根據 account 查 UID，找不到就報錯）
+            String uid = null;
+            try (Connection conn = DriverManager.getConnection(DB_URL)) {
+                String sql = "SELECT UID FROM UserInfo WHERE Account = ?";
+                try (var pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setString(1, account);
+                    try (var rs = pstmt.executeQuery()) {
+                        if (rs.next()) {
+                            uid = rs.getString("UID");
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("查詢 UID 失敗：" + e.getMessage());
+                response = "系統錯誤：查詢 UID 失敗\n" + e.getClass().getName() + ": " + e.getMessage();
+                exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+                exchange.sendResponseHeaders(500, response.getBytes("UTF-8").length);
+                exchange.getResponseBody().write(response.getBytes("UTF-8"));
+                exchange.close();
+                return;
+            }
+            if (uid == null) {
+                response = "查無此帳號對應的 UID，請重新登入或聯絡管理員";
+                exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+                exchange.sendResponseHeaders(400, response.getBytes("UTF-8").length);
+                exchange.getResponseBody().write(response.getBytes("UTF-8"));
+                exchange.close();
+                return;
+            }
+            String info = String.format("%s-%s-0000-00-00", qn, uid); // QN001A-XXXXX-0000-00-00
             String ext = switch (lang.toUpperCase()) {
                 case "C" -> "c";
                 case "CPP" -> "cpp";
