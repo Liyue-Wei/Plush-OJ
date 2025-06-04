@@ -1,6 +1,5 @@
 import com.sun.net.httpserver.*;
 import java.io.*;
-import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.Connection;
@@ -35,13 +34,13 @@ public class Plush_OJ_Server_Test {
     public static int FOFE(String QN, String info, String lang) {  // Question Number, Information, Language
         Process process = null;
         int exitCode = -1;
-        final String TCP = "Server_Test/FileOnFileExecution_Framework/TempCode/" + info + "." + lang;  // Temp Code Path
-        final String QDP = "Server_Test/Database/QuestionDB/TestDATA/" + QN + ".json";  // Question Database Path
+        final String TCP = "FileOnFileExecution_Framework/TempCode/" + info + "." + lang;  // Temp Code Path
+        final String QDP = "Database/QuestionDB/TestDATA/" + QN + ".json";  // Question Database Path
 
         try (java.util.concurrent.ExecutorService executor = Executors.newFixedThreadPool(2)) {
             ProcessBuilder commandBuilder = new ProcessBuilder(
                     "python",
-                    "Server_Test/FileOnFileExecution_Framework/FF_Python_CTR.py",
+                    "FileOnFileExecution_Framework/FF_Python_CTR.py",
                     TCP,
                     QDP,
                     info
@@ -80,18 +79,28 @@ public class Plush_OJ_Server_Test {
     }
 
     public static void main(String[] args) throws Exception {
-        int port = 8080;
-        String baseDir = "WebPages";
-        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-        server.createContext("/", new StaticFileHandler(baseDir));
-        server.createContext("/signup", new SignupHandler());
-        server.createContext("/login", new LoginHandler());
-        server.createContext("/question", new QuestionHandler());
-        server.createContext("/judge", new JudgeHandler());  
-        server.setExecutor(null);
-        server.start();
-        System.out.println("Server started at http://localhost:" + port + "/");
+        String qn = "QN001A";
+        String info = "QN001A-1-20250604-233250";
+        String lang = "cpp";
+        console_output.setLength(0);
+        int rc = FOFE(qn, info, lang);
+        System.out.println("FOFE return code: " + rc);
+        System.out.println("Console Output:\n" + console_output);
     }
+
+    // public static void main(String[] args) throws Exception {
+    //     int port = 8080;
+    //     String baseDir = "WebPages";
+    //     HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+    //     server.createContext("/", new StaticFileHandler(baseDir));
+    //     server.createContext("/signup", new SignupHandler());
+    //     server.createContext("/login", new LoginHandler());
+    //     server.createContext("/question", new QuestionHandler());
+    //     server.createContext("/judge", new JudgeHandler());  
+    //     server.setExecutor(null);
+    //     server.start();
+    //     System.out.println("Server started at http://localhost:" + port + "/");
+    // }
 
     static class StaticFileHandler implements HttpHandler {
         private final String baseDir;
