@@ -106,6 +106,35 @@
             } else {
                 leftColumn.innerText = "未指定題號";
             }
+
+            document.getElementById('submit-btn').addEventListener('click', async function () {
+                const code = document.querySelector('.full-width-textarea').value;
+                const lang = document.querySelector('.dropdown-menu').value;
+                const consoleArea = document.querySelector('.console-textarea');
+                if (!qn || !account || !code.trim()) {
+                    alert('請確認已登入、選擇題號並輸入程式碼');
+                    return;
+                }
+                // 組裝資料
+                const payload = [
+                    `account=${encodeURIComponent(account)}`,
+                    `qn=${encodeURIComponent(qn)}`,
+                    `lang=${encodeURIComponent(lang)}`,
+                    `code=${encodeURIComponent(code)}`
+                ].join('\n');
+                // 發送 POST 請求
+                try {
+                    const res = await fetch('/judge', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain; charset=UTF-8' },
+                        body: payload
+                    });
+                    const text = await res.text();
+                    consoleArea.value = text;
+                } catch (e) {
+                    consoleArea.value = '系統錯誤，請稍後再試';
+                }
+            });
         </script>
     </body>
 </html>

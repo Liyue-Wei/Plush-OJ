@@ -354,7 +354,95 @@ public class Plush_OJ_Server_Test {
     }
 
     static class JudgeHandler implements HttpHandler {
-        
+        @Override
+        @SuppressWarnings("ConvertToTryWithResources")
+        public void handle(HttpExchange exchange) throws IOException {
+            if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.close();
+                return;
+            }
+
+            // 讀取傳入的資料
+            BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), "UTF-8"));
+            String line;
+            String account = null, qn = null, lang = null, code = null;
+            while ((line = reader.readLine()) != null) {
+                int idx = line.indexOf('=');
+                if (idx == -1) continue;
+                String key = line.substring(0, idx);
+                String value = java.net.URLDecoder.decode(line.substring(idx + 1), "UTF-8");
+                switch (key) {
+                    case "account" -> account = value;
+                    case "qn" -> qn = value;
+                    case "lang" -> lang = value;
+                    case "code" -> code = value;
+                }
+            }
+
+            String response;
+            if (account == null || qn == null || lang == null || code == null) {
+                response = "缺少必要參數";
+                exchange.sendResponseHeaders(400, response.getBytes("UTF-8").length);
+                exchange.getResponseBody().write(response.getBytes("UTF-8"));
+                exchange.close();
+                return;
+            }
+
+            // 產生唯一檔名
+            String info = String.format("%s-%s-%s", qn, account, System.currentTimeMillis());
+            String ext = switch (lang.toUpperCase()) {
+                case "C" -> "c";
+                case "CPP" -> "cpp";
+                case "CS" -> "cs";
+                case "PY" -> "py";
+                case "JAVA" -> "java";
+                case "JS" -> "js";
+                case "RS" -> "rs";
+                case "KT" -> "kt";
+                case "R" -> "r";
+                case "GO" -> "go";
+                case "JL" -> "jl";
+                default -> "txt";
+            };
+            String tempCodePath = "Server_Test/FileOnFileExecution_Framework/TempCode/" + info + "." + ext;
+
+            // 寫入程式碼檔案
+            try (Writer writer = new OutputStreamWriter(new FileOutputStream(tempCodePath), StandardCharsets.UTF_8)) {
+                writer.write(code.replaceAll("\\r\\n", "\n").replaceAll("\\r", "\n"));
+            } catch (Exception e) {
+                response = "系統錯誤：無法寫入程式碼檔案";
+                exchange.sendResponseHeaders(500, response.getBytes("UTF-8").length);
+                exchange.getResponseBody().write(response.getBytes("UTF-8"));
+                exchange.close();
+                return;
+            }
+
+            /*
+            // 執行評測
+            console_output.setLength(0); // 清空
+            int rc = FOFE(qn, info, ext);
+
+            // 組合回傳訊息
+            StringBuilder sb = new StringBuilder();
+            switch (rc) {
+                case 0 -> sb.append(console_output);
+                case 3 -> sb.append("Prohibited Header Detected\n");
+                case 4 -> sb.append("Compile Error\n");
+                case 5 -> sb.append("Time Limit Exceeded\n");
+                case 6 -> sb.append("Memory Limit Exceeded\n");
+                case 7 -> sb.append("Wrong Answer\n");
+                case 10 -> sb.append("Unsupported Language\n");
+                default -> sb.append("Unexpected System Error\n");
+            }
+            response = sb.toString();
+
+            exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+            exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
+            exchange.getResponseBody().write(response.getBytes("UTF-8"));
+            exchange.close();
+            */
+        }
     }
 }
 
