@@ -14,10 +14,12 @@ import java.util.function.Consumer;
 // import org.json.JSONObject; // 需要 org.json 庫
 
 public class Plush_OJ_Server_Test {
+    // 新增一個全域單執行緒排程器
+    private static final java.util.concurrent.ExecutorService judgeQueue = java.util.concurrent.Executors.newSingleThreadExecutor();
     public static StringBuffer console_output = new StringBuffer();
     private static final String DB_PATH = "Database/UserDB/userdb.db";
     private static final String DB_URL = "jdbc:sqlite:" + DB_PATH;
-    
+
     private static class StreamGobbler implements Runnable {
         private final InputStreamReader inputStreamReader;
         private final Consumer<String> consumer;
@@ -368,124 +370,134 @@ public class Plush_OJ_Server_Test {
         @Override
         @SuppressWarnings({"ConvertToTryWithResources", "CallToPrintStackTrace", "UseSpecificCatch"})
         public void handle(HttpExchange exchange) throws IOException {
-            if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
-                exchange.close();
-                return;
-            }
-
-            // 讀取傳入的資料
-            BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), "UTF-8"));
-            String line;
-            String account = null, qn = null, lang = null, code = null;
-            while ((line = reader.readLine()) != null) {
-                int idx = line.indexOf('=');
-                if (idx == -1) continue;
-                String key = line.substring(0, idx);
-                String value = java.net.URLDecoder.decode(line.substring(idx + 1), "UTF-8");
-                switch (key) {
-                    case "account" -> account = value;
-                    case "qn" -> qn = value;
-                    case "lang" -> lang = value;
-                    case "code" -> code = value;
-                }
-            }
-
-            String response;
-            if (account == null || qn == null || lang == null || code == null) {
-                response = "缺少必要參數";
-                exchange.sendResponseHeaders(400, response.getBytes("UTF-8").length);
-                exchange.getResponseBody().write(response.getBytes("UTF-8"));
-                exchange.close();
-                return;
-            }
-
-            // 產生唯一檔名（根據 account 查 UID，找不到就報錯）
-            String uid = null;
-            try (Connection conn = DriverManager.getConnection(DB_URL)) {
-                String sql = "SELECT UID FROM UserInfo WHERE Account = ?";
-                try (var pstmt = conn.prepareStatement(sql)) {
-                    pstmt.setString(1, account);
-                    try (var rs = pstmt.executeQuery()) {
-                        if (rs.next()) {
-                            uid = rs.getString("UID");
+            // 先複製 exchange 內容到本地變數，避免在排隊時 HttpExchange 已經 close
+            byte[] requestBody = exchange.getRequestBody().readAllBytes();
+            HttpExchange exchangeCopy = exchange;
+            judgeQueue.submit(() -> {
+                try {
+                    // 重新用 ByteArrayInputStream 包裝 requestBody
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(requestBody), "UTF-8"));
+                    String line;
+                    String account = null, qn = null, lang = null, code = null;
+                    while ((line = reader.readLine()) != null) {
+                        int idx = line.indexOf('=');
+                        if (idx == -1) continue;
+                        String key = line.substring(0, idx);
+                        String value = java.net.URLDecoder.decode(line.substring(idx + 1), "UTF-8");
+                        switch (key) {
+                            case "account" -> account = value;
+                            case "qn" -> qn = value;
+                            case "lang" -> lang = value;
+                            case "code" -> code = value;
                         }
                     }
+
+                    String response;
+                    if (account == null || qn == null || lang == null || code == null) {
+                        response = "缺少必要參數";
+                        exchangeCopy.sendResponseHeaders(400, response.getBytes("UTF-8").length);
+                        exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
+                        exchangeCopy.close();
+                        return;
+                    }
+
+                    // 產生唯一檔名（根據 account 查 UID，找不到就報錯）
+                    String uid = null;
+                    try (Connection conn = DriverManager.getConnection(DB_URL)) {
+                        String sql = "SELECT UID FROM UserInfo WHERE Account = ?";
+                        try (var pstmt = conn.prepareStatement(sql)) {
+                            pstmt.setString(1, account);
+                            try (var rs = pstmt.executeQuery()) {
+                                if (rs.next()) {
+                                    uid = rs.getString("UID");
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.err.println("查詢 UID 失敗：" + e.getMessage());
+                        response = "系統錯誤：查詢 UID 失敗\n" + e.getClass().getName() + ": " + e.getMessage();
+                        exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+                        exchangeCopy.sendResponseHeaders(500, response.getBytes("UTF-8").length);
+                        exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
+                        exchangeCopy.close();
+                        return;
+                    }
+                    if (uid == null) {
+                        response = "查無此帳號對應的 UID，請重新登入或聯絡管理員";
+                        exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+                        exchangeCopy.sendResponseHeaders(400, response.getBytes("UTF-8").length);
+                        exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
+                        exchangeCopy.close();
+                        return;
+                    }
+                    // 取得當前時間（格式：yyyyMMdd-HHmmss）
+                    String now = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
+                    String info = String.format("%s-%s-%s", qn, uid, now); // QN001A-XXXXX-20240604-153012
+                    String ext = switch (lang.toUpperCase()) {
+                        case "C" -> "c";
+                        case "CPP" -> "cpp";
+                        case "CS" -> "cs";
+                        case "PY" -> "py";
+                        case "JAVA" -> "java";
+                        case "JS" -> "js";
+                        case "RS" -> "rs";
+                        case "KT" -> "kt";
+                        case "R" -> "r";
+                        case "GO" -> "go";
+                        case "JL" -> "jl";
+                        default -> "txt";
+                    };
+                    String tempCodePath = "FileOnFileExecution_Framework/TempCode/" + info + "." + ext;
+
+                    // 寫入程式碼檔案
+                    try {
+                        try (Writer writer = new OutputStreamWriter(new FileOutputStream(tempCodePath), StandardCharsets.UTF_8)) {
+                            writer.write(code.replaceAll("\\r\\n", "\n").replaceAll("\\r", "\n"));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println("無法寫入程式碼檔案：" + e.getMessage());
+                        response = "系統錯誤：無法寫入程式碼檔案\n" + e.getClass().getName() + ": " + e.getMessage();
+                        exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+                        exchangeCopy.sendResponseHeaders(500, response.getBytes("UTF-8").length);
+                        exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
+                        exchangeCopy.close();
+                        return;
+                    }
+
+                    // 執行評測
+                    console_output.setLength(0); // 清空
+                    int rc = FOFE(qn, info, ext);
+
+                    // 組合回傳訊息
+                    StringBuilder sb = new StringBuilder();
+                    switch (rc) {
+                        case 0 -> sb.append(console_output);
+                        case 3 -> sb.append("Prohibited Header Detected\n");
+                        case 4 -> sb.append("Compile Error\n");
+                        case 5 -> sb.append("Time Limit Exceeded\n");
+                        case 6 -> sb.append("Memory Limit Exceeded\n");
+                        case 7 -> sb.append("Wrong Answer\n");
+                        case 10 -> sb.append("Unsupported Language\n");
+                        default -> sb.append("Unexpected System Error\n");
+                    }
+                    response = sb.toString();
+
+                    exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+                    exchangeCopy.sendResponseHeaders(200, response.getBytes("UTF-8").length);
+                    exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
+                    exchangeCopy.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    try {
+                        String response = "系統錯誤：排程處理失敗\n" + ex.getClass().getName() + ": " + ex.getMessage();
+                        exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+                        exchangeCopy.sendResponseHeaders(500, response.getBytes("UTF-8").length);
+                        exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
+                        exchangeCopy.close();
+                    } catch (IOException ignored) {}
                 }
-            } catch (Exception e) {
-                System.err.println("查詢 UID 失敗：" + e.getMessage());
-                response = "系統錯誤：查詢 UID 失敗\n" + e.getClass().getName() + ": " + e.getMessage();
-                exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-                exchange.sendResponseHeaders(500, response.getBytes("UTF-8").length);
-                exchange.getResponseBody().write(response.getBytes("UTF-8"));
-                exchange.close();
-                return;
-            }
-            if (uid == null) {
-                response = "查無此帳號對應的 UID，請重新登入或聯絡管理員";
-                exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-                exchange.sendResponseHeaders(400, response.getBytes("UTF-8").length);
-                exchange.getResponseBody().write(response.getBytes("UTF-8"));
-                exchange.close();
-                return;
-            }
-            // 取得當前時間（格式：yyyyMMdd-HHmmss）
-            String now = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
-            String info = String.format("%s-%s-%s", qn, uid, now); // QN001A-XXXXX-20240604-153012
-            String ext = switch (lang.toUpperCase()) {
-                case "C" -> "c";
-                case "CPP" -> "cpp";
-                case "CS" -> "cs";
-                case "PY" -> "py";
-                case "JAVA" -> "java";
-                case "JS" -> "js";
-                case "RS" -> "rs";
-                case "KT" -> "kt";
-                case "R" -> "r";
-                case "GO" -> "go";
-                case "JL" -> "jl";
-                default -> "txt";
-            };
-            String tempCodePath = "FileOnFileExecution_Framework/TempCode/" + info + "." + ext;
-
-            // 寫入程式碼檔案
-            try {
-                try (Writer writer = new OutputStreamWriter(new FileOutputStream(tempCodePath), StandardCharsets.UTF_8)) {
-                    writer.write(code.replaceAll("\\r\\n", "\n").replaceAll("\\r", "\n"));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("無法寫入程式碼檔案：" + e.getMessage());
-                response = "系統錯誤：無法寫入程式碼檔案\n" + e.getClass().getName() + ": " + e.getMessage();
-                exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-                exchange.sendResponseHeaders(500, response.getBytes("UTF-8").length);
-                exchange.getResponseBody().write(response.getBytes("UTF-8"));
-                exchange.close();
-                return;
-            }
-
-            // 執行評測
-            console_output.setLength(0); // 清空
-            int rc = FOFE(qn, info, ext);
-
-            // 組合回傳訊息
-            StringBuilder sb = new StringBuilder();
-            switch (rc) {
-                case 0 -> sb.append(console_output);
-                case 3 -> sb.append("Prohibited Header Detected\n");
-                case 4 -> sb.append("Compile Error\n");
-                case 5 -> sb.append("Time Limit Exceeded\n");
-                case 6 -> sb.append("Memory Limit Exceeded\n");
-                case 7 -> sb.append("Wrong Answer\n");
-                case 10 -> sb.append("Unsupported Language\n");
-                default -> sb.append("Unexpected System Error\n");
-            }
-            response = sb.toString();
-
-            exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-            exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
-            exchange.getResponseBody().write(response.getBytes("UTF-8"));
-            exchange.close();
+            });
         }
     }
 }
