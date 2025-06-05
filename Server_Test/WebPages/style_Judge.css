@@ -241,3 +241,15 @@ body, h1, ul, li, a {
 .plush-ai-fade-out {
     animation: plushFadeOut 0.25s cubic-bezier(.4,0,.2,1) forwards;
 }
+
+/* Plush AI 對話框字體統一微軟正黑體 */
+#plush-ai-dialog,
+#plush-ai-content,
+#plush-ai-input,
+#plush-ai-send,
+#plush-ai-close {
+    font-family: 'Microsoft JhengHei', '微軟正黑體', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif !important;
+}
+#plush-ai-content pre {
+    font-family: 'Consolas', 'Microsoft JhengHei', '微軟正黑體', 'Microsoft YaHei', '微软雅黑', monospace !important;
+}

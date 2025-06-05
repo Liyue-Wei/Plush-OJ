@@ -220,7 +220,7 @@
                     .then(reply => {
                         const thinkingDiv = document.getElementById(thinkingId);
                         if (thinkingDiv) {
-                            thinkingDiv.outerHTML = `<div style="color:#555;margin-bottom:8px;">Plush AI: ${reply}</div>`;
+                            thinkingDiv.outerHTML = `<div style="color:#555;margin-bottom:8px;">Plush AI: <pre style="white-space:pre-wrap;margin:0;">${reply}</pre></div>`;
                         }
                         content.scrollTop = content.scrollHeight;
                     })
