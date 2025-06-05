@@ -15,7 +15,8 @@ import java.util.function.Consumer;
 
 public class Plush_OJ_Server_Test {
     // 新增一個全域單執行緒排程器
-    private static final java.util.concurrent.ExecutorService judgeQueue = java.util.concurrent.Executors.newSingleThreadExecutor();
+    // 建議根據主機核心數調整 pool 大小
+    private static final java.util.concurrent.ExecutorService judgeQueue = java.util.concurrent.Executors.newFixedThreadPool(8);
     public static StringBuffer console_output = new StringBuffer();
     private static final String DB_PATH = "Database/UserDB/userdb.db";
     private static final String DB_URL = "jdbc:sqlite:" + DB_PATH;
