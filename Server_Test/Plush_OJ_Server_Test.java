@@ -511,18 +511,56 @@ public class Plush_OJ_Server_Test {
             }
             String userMsg = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8).trim();
             String reply;
-            // 這裡可串接真 AI，暫時回覆固定內容
+
             if (userMsg.isEmpty()) {
                 reply = "請輸入問題。";
-            } else if (userMsg.contains("你好")) {
-                reply = "你好！有什麼我可以幫忙的嗎？";
             } else {
-                reply = "這是 Plush AI 的回覆範例（你問的是：" + userMsg + "）";
+                // 呼叫 ollama API
+                try {
+                    String prompt = userMsg;
+                    String payload = String.format(
+                        "{\"model\":\"deepseek-coder:6.7b\",\"prompt\":%s,\"stream\":false}",
+                        toJsonString(prompt)
+                    );
+                    java.net.URL url = new java.net.URL("http://localhost:11434/api/generate");
+                    java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
+                    try (OutputStream os = conn.getOutputStream()) {
+                        os.write(payload.getBytes(StandardCharsets.UTF_8));
+                    }
+                    StringBuilder sb = new StringBuilder();
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            sb.append(line);
+                        }
+                    }
+                    // 回傳 JSON 格式，解析出 response
+                    String json = sb.toString();
+                    int idx = json.indexOf("\"response\":\"");
+                    if (idx != -1) {
+                        int start = idx + 12;
+                        int end = json.indexOf("\"", start);
+                        reply = json.substring(start, end).replace("\\n", "\n").replace("\\\"", "\"");
+                    } else {
+                        reply = "AI 回應解析失敗：" + json;
+                    }
+                } catch (Exception e) {
+                    reply = "AI 系統錯誤：" + e.getMessage();
+                }
             }
             exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
             exchange.sendResponseHeaders(200, reply.getBytes(StandardCharsets.UTF_8).length);
             exchange.getResponseBody().write(reply.getBytes(StandardCharsets.UTF_8));
             exchange.close();
+        }
+
+        // 將字串安全轉成 JSON 字串
+        private static String toJsonString(String s) {
+            return "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n") + "\"";
         }
     }
 }
