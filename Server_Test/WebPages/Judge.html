@@ -162,6 +162,7 @@
                 // 建立對話框
                 const dialog = document.createElement('div');
                 dialog.id = 'plush-ai-dialog';
+                dialog.classList.add('plush-ai-fade-in'); // 加入淡入動畫
                 dialog.style.position = 'fixed';
                 dialog.style.right = '40px';
                 dialog.style.bottom = '80px';
@@ -186,7 +187,11 @@
                 document.body.appendChild(dialog);
                 
                 // 關閉按鈕
-                document.getElementById('plush-ai-close').onclick = () => dialog.remove();
+                document.getElementById('plush-ai-close').onclick = () => {
+                    dialog.classList.remove('plush-ai-fade-in');
+                    dialog.classList.add('plush-ai-fade-out');
+                    dialog.addEventListener('animationend', () => dialog.remove(), { once: true });
+                };
                 
                 // 送出訊息
                 document.getElementById('plush-ai-send').onclick = sendAIMessage;
