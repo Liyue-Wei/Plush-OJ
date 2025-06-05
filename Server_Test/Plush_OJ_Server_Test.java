@@ -1,6 +1,7 @@
 import com.sun.net.httpserver.*;
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.Connection;
@@ -502,7 +503,7 @@ public class Plush_OJ_Server_Test {
 
     static class PlushAIHandler implements HttpHandler {
         @Override
-        @SuppressWarnings("ConvertToTryWithResources")
+        @SuppressWarnings({"ConvertToTryWithResources", "UseSpecificCatch"})
         public void handle(HttpExchange exchange) throws IOException {
             if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(405, -1);
@@ -517,12 +518,15 @@ public class Plush_OJ_Server_Test {
             } else {
                 // 呼叫 ollama API
                 try {
+                    System.out.println("[PlushAI] 收到用戶問題: " + userMsg);
+                    System.out.println("[PlushAI] 正在呼叫 Ollama deepseek-coder:6.7b ...");
                     String prompt = userMsg;
                     String payload = String.format(
                         "{\"model\":\"deepseek-coder:6.7b\",\"prompt\":%s,\"stream\":false}",
                         toJsonString(prompt)
                     );
-                    java.net.URL url = new java.net.URL("http://localhost:11434/api/generate");
+                    // 使用 URI 以避免 deprecated 警告
+                    java.net.URL url = new URI("http://localhost:11434/api/generate").toURL();
                     java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json");
@@ -538,18 +542,44 @@ public class Plush_OJ_Server_Test {
                             sb.append(line);
                         }
                     }
+                    System.out.println("[PlushAI] Ollama 回傳原始資料: " + sb);
                     // 回傳 JSON 格式，解析出 response
                     String json = sb.toString();
-                    int idx = json.indexOf("\"response\":\"");
+                    String marker = "\"response\":\"";
+                    int idx = json.indexOf(marker);
                     if (idx != -1) {
-                        int start = idx + 12;
-                        int end = json.indexOf("\"", start);
-                        reply = json.substring(start, end).replace("\\n", "\n").replace("\\\"", "\"");
+                        int start = idx + marker.length();
+                        // 只找下一個 " 前的內容，但要處理跳脫字元
+                        StringBuilder resp = new StringBuilder();
+                        boolean escape = false;
+                        for (int i = start; i < json.length(); i++) {
+                            char c = json.charAt(i);
+                            if (escape) {
+                                switch (c) {
+                                    case 'n' -> resp.append('\n');
+                                    case 'r' -> resp.append('\r');
+                                    case 't' -> resp.append('\t');
+                                    case '\\', '"' -> resp.append(c);
+                                    default -> resp.append('\\').append(c);
+                                }
+                                escape = false;
+                            } else if (c == '\\') {
+                                escape = true;
+                            } else if (c == '"') {
+                                break;
+                            } else {
+                                resp.append(c);
+                            }
+                        }
+                        reply = resp.toString();
+                        System.out.println("[PlushAI] Ollama 回覆內容: " + reply);
                     } else {
                         reply = "AI 回應解析失敗：" + json;
+                        System.out.println("[PlushAI] Ollama 回覆解析失敗: " + json);
                     }
                 } catch (Exception e) {
                     reply = "AI 系統錯誤：" + e.getMessage();
+                    System.err.println("[PlushAI] Ollama 呼叫失敗: " + e.getMessage());
                 }
             }
             exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");

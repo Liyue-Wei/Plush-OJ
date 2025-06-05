@@ -201,6 +201,10 @@
                     if (!msg) return;
                     content.innerHTML += `<div style="color:#1976d2;margin-bottom:4px;">你：${msg}</div>`;
                     input.value = '';
+                    // 顯示思考中
+                    const thinkingId = 'plush-ai-thinking';
+                    content.innerHTML += `<div id="${thinkingId}" style="color:#888;margin-bottom:8px;">Plush AI 思考中...</div>`;
+                    content.scrollTop = content.scrollHeight;
                     // 串接後端
                     fetch('/plushai', {
                         method: 'POST',
@@ -209,14 +213,19 @@
                     })
                     .then(res => res.text())
                     .then(reply => {
-                        content.innerHTML += `<div style="color:#555;margin-bottom:8px;">Plush AI: ${reply}</div>`;
+                        const thinkingDiv = document.getElementById(thinkingId);
+                        if (thinkingDiv) {
+                            thinkingDiv.outerHTML = `<div style="color:#555;margin-bottom:8px;">Plush AI: ${reply}</div>`;
+                        }
                         content.scrollTop = content.scrollHeight;
                     })
                     .catch(() => {
-                        content.innerHTML += `<div style="color:red;margin-bottom:8px;">Plush AI: 系統錯誤，請稍後再試</div>`;
+                        const thinkingDiv = document.getElementById(thinkingId);
+                        if (thinkingDiv) {
+                            thinkingDiv.outerHTML = `<div style="color:red;margin-bottom:8px;">Plush AI: 系統錯誤，請稍後再試</div>`;
+                        }
                         content.scrollTop = content.scrollHeight;
                     });
-                    content.scrollTop = content.scrollHeight;
                 }
             });
         </script>
