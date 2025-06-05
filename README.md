@@ -14,6 +14,8 @@
 
 ### Database
 
+### Plush AI - Powered by deepseek-coder
+
 ### Security
 1. SQL Injection Protection
 
