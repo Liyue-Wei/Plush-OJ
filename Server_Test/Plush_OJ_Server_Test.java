@@ -466,6 +466,7 @@ public class Plush_OJ_Server_Test {
                     }
 
                     // 執行評測
+                    System.out.println("開始評測：" + info + " (" + ext + ")");
                     console_output.setLength(0); // 清空
                     int rc = FOFE(qn, info, ext);
 
