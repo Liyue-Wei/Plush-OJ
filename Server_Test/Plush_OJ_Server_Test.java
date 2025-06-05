@@ -466,9 +466,10 @@ public class Plush_OJ_Server_Test {
                     }
 
                     // 執行評測
-                    System.out.println("開始評測：" + info + " (" + ext + ")");
+                    System.out.println(info + " - " + ext);
                     console_output.setLength(0); // 清空
                     int rc = FOFE(qn, info, ext);
+                    System.out.println("Return Code: " + rc);
 
                     // 組合回傳訊息
                     StringBuilder sb = new StringBuilder();
