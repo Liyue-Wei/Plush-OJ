@@ -115,9 +115,8 @@
                     alert('請確認已登入、選擇題號並輸入程式碼');
                     return;
                 }
-                // 顯示送出提示
                 alert('已送出，正在進行評分');
-                // 組裝資料
+                
                 const payload = [
                     `account=${encodeURIComponent(account)}`,
                     `qn=${encodeURIComponent(qn)}`,
@@ -132,8 +131,6 @@
                     });
                     const text = await res.text();
                     consoleArea.value = text;
-
-                    // 根據回傳內容彈窗
                     if (text.includes('Wrong Answer')) {
                         alert('WA: 答案錯誤');
                     } else if (text.includes('Compile Error')) {
@@ -151,7 +148,6 @@
                     } else if (text.includes('AC') || text.includes('Accepted')) {
                         alert('Accepted!');
                     }
-                    // 你可根據實際回傳內容再細調
                 } catch (e) {
                     consoleArea.value = '系統錯誤，請稍後再試';
                     alert('系統錯誤，請稍後再試');
