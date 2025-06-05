@@ -99,6 +99,7 @@ public class Plush_OJ_Server_Test {
         server.createContext("/login", new LoginHandler());
         server.createContext("/question", new QuestionHandler());
         server.createContext("/judge", new JudgeHandler());  
+        server.createContext("/plushai", new PlushAIHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("Server started at http://localhost:" + port + "/");
@@ -496,6 +497,32 @@ public class Plush_OJ_Server_Test {
                     } catch (IOException ignored) {}
                 }
             });
+        }
+    }
+
+    static class PlushAIHandler implements HttpHandler {
+        @Override
+        @SuppressWarnings("ConvertToTryWithResources")
+        public void handle(HttpExchange exchange) throws IOException {
+            if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(405, -1);
+                exchange.close();
+                return;
+            }
+            String userMsg = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8).trim();
+            String reply;
+            // 這裡可串接真 AI，暫時回覆固定內容
+            if (userMsg.isEmpty()) {
+                reply = "請輸入問題。";
+            } else if (userMsg.contains("你好")) {
+                reply = "你好！有什麼我可以幫忙的嗎？";
+            } else {
+                reply = "這是 Plush AI 的回覆範例（你問的是：" + userMsg + "）";
+            }
+            exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+            exchange.sendResponseHeaders(200, reply.getBytes(StandardCharsets.UTF_8).length);
+            exchange.getResponseBody().write(reply.getBytes(StandardCharsets.UTF_8));
+            exchange.close();
         }
     }
 }
