@@ -395,6 +395,7 @@ public class Plush_OJ_Server_Test {
                     String response;
                     if (account == null || qn == null || lang == null || code == null) {
                         response = "缺少必要參數";
+                        System.out.println("[Judge] 缺少必要參數: account=" + account + ", qn=" + qn + ", lang=" + lang);
                         exchangeCopy.sendResponseHeaders(400, response.getBytes("UTF-8").length);
                         exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
                         exchangeCopy.close();
@@ -414,7 +415,7 @@ public class Plush_OJ_Server_Test {
                             }
                         }
                     } catch (Exception e) {
-                        System.err.println("查詢 UID 失敗：" + e.getMessage());
+                        System.err.println("[Judge] 查詢 UID 失敗：" + e.getMessage());
                         response = "系統錯誤：查詢 UID 失敗\n" + e.getClass().getName() + ": " + e.getMessage();
                         exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
                         exchangeCopy.sendResponseHeaders(500, response.getBytes("UTF-8").length);
@@ -424,6 +425,7 @@ public class Plush_OJ_Server_Test {
                     }
                     if (uid == null) {
                         response = "查無此帳號對應的 UID，請重新登入或聯絡管理員";
+                        System.out.println("[Judge] 查無 UID: account=" + account);
                         exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
                         exchangeCopy.sendResponseHeaders(400, response.getBytes("UTF-8").length);
                         exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
@@ -449,6 +451,8 @@ public class Plush_OJ_Server_Test {
                     };
                     String tempCodePath = "FileOnFileExecution_Framework/TempCode/" + info + "." + ext;
 
+                    System.out.println("[Judge] 用戶提交: account=" + account + " (UID=" + uid + "), 題號=" + qn + ", 語言=" + lang + ", 檔案=" + tempCodePath);
+
                     // 寫入程式碼檔案
                     try {
                         try (Writer writer = new OutputStreamWriter(new FileOutputStream(tempCodePath), StandardCharsets.UTF_8)) {
@@ -456,7 +460,7 @@ public class Plush_OJ_Server_Test {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        System.err.println("無法寫入程式碼檔案：" + e.getMessage());
+                        System.err.println("[Judge] 無法寫入程式碼檔案：" + e.getMessage());
                         response = "系統錯誤：無法寫入程式碼檔案\n" + e.getClass().getName() + ": " + e.getMessage();
                         exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
                         exchangeCopy.sendResponseHeaders(500, response.getBytes("UTF-8").length);
@@ -466,10 +470,10 @@ public class Plush_OJ_Server_Test {
                     }
 
                     // 執行評測
-                    System.out.println(info + " - " + ext);
+                    System.out.println("[Judge] 開始評測: " + info + " - " + ext);
                     console_output.setLength(0); // 清空
                     int rc = FOFE(qn, info, ext);
-                    System.out.println("Return Code: " + rc);
+                    System.out.println("[Judge] Return Code: " + rc);
 
                     // 組合回傳訊息
                     StringBuilder sb = new StringBuilder();
@@ -485,6 +489,8 @@ public class Plush_OJ_Server_Test {
                     }
                     response = sb.toString();
 
+                    System.out.println("[Judge] 輸出結果：\n" + response);
+
                     exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
                     exchangeCopy.sendResponseHeaders(200, response.getBytes("UTF-8").length);
                     exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
@@ -493,6 +499,7 @@ public class Plush_OJ_Server_Test {
                     ex.printStackTrace();
                     try {
                         String response = "系統錯誤：排程處理失敗\n" + ex.getClass().getName() + ": " + ex.getMessage();
+                        System.err.println("[Judge] 排程處理失敗：" + ex.getMessage());
                         exchangeCopy.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
                         exchangeCopy.sendResponseHeaders(500, response.getBytes("UTF-8").length);
                         exchangeCopy.getResponseBody().write(response.getBytes("UTF-8"));
