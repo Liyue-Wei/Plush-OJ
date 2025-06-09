@@ -35,6 +35,23 @@ body, h1, ul, li, a {
     font-weight: bold;
 }
 
+.header .logo a {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: flex-end;
+}
+
+.header .logo img {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
 .header .nav {
     display: flex;
     gap: 20px;
