@@ -37,6 +37,8 @@ public class UI_TEST {
 
         BufferedImage finalLogoImg = logoImg; // for lambda use
 
+        final int[] breathTick = {0}; // 呼吸動畫計時
+
         JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -58,26 +60,26 @@ public class UI_TEST {
                 int w = getWidth();
                 int h = getHeight();
 
-                // ====== 燈光光暈效果 ======
-                int glowWidth = 0; // 光暈寬度
+                // ====== 呼吸光暈效果 ======
+                int glowWidth = 32; // 光暈寬度
+                // 計算呼吸動畫的 alpha 變化 (0.5~1.0)
+                double breath = 0.5 + 0.5 * Math.sin(breathTick[0] * 0.05);
                 for (int i = glowWidth; i > 0; i--) {
-                    float alpha = 0.18f * (1f - (float)i / glowWidth); // 外圍更淡
+                    float alpha = (float)(breath * 0.18f * (1f - (float)i / glowWidth));
                     g2.setColor(new Color(255, 255, 255, Math.round(255 * alpha)));
                     g2.setStroke(new BasicStroke(i * 2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-                    g2.drawRect(
-                        i, i, w - i * 2, h - i * 2
-                    );
+                    g2.drawRect(i, i, w - i * 2, h - i * 2);
                 }
-                // ====== END 燈光光暈效果 ======
+                // ====== END 呼吸光暈效果 ======
 
                 // ====== 斜邊光暈效果 ======
-                int sideGlowWidth = 0; // 斜邊光暈層數（加大）
+                int sideGlowWidth = 44;
                 for (int i = sideGlowWidth; i > 0; i--) {
-                    float alpha = 0.18f * (1f - (float)i / sideGlowWidth); // 調高透明度
+                    float alpha = (float)(breath * 0.18f * (1f - (float)i / sideGlowWidth));
                     // 左上斜邊光暈
                     Polygon leftGlow = new Polygon();
                     leftGlow.addPoint(0, 0);
-                    leftGlow.addPoint(cut + i * 2, 0);      // 斜邊範圍加大
+                    leftGlow.addPoint(cut + i * 2, 0);
                     leftGlow.addPoint(0, cut + i * 2);
                     g2.setColor(new Color(255, 255, 255, Math.round(255 * alpha)));
                     g2.fillPolygon(leftGlow);
@@ -85,7 +87,7 @@ public class UI_TEST {
                     // 右下斜邊光暈
                     Polygon rightGlow = new Polygon();
                     rightGlow.addPoint(w, h);
-                    rightGlow.addPoint(w - cut - i * 2, h); // 斜邊範圍加大
+                    rightGlow.addPoint(w - cut - i * 2, h);
                     rightGlow.addPoint(w, h - cut - i * 2);
                     g2.setColor(new Color(255, 255, 255, Math.round(255 * alpha)));
                     g2.fillPolygon(rightGlow);
@@ -124,6 +126,12 @@ public class UI_TEST {
         };
         panel.setBackground(new Color(0,0,0,0)); // 透明背景
         panel.setLayout(null); // 設定為絕對定位
+
+        // 呼吸動畫 Timer
+        new javax.swing.Timer(10, e -> {
+            breathTick[0]++;
+            panel.repaint();
+        }).start();
 
         // ====== 新增科技感的關閉與最小化按鈕 ======
         int btnSize = 36;
