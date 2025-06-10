@@ -29,7 +29,7 @@ public class UI_TEST {
             System.err.println("LOGO 載入失敗: " + e.getMessage());
         }
 
-        JFrame frame = new JFrame();
+        final JFrame frame = new JFrame();
         frame.setUndecorated(true); // 無邊框
         frame.setSize(frameWidth, frameHeight);
         frame.setLocationRelativeTo(null);
@@ -86,6 +86,79 @@ public class UI_TEST {
             }
         };
         panel.setBackground(new Color(0,0,0,0)); // 透明背景
+        panel.setLayout(null); // 設定為絕對定位
+
+        // ====== 新增科技感的關閉與最小化按鈕 ======
+        int btnSize = 36;
+        int btnMargin = 18;
+
+        // 自訂科技感按鈕
+        class TechButton extends JButton {
+            private final Color glowColor, normalColor, hoverColor;
+            private boolean hover = false;
+            public TechButton(String text, Color normal, Color hover, Color glow) {
+                super(text);
+                this.normalColor = normal;
+                this.hoverColor = hover;
+                this.glowColor = glow;
+                setFocusPainted(false);
+                setBorderPainted(false);
+                setContentAreaFilled(false);
+                setOpaque(false);
+                setFont(new Font("Consolas", Font.BOLD, 24));
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                setForeground(normalColor);
+                addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        TechButton.this.hover = true; TechButton.this.repaint();
+                    }
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        TechButton.this.hover = false; TechButton.this.repaint();
+                    }
+                });
+            }
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int arc = 18;
+                // 半透明底
+                g2.setColor(new Color(30, 30, 30, hover ? 180 : 120));
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
+                // 發光外框
+                if (hover) {
+                    g2.setColor(glowColor);
+                    g2.setStroke(new BasicStroke(3f));
+                    g2.drawRoundRect(2, 2, getWidth()-4, getHeight()-4, arc, arc);
+                }
+                // 文字
+                g2.setColor(hover ? hoverColor : normalColor);
+                FontMetrics fm = g2.getFontMetrics();
+                int tx = (getWidth() - fm.stringWidth(getText())) / 2;
+                int ty = (getHeight() + fm.getAscent()) / 2 - 2;
+                g2.drawString(getText(), tx, ty);
+                g2.dispose();
+            }
+        }
+
+        // 關閉鈕
+        TechButton closeBtn = new TechButton("x",
+            new Color(255, 80, 80), new Color(255, 180, 180), new Color(255, 0, 0, 120));
+        closeBtn.setToolTipText("close");
+        closeBtn.setBounds(frameWidth - btnSize - btnMargin, btnMargin, btnSize, btnSize);
+        closeBtn.addActionListener(e -> System.exit(0));
+
+        // 最小化鈕
+        TechButton minBtn = new TechButton("-",
+            new Color(80, 200, 255), new Color(180, 255, 255), new Color(0, 255, 255, 120));
+        minBtn.setToolTipText("minimize");
+        minBtn.setBounds(frameWidth - btnSize * 2 - btnMargin - 8, btnMargin, btnSize, btnSize);
+        minBtn.addActionListener(e -> frame.setState(JFrame.ICONIFIED));
+
+        panel.add(closeBtn);
+        panel.add(minBtn);
+        // ====== END ======
+
         frame.setContentPane(panel);
         frame.setBackground(new Color(0,0,0,0)); // 讓JFrame背景也透明
         frame.setVisible(true);
