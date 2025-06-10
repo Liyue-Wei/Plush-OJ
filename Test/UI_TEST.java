@@ -59,7 +59,7 @@ public class UI_TEST {
                 int h = getHeight();
 
                 // ====== 燈光光暈效果 ======
-                int glowWidth = 32; // 光暈寬度
+                int glowWidth = 0; // 光暈寬度
                 for (int i = glowWidth; i > 0; i--) {
                     float alpha = 0.18f * (1f - (float)i / glowWidth); // 外圍更淡
                     g2.setColor(new Color(255, 255, 255, Math.round(255 * alpha)));
@@ -71,7 +71,7 @@ public class UI_TEST {
                 // ====== END 燈光光暈效果 ======
 
                 // ====== 斜邊光暈效果 ======
-                int sideGlowWidth = 44; // 斜邊光暈層數（加大）
+                int sideGlowWidth = 0; // 斜邊光暈層數（加大）
                 for (int i = sideGlowWidth; i > 0; i--) {
                     float alpha = 0.18f * (1f - (float)i / sideGlowWidth); // 調高透明度
                     // 左上斜邊光暈
