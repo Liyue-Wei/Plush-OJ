@@ -30,6 +30,7 @@ public class UI_TEST {
         }
 
         final JFrame frame = new JFrame();
+        frame.setTitle("Plush::OJ Dashboard"); // 新增視窗名稱
         frame.setUndecorated(true); // 無邊框
         frame.setSize(frameWidth, frameHeight);
         frame.setLocationRelativeTo(null);
@@ -41,10 +42,8 @@ public class UI_TEST {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g;
-                int w = getWidth();
-                int h = getHeight();
 
-                // 啟用抗鋸齒與高品質縮放
+                // ====== 抗鋸齒與高品質渲染 ======
                 g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -54,6 +53,44 @@ public class UI_TEST {
                 g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
                 g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                 g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+                // ====== END 抗鋸齒與高品質渲染 ======
+
+                int w = getWidth();
+                int h = getHeight();
+
+                // ====== 燈光光暈效果 ======
+                int glowWidth = 32; // 光暈寬度
+                for (int i = glowWidth; i > 0; i--) {
+                    float alpha = 0.18f * (1f - (float)i / glowWidth); // 外圍更淡
+                    g2.setColor(new Color(255, 255, 255, Math.round(255 * alpha)));
+                    g2.setStroke(new BasicStroke(i * 2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                    g2.drawRect(
+                        i, i, w - i * 2, h - i * 2
+                    );
+                }
+                // ====== END 燈光光暈效果 ======
+
+                // ====== 斜邊光暈效果 ======
+                int sideGlowWidth = 44; // 斜邊光暈層數（加大）
+                for (int i = sideGlowWidth; i > 0; i--) {
+                    float alpha = 0.18f * (1f - (float)i / sideGlowWidth); // 調高透明度
+                    // 左上斜邊光暈
+                    Polygon leftGlow = new Polygon();
+                    leftGlow.addPoint(0, 0);
+                    leftGlow.addPoint(cut + i * 2, 0);      // 斜邊範圍加大
+                    leftGlow.addPoint(0, cut + i * 2);
+                    g2.setColor(new Color(255, 255, 255, Math.round(255 * alpha)));
+                    g2.fillPolygon(leftGlow);
+
+                    // 右下斜邊光暈
+                    Polygon rightGlow = new Polygon();
+                    rightGlow.addPoint(w, h);
+                    rightGlow.addPoint(w - cut - i * 2, h); // 斜邊範圍加大
+                    rightGlow.addPoint(w, h - cut - i * 2);
+                    g2.setColor(new Color(255, 255, 255, Math.round(255 * alpha)));
+                    g2.fillPolygon(rightGlow);
+                }
+                // ====== END 斜邊光暈效果 ======
 
                 // 填滿背景色
                 g2.setColor(bgColor);
