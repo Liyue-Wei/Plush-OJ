@@ -128,7 +128,7 @@ public class UI_TEST {
         panel.setLayout(null); // 設定為絕對定位
 
         // 呼吸動畫 Timer
-        new javax.swing.Timer(10, e -> {
+        new javax.swing.Timer(2, e -> {
             breathTick[0]++;
             panel.repaint();
         }).start();
