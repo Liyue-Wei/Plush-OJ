@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
@@ -261,6 +260,7 @@ public class Dashboard {
         bashScrollPane.getViewport().setOpaque(false); // 讓 Viewport 也透明
         panel.add(bashScrollPane);
 
+        /*
         // 你可以加上 Ctrl+Enter 事件來模擬 bash 輸入
         bashTextArea.getInputMap().put(KeyStroke.getKeyStroke("ctrl ENTER"), "submitBash");
         bashTextArea.getActionMap().put("submitBash", new AbstractAction() {
@@ -350,7 +350,8 @@ public class Dashboard {
                 }).start();
             }
         });
-
+        */
+        
         frame.setContentPane(panel);
         frame.setBackground(new Color(0,0,0,0)); // 讓JFrame背景也透明
         frame.setVisible(true);
