@@ -321,17 +321,29 @@ public class UI_TEST {
                     bashTextArea.setCaretPosition(bashTextArea.getText().length());
                     return;
                 }
-                try {
-                    Process process = new ProcessBuilder("cmd", "/c", cmd).redirectErrorStream(true).start();
-                    java.util.Scanner s = new java.util.Scanner(process.getInputStream(), "UTF-8").useDelimiter("\\A");
-                    String output = s.hasNext() ? s.next() : "";
-                    if (!output.endsWith("\n")) output += "\n";
-                    bashTextArea.append("\n" + output + prompt);
-                    bashTextArea.setCaretPosition(bashTextArea.getText().length());
-                } catch (Exception ex) {
-                    bashTextArea.append("\n執行錯誤: " + ex.getMessage() + "\n" + prompt);
-                    bashTextArea.setCaretPosition(bashTextArea.getText().length());
-                }
+                // 開新執行緒執行指令，避免 UI 卡住
+                new Thread(() -> {
+                    try {
+                        // 全部用 powershell 執行，避免中文亂碼
+                        Process process = new ProcessBuilder("powershell", "-Command", cmd)
+                            .redirectErrorStream(true).start();
+                        java.io.InputStreamReader isr = new java.io.InputStreamReader(
+                            process.getInputStream(), java.nio.charset.StandardCharsets.UTF_8);
+                        java.util.Scanner s = new java.util.Scanner(isr).useDelimiter("\\A");
+                        String output = s.hasNext() ? s.next() : "";
+                        System.out.println(output); // 正确输出
+                        // Swing UI 更新要在 EDT 執行
+                        SwingUtilities.invokeLater(() -> {
+                            bashTextArea.append("\n" + output + prompt);
+                            bashTextArea.setCaretPosition(bashTextArea.getText().length());
+                        });
+                    } catch (Exception ex) {
+                        SwingUtilities.invokeLater(() -> {
+                            bashTextArea.append("\n執行錯誤: " + ex.getMessage() + "\n" + prompt);
+                            bashTextArea.setCaretPosition(bashTextArea.getText().length());
+                        });
+                    }
+                }).start();
             }
         });
 
