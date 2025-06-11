@@ -155,9 +155,11 @@ public class UI_TEST {
                 setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 setForeground(normalColor);
                 addMouseListener(new java.awt.event.MouseAdapter() {
+                    @SuppressWarnings("override")
                     public void mouseEntered(java.awt.event.MouseEvent evt) {
                         TechButton.this.hover = true; TechButton.this.repaint();
                     }
+                    @SuppressWarnings("override")
                     public void mouseExited(java.awt.event.MouseEvent evt) {
                         TechButton.this.hover = false; TechButton.this.repaint();
                     }
@@ -263,6 +265,7 @@ public class UI_TEST {
         bashTextArea.getInputMap().put(KeyStroke.getKeyStroke("ctrl ENTER"), "submitBash");
         bashTextArea.getActionMap().put("submitBash", new AbstractAction() {
             @Override
+            @SuppressWarnings("UseSpecificCatch")
             public void actionPerformed(ActionEvent e) {
                 String cmd = bashTextArea.getText();
                 try {
@@ -305,6 +308,7 @@ public class UI_TEST {
         bashTextArea.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "submitBash");
         bashTextArea.getActionMap().put("submitBash", new AbstractAction() {
             @Override
+            @SuppressWarnings("UseSpecificCatch")
             public void actionPerformed(ActionEvent e) {
                 String text = bashTextArea.getText();
                 int lastPrompt = text.lastIndexOf(prompt);
