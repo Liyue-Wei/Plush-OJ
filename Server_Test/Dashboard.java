@@ -298,7 +298,6 @@ public class Dashboard {
         bashScrollPane.getViewport().setOpaque(false); // 讓 Viewport 也透明
         panel.add(bashScrollPane);
 
-        // 你可以加上 Ctrl+Enter 事件來模擬 bash 輸入
         bashTextArea.getInputMap().put(KeyStroke.getKeyStroke("ctrl ENTER"), "submitBash");
         bashTextArea.getActionMap().put("submitBash", new AbstractAction() {
             @Override
@@ -307,8 +306,10 @@ public class Dashboard {
                 String cmd = bashTextArea.getText();
                 try {
                     // 執行 Windows cmd 指令，若要 bash 請改為 "bash", "-c", cmd
-                    Process process = new ProcessBuilder("cmd", "/c", cmd).redirectErrorStream(true).start();
-                    java.util.Scanner s = new java.util.Scanner(process.getInputStream(), "UTF-8").useDelimiter("\\A");
+                    Process process = new ProcessBuilder(
+                        "cmd", "/c", "chcp 65001 >nul && set LANG=en_US && " + cmd
+                    ).redirectErrorStream(true).start();
+                java.util.Scanner s = new java.util.Scanner(process.getInputStream(), "UTF-8").useDelimiter("\\A");
                     String output = s.hasNext() ? s.next() : "";
                     bashTextArea.setText(output);
                 } catch (Exception ex) {
@@ -365,15 +366,14 @@ public class Dashboard {
                 // 開新執行緒執行指令，避免 UI 卡住
                 new Thread(() -> {
                     try {
-                        // 全部用 powershell 執行，避免中文亂碼
-                        Process process = new ProcessBuilder("powershell", "-Command", cmd)
+                        // 強制 powershell 輸出英文與 UTF-8
+                        String psCmd = "$OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8; $env:LANG='en_US'; " + cmd;
+                        Process process = new ProcessBuilder("powershell", "-Command", psCmd)
                             .redirectErrorStream(true).start();
                         java.io.InputStreamReader isr = new java.io.InputStreamReader(
                             process.getInputStream(), java.nio.charset.StandardCharsets.UTF_8);
                         java.util.Scanner s = new java.util.Scanner(isr).useDelimiter("\\A");
                         String output = s.hasNext() ? s.next() : "";
-                        System.out.println(output); // 正确输出
-                        // Swing UI 更新要在 EDT 執行
                         SwingUtilities.invokeLater(() -> {
                             bashTextArea.append("\n" + output + prompt);
                             bashTextArea.setCaretPosition(bashTextArea.getText().length());
