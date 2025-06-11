@@ -423,7 +423,7 @@ public class Dashboard {
         // ====== 右側系統監測區 ======
         int monitorBoxX = frameWidth - 620;
         int monitorBoxY = frameHeight - 580; 
-        int monitorBoxW = 580;
+        int monitorBoxW = 560;
         int monitorBoxH = 200;
 
         JLabel cpuLabel = new JLabel("CPU: 0%");
