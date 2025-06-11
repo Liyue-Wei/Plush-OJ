@@ -265,8 +265,15 @@ public class UI_TEST {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String cmd = bashTextArea.getText();
-                System.out.println("Bash 輸入: " + cmd);
-                bashTextArea.setText("");
+                try {
+                    // 執行 Windows cmd 指令，若要 bash 請改為 "bash", "-c", cmd
+                    Process process = new ProcessBuilder("cmd", "/c", cmd).redirectErrorStream(true).start();
+                    java.util.Scanner s = new java.util.Scanner(process.getInputStream(), "UTF-8").useDelimiter("\\A");
+                    String output = s.hasNext() ? s.next() : "";
+                    bashTextArea.setText(output);
+                } catch (Exception ex) {
+                    bashTextArea.setText("執行錯誤: " + ex.getMessage());
+                }
             }
         });
 
