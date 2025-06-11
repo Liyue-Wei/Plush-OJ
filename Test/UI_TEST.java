@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
@@ -203,6 +204,34 @@ public class UI_TEST {
         panel.add(closeBtn);
         panel.add(minBtn);
         // ====== END ======
+
+        // 新增 Bash 專用 TextArea（多行）
+        JTextArea bashTextArea = new JTextArea();
+        bashTextArea.setFont(new Font("Consolas", Font.PLAIN, 18));
+        bashTextArea.setBackground(new Color(30, 30, 30, 220));
+        bashTextArea.setForeground(new Color(0, 255, 128));
+        bashTextArea.setCaretColor(new Color(0, 255, 128));
+        bashTextArea.setBorder(BorderFactory.createLineBorder(new Color(219, 219, 219), 2, true));
+        bashTextArea.setLineWrap(true);
+        bashTextArea.setWrapStyleWord(true);
+
+        // 設定位置與大小（可依需求調整）
+        JScrollPane bashScrollPane = new JScrollPane(bashTextArea);
+        bashScrollPane.setBounds(60, frameHeight - 285, frameWidth - 120, 200);
+        bashScrollPane.setBorder(BorderFactory.createEmptyBorder()); // 可選：去除外框
+
+        // 你可以加上 Ctrl+Enter 事件來模擬 bash 輸入
+        bashTextArea.getInputMap().put(KeyStroke.getKeyStroke("ctrl ENTER"), "submitBash");
+        bashTextArea.getActionMap().put("submitBash", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String cmd = bashTextArea.getText();
+                System.out.println("Bash 輸入: " + cmd);
+                bashTextArea.setText("");
+            }
+        });
+
+        panel.add(bashScrollPane);
 
         frame.setContentPane(panel);
         frame.setBackground(new Color(0,0,0,0)); // 讓JFrame背景也透明
