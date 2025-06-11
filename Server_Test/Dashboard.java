@@ -129,7 +129,7 @@ public class Dashboard {
         panel.setLayout(null); // 設定為絕對定位
 
         // 呼吸動畫 Timer
-        new javax.swing.Timer(2, e -> {
+        new javax.swing.Timer(1, e -> {
             breathTick[0]++;
             panel.repaint();
         }).start();
