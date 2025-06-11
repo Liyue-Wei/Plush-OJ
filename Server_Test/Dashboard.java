@@ -548,5 +548,25 @@ public class Dashboard {
 
             chartPanel.repaint();
         }).start();
+
+        // 在 main 裡 LOGO 畫完後加上這段
+        int logoBtnX = 10;
+        int logoBtnY = frameHeight - logoHeight - 10;
+        JButton logoBtn = new JButton();
+        logoBtn.setBounds(logoBtnX, logoBtnY, logoWidth, logoHeight);
+        logoBtn.setOpaque(false);
+        logoBtn.setContentAreaFilled(false);
+        logoBtn.setBorderPainted(false);
+        logoBtn.setFocusPainted(false);
+        logoBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        logoBtn.setToolTipText("前往 Plush-OJ GitHub");
+        logoBtn.addActionListener(e -> {
+            try {
+                java.awt.Desktop.getDesktop().browse(new java.net.URI("https://github.com/Liyue-Wei/Plush-OJ"));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "無法開啟瀏覽器: " + ex.getMessage());
+            }
+        });
+        panel.add(logoBtn);
     }
 }
