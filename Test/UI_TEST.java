@@ -277,6 +277,64 @@ public class UI_TEST {
             }
         });
 
+        // ====== cmd 模擬區 ======
+        String userDir = System.getProperty("user.dir");
+        String prompt = userDir + ">";
+        bashTextArea.setText(prompt);
+
+        // 記錄 prompt 長度，防止刪除 prompt
+        bashTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                int caret = bashTextArea.getCaretPosition();
+                // 禁止刪除 prompt
+                if ((e.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE ||
+                     e.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) &&
+                    caret <= bashTextArea.getText().lastIndexOf(prompt) + prompt.length()) {
+                    e.consume();
+                }
+                // Home 鍵跳到 prompt 後
+                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_HOME) {
+                    int p = bashTextArea.getText().lastIndexOf(prompt) + prompt.length();
+                    bashTextArea.setCaretPosition(p);
+                    e.consume();
+                }
+            }
+        });
+
+        bashTextArea.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "submitBash");
+        bashTextArea.getActionMap().put("submitBash", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = bashTextArea.getText();
+                int lastPrompt = text.lastIndexOf(prompt);
+                if (lastPrompt == -1) return;
+                String cmd = text.substring(lastPrompt + prompt.length()).trim();
+                if (cmd.isEmpty()) {
+                    bashTextArea.append("\n" + prompt);
+                    bashTextArea.setCaretPosition(bashTextArea.getText().length());
+                    return;
+                }
+                // 處理 cls 指令
+                if (cmd.equalsIgnoreCase("cls")) {
+                    bashTextArea.setText(prompt);
+                    bashTextArea.setCaretPosition(bashTextArea.getText().length());
+                    return;
+                }
+                try {
+                    Process process = new ProcessBuilder("cmd", "/c", cmd).redirectErrorStream(true).start();
+                    java.util.Scanner s = new java.util.Scanner(process.getInputStream(), "UTF-8").useDelimiter("\\A");
+                    String output = s.hasNext() ? s.next() : "";
+                    if (!output.endsWith("\n")) output += "\n";
+                    bashTextArea.append("\n" + output + prompt);
+                    bashTextArea.setCaretPosition(bashTextArea.getText().length());
+                } catch (Exception ex) {
+                    bashTextArea.append("\n執行錯誤: " + ex.getMessage() + "\n" + prompt);
+                    bashTextArea.setCaretPosition(bashTextArea.getText().length());
+                }
+            }
+        });
+
         frame.setContentPane(panel);
         frame.setBackground(new Color(0,0,0,0)); // 讓JFrame背景也透明
         frame.setVisible(true);
