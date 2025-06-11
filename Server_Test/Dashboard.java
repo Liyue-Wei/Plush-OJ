@@ -388,6 +388,34 @@ public class Dashboard {
             }
         });
         
+        // 例如放在 bash 區塊左側，垂直排列
+        int inputLabelW = 160, inputH = 32, inputGap = 18;
+        int inputStartX = 80, inputStartY = frameHeight - 575; // 可依需求調整
+
+        String[] inputLabels = {"Port Number : ", "AI Server URL : ", "Model : ", "Cluster Address : "};
+        String[] inputDefaults = {"8080", "http://localhost:11434/api/generate", "deepseek-coder:6.7b", "192.168.1.1"};
+        JTextField[] inputFields = new JTextField[4];
+
+        for (int i = 0; i < 4; i++) {
+            JLabel label = new JLabel(inputLabels[i]);
+            label.setForeground(Color.WHITE);
+            label.setFont(new Font("微軟正黑體", Font.BOLD, 18));
+            label.setBounds(inputStartX, inputStartY + i * (inputH + inputGap), inputLabelW, inputH);
+            panel.add(label);
+
+            JTextField field = new JTextField();
+            field.setFont(new Font("Consolas", Font.PLAIN, 18));
+            field.setBounds(inputStartX + inputLabelW + 8, inputStartY + i * (inputH + inputGap), 360, inputH);
+            field.setOpaque(false);
+            field.setForeground(Color.WHITE);
+            field.setCaretColor(Color.WHITE);
+            field.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(180,180,180,180)));
+            field.setText(inputDefaults[i]); // 設定預設值
+            panel.add(field);
+
+            inputFields[i] = field;
+        }
+
         frame.setContentPane(panel);
         frame.setBackground(new Color(0,0,0,0)); // 讓JFrame背景也透明
         frame.setVisible(true);
