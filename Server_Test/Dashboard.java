@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
@@ -206,6 +207,43 @@ public class Dashboard {
         panel.add(minBtn);
         // ====== END ======
 
+        // ====== 新增五個科技感按鈕 ======
+        int btnW = 180, btnH = 36, btnGap = 16;
+        int btnStartX = 60, btnY = frameHeight - 355; // 位置可依需求調整
+
+        TechButton[] funcBtns = new TechButton[6];
+        String[] btnNames = {"Run Server", "NAT ", "Bridge", "AIP", "POST", "Toolbox"};
+        Color[] btnColors = {
+            new Color(255, 255, 255, 200), // 白色帶透明
+            new Color(220, 220, 220, 180), // 淺灰
+            new Color(200, 200, 200, 180), // 灰
+            new Color(180, 180, 180, 180), // 深灰
+            new Color(230, 230, 230, 180), // 淺灰
+            new Color(210, 210, 210, 180)  // 灰
+        };
+        Color[] btnGlow = {
+            new Color(255, 255, 255, 100), // 白色發光
+            new Color(220, 220, 220, 80),  // 灰色發光
+            new Color(200, 200, 200, 80),
+            new Color(180, 180, 180, 80),
+            new Color(230, 230, 230, 80),
+            new Color(210, 210, 210, 80)
+        };
+        String[] btnTips = {
+            "啟動伺服器",
+            "Network Address Translation",
+            "Bridge Network",
+            "Automatic Installation Procedure",
+            "Power On Self Test",
+            "工具箱"
+        };
+        for (int i = 0; i < 6; i++) {
+            funcBtns[i] = new TechButton(btnNames[i], btnColors[i], btnColors[i].brighter(), btnGlow[i]);
+            funcBtns[i].setBounds(btnStartX + i * (btnW + btnGap), btnY, btnW, btnH);
+            funcBtns[i].setToolTipText(btnTips[i]); // 個別描述
+            panel.add(funcBtns[i]);
+        }
+
         // 1. 斜角外框
         JComponent bashBorder = new JComponent() {
             @Override
@@ -260,7 +298,6 @@ public class Dashboard {
         bashScrollPane.getViewport().setOpaque(false); // 讓 Viewport 也透明
         panel.add(bashScrollPane);
 
-        /*
         // 你可以加上 Ctrl+Enter 事件來模擬 bash 輸入
         bashTextArea.getInputMap().put(KeyStroke.getKeyStroke("ctrl ENTER"), "submitBash");
         bashTextArea.getActionMap().put("submitBash", new AbstractAction() {
@@ -350,7 +387,6 @@ public class Dashboard {
                 }).start();
             }
         });
-        */
         
         frame.setContentPane(panel);
         frame.setBackground(new Color(0,0,0,0)); // 讓JFrame背景也透明
