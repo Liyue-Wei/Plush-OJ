@@ -205,20 +205,59 @@ public class UI_TEST {
         panel.add(minBtn);
         // ====== END ======
 
-        // 新增 Bash 專用 TextArea（多行）
+        // 1. 斜角外框
+        JComponent bashBorder = new JComponent() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                int cut = 36;
+                int w = getWidth(), h = getHeight();
+                int t = 2;
+                g2.setStroke(new BasicStroke(t));
+                g2.setColor(new Color(219, 219, 219));
+                Polygon border = new Polygon();
+                border.addPoint(cut, 0);
+                border.addPoint(w, 0);
+                border.addPoint(w, h - cut);
+                border.addPoint(w - cut, h);
+                border.addPoint(0, h);
+                border.addPoint(0, cut);
+                border.addPoint(cut, 0);
+                g2.drawPolygon(border);
+                g2.dispose();
+            }
+        };
+        // ====【調整位置區域】====
+        bashBorder.setBounds(60, frameHeight - 305, frameWidth - 120, 200);
+        // ====【調整位置區域】====
+        bashBorder.setOpaque(false);
+        panel.add(bashBorder);
+
+        // 2. 透明多行文字框（縮小）
         JTextArea bashTextArea = new JTextArea();
         bashTextArea.setFont(new Font("Consolas", Font.PLAIN, 18));
-        bashTextArea.setBackground(new Color(30, 30, 30, 220));
+        bashTextArea.setBackground(new Color(30, 30, 30, 0)); // 完全透明
         bashTextArea.setForeground(new Color(0, 255, 128));
         bashTextArea.setCaretColor(new Color(0, 255, 128));
-        bashTextArea.setBorder(BorderFactory.createLineBorder(new Color(219, 219, 219), 2, true));
+        bashTextArea.setBorder(BorderFactory.createEmptyBorder());
         bashTextArea.setLineWrap(true);
         bashTextArea.setWrapStyleWord(true);
 
-        // 設定位置與大小（可依需求調整）
+        int margin = 32;
+        // ====【調整位置區域】====
+        int bashBoxX = 60 + margin;
+        int bashBoxY = frameHeight - 305 + margin;
+        int bashBoxW = frameWidth - 120 - margin * 2;
+        int bashBoxH = 200 - margin * 2;
+        // ====【調整位置區域】====
+
         JScrollPane bashScrollPane = new JScrollPane(bashTextArea);
-        bashScrollPane.setBounds(60, frameHeight - 285, frameWidth - 120, 200);
-        bashScrollPane.setBorder(BorderFactory.createEmptyBorder()); // 可選：去除外框
+        bashScrollPane.setBounds(bashBoxX, bashBoxY, bashBoxW, bashBoxH);
+        bashScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        bashScrollPane.setOpaque(false); // 讓 JScrollPane 透明
+        bashScrollPane.getViewport().setOpaque(false); // 讓 Viewport 也透明
+        panel.add(bashScrollPane);
 
         // 你可以加上 Ctrl+Enter 事件來模擬 bash 輸入
         bashTextArea.getInputMap().put(KeyStroke.getKeyStroke("ctrl ENTER"), "submitBash");
@@ -230,8 +269,6 @@ public class UI_TEST {
                 bashTextArea.setText("");
             }
         });
-
-        panel.add(bashScrollPane);
 
         frame.setContentPane(panel);
         frame.setBackground(new Color(0,0,0,0)); // 讓JFrame背景也透明
