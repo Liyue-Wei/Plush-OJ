@@ -419,5 +419,134 @@ public class Dashboard {
         frame.setContentPane(panel);
         frame.setBackground(new Color(0,0,0,0)); // 讓JFrame背景也透明
         frame.setVisible(true);
+
+        // ====== 右側系統監測區 ======
+        int monitorBoxX = frameWidth - 620;
+        int monitorBoxY = frameHeight - 580; 
+        int monitorBoxW = 580;
+        int monitorBoxH = 200;
+
+        JLabel cpuLabel = new JLabel("CPU: 0%");
+        cpuLabel.setForeground(new Color(80, 255, 80));
+        cpuLabel.setFont(new Font("Consolas", Font.BOLD, 18));
+        cpuLabel.setBounds(monitorBoxX, monitorBoxY, monitorBoxW, 32);
+        panel.add(cpuLabel);
+
+        JLabel ramLabel = new JLabel("RAM: 0 MB / 0 MB");
+        ramLabel.setForeground(new Color(80, 200, 255));
+        ramLabel.setFont(new Font("Consolas", Font.BOLD, 18));
+        ramLabel.setBounds(monitorBoxX, monitorBoxY + 38, monitorBoxW, 32);
+        panel.add(ramLabel);
+
+        JLabel netLabel = new JLabel("Net: 0 KB/s ↑  0 KB/s ↓");
+        netLabel.setForeground(new Color(255, 220, 80));
+        netLabel.setFont(new Font("Consolas", Font.BOLD, 18));
+        netLabel.setBounds(monitorBoxX, monitorBoxY + 76, monitorBoxW, 32);
+        panel.add(netLabel);
+
+        // ====== 歷史數據緩衝區 ======
+        final int HISTORY = 60;
+        java.util.List<Double> cpuHistory = new java.util.LinkedList<>();
+        java.util.List<Double> ramHistory = new java.util.LinkedList<>();
+        java.util.List<Double> netHistory = new java.util.LinkedList<>();
+
+        // ====== 圖表面板 ======
+        JPanel chartPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                int w = getWidth(), h = getHeight();
+                // 背景
+                g2.setColor(new Color(30,30,30,120));
+                g2.fillRect(0, 0, w, h);
+
+                // 畫格線
+                g2.setColor(new Color(80,80,80,120));
+                for(int i=1;i<6;i++) {
+                    int y = h*i/6;
+                    g2.drawLine(0, y, w, y);
+                }
+
+                // 畫 CPU 曲線
+                g2.setColor(new Color(80,255,80));
+                drawLine(g2, cpuHistory, w, h, 100);
+
+                // 畫 RAM 曲線
+                g2.setColor(new Color(80,200,255));
+                drawLine(g2, ramHistory, w, h, 100);
+
+                // 畫 Net 曲線
+                g2.setColor(new Color(255,220,80));
+                drawLine(g2, netHistory, w, h, 100);
+            }
+            private void drawLine(Graphics2D g2, java.util.List<Double> data, int w, int h, double max) {
+                if(data.size()<2) return;
+                int n = data.size();
+                int prevX = 0, prevY = h - (int)(data.get(0)/max*h);
+                for(int i=1;i<n;i++) {
+                    int x = i*w/(HISTORY-1);
+                    int y = h - (int)(data.get(i)/max*h);
+                    g2.drawLine(prevX, prevY, x, y);
+                    prevX = x; prevY = y;
+                }
+            }
+        };
+        // 調整圖表位置與寬度，避免壓到下方按鈕
+        chartPanel.setBounds(monitorBoxX, monitorBoxY - 100 + monitorBoxH + 10, monitorBoxW, 80);
+        chartPanel.setOpaque(false);
+        panel.add(chartPanel);
+
+        // ====== 監測數據更新 Timer ======
+        final long[] lastNetBytes = {0};
+        final long[] lastNetTime = {System.currentTimeMillis()};
+        new javax.swing.Timer(250, e -> {
+            // CPU
+            double cpuLoad = 0;
+            try {
+                com.sun.management.OperatingSystemMXBean osBean =
+                    (com.sun.management.OperatingSystemMXBean) java.lang.management.ManagementFactory.getOperatingSystemMXBean();
+                cpuLoad = osBean.getSystemCpuLoad();
+                if (cpuLoad < 0) cpuLoad = 0;
+            } catch (Exception ex) {}
+            cpuLabel.setText(String.format("CPU: %.1f%%", cpuLoad * 100));
+
+            // RAM
+            long total = Runtime.getRuntime().totalMemory() / 1024 / 1024;
+            long free = Runtime.getRuntime().freeMemory() / 1024 / 1024;
+            long used = total - free;
+            ramLabel.setText(String.format("RAM: %d MB / %d MB", used, total));
+
+            // 網路（僅顯示本機流量，簡易版）
+            long netSpeed = 0;
+            try {
+                java.net.NetworkInterface ni = java.net.NetworkInterface.getNetworkInterfaces().nextElement();
+                long bytes = 0;
+                for (java.util.Enumeration<java.net.NetworkInterface> en = java.net.NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                    java.net.NetworkInterface nif = en.nextElement();
+                    if (nif.isUp() && !nif.isLoopback()) {
+                        for (java.util.Enumeration<java.net.NetworkInterface> sub = nif.getSubInterfaces(); sub.hasMoreElements();) {
+                            java.net.NetworkInterface subNif = sub.nextElement();
+                            bytes += subNif.getMTU(); // 這裡僅為示意，真實流量需用第三方庫
+                        }
+                    }
+                }
+                long now = System.currentTimeMillis();
+                netSpeed = (bytes - lastNetBytes[0]) * 1000 / (now - lastNetTime[0] + 1);
+                lastNetBytes[0] = bytes;
+                lastNetTime[0] = now;
+            } catch (Exception ex) {}
+            netLabel.setText("Net: " + netSpeed + " KB/s ↑  0 KB/s ↓");
+
+            // 更新歷史數據
+            if (cpuHistory.size() >= HISTORY) cpuHistory.remove(0);
+            cpuHistory.add(cpuLoad * 100);
+            if (ramHistory.size() >= HISTORY) ramHistory.remove(0);
+            ramHistory.add((double)used * 100 / (total == 0 ? 1 : total));
+            if (netHistory.size() >= HISTORY) netHistory.remove(0);
+            netHistory.add((double)netSpeed);
+
+            chartPanel.repaint();
+        }).start();
     }
 }
