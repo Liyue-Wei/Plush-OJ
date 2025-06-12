@@ -881,7 +881,7 @@ public class Dashboard {
                                     if (isSpinning) {
                                         // 旋转
                                         spinAngle += 0.75; // 旋转速度
-                                        int r = 40; // 旋转半径
+                                        int r = 45; // 旋转半径
                                         doroPos.x = (int) (mousePos.x + Math.cos(spinAngle) * r);
                                         doroPos.y = (int) (mousePos.y + Math.sin(spinAngle) * r);
                                     } else {
