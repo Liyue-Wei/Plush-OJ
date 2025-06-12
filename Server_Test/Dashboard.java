@@ -588,5 +588,29 @@ public class Dashboard {
                 JOptionPane.showMessageDialog(null, "無法啟動伺服器: " + ex.getMessage());
             }
         });
+
+        String[] toolboxBtnNames = {"工具一", "工具二", "工具三", "工具四"};
+        funcBtns[5].addActionListener(e -> {
+            JDialog dialog = new JDialog(frame, "Toolbox", true);
+            dialog.setSize(400, 260);
+            dialog.setLayout(null);
+            dialog.setLocationRelativeTo(frame);
+
+            // 四個功能按鈕
+            for (int i = 0; i < 4; i++) {
+                JButton btn = new JButton(toolboxBtnNames[i]);
+                btn.setBounds(40 + (i % 2) * 160, 60 + (i / 2) * 60, 120, 40);
+                dialog.add(btn);
+            }
+
+            // 關閉鈕
+            JButton SUBcloseBtn = new JButton("關閉");
+            SUBcloseBtn.setBounds(150, 170, 100, 36);
+            SUBcloseBtn.addActionListener(ev -> dialog.dispose());
+            dialog.add(SUBcloseBtn);
+
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setVisible(true);
+        });
     }
 }
