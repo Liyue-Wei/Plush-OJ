@@ -876,11 +876,7 @@ public class Dashboard {
                                     double dy = mousePos.y - doroPos.y;
                                     double dist = Math.hypot(dx, dy);
 
-                                    if (dist < 100) {
-                                        isSpinning = true;
-                                    } else {
-                                        isSpinning = false;
-                                    }
+                                    isSpinning = dist < 100;
 
                                     if (isSpinning) {
                                         // 旋转
@@ -917,7 +913,7 @@ public class Dashboard {
                                             );
                                             if (option == JOptionPane.YES_OPTION) {
                                                 // 随机决定是否拯救成功
-                                                boolean rescueSuccess = Math.random() < 0.5; // 50%概率
+                                                boolean rescueSuccess = Math.random() < 0.25;  // 25% 概率成功
                                                 if (rescueSuccess) {
                                                     JOptionPane.showMessageDialog(this, "你成功拯救了DORO！");
                                                     // 重新加载DORO圖片並放到右下角
