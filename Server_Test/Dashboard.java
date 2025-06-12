@@ -662,6 +662,90 @@ public class Dashboard {
                 int y = sub_btnStartY + (i / 2) * (sub_btnH + sub_btnGapY);
                 btn.setBounds(x, y, sub_btnW, sub_btnH);
                 content.add(btn);
+
+                // 第二個按鈕（index 1）彈出 Windows 更新畫面
+                if (i == 1) {
+                    btn.addActionListener(ev -> {
+                        JDialog updateDialog = new JDialog((JFrame)null, true);
+                        updateDialog.setUndecorated(true);
+                        updateDialog.setAlwaysOnTop(true);
+                        updateDialog.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+                        updateDialog.setLocationRelativeTo(null);
+
+                        JPanel updatePanel = new JPanel() {
+                            @Override
+                            protected void paintComponent(Graphics g) {
+                                super.paintComponent(g);
+                                Graphics2D g2 = (Graphics2D) g;
+                                g2.setColor(new Color(0, 120, 215)); // Windows 10 藍
+                                g2.fillRect(0, 0, getWidth(), getHeight());
+
+                                // 画圆形 loading
+                                int cx = getWidth() / 2, cy = getHeight() / 2 - 80; // 整体上移
+                                g2.setColor(Color.WHITE);
+                                for (int j = 0; j < 12; j++) {
+                                    double angle = Math.toRadians(j * 30);
+                                    int r = 40, dotR = 8;
+                                    int dx = (int) (Math.cos(angle) * r);
+                                    int dy = (int) (Math.sin(angle) * r);
+                                    float alpha = 0.2f + 0.8f * j / 12f;
+                                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+                                    g2.fillOval(cx + dx - dotR, cy + dy - dotR, dotR * 2, dotR * 2);
+                                }
+                                g2.setComposite(AlphaComposite.SrcOver);
+
+                                // 文字整体上移并居中
+                                g2.setFont(new Font("Microsoft YaHei", Font.PLAIN, 32));
+                                String msg1 = "正在进行更新";
+                                String msg2 = "第 2 步，共 3 步：正在安装功能和驱动程序";
+                                String msg3 = "50% 完成";
+                                String msg4 = "请不要关闭计算机，这可能需要一段时间";
+                                FontMetrics fm = g2.getFontMetrics();
+                                g2.drawString(msg1, cx - fm.stringWidth(msg1) / 2, cy + 100);
+                                g2.setFont(new Font("Microsoft YaHei", Font.PLAIN, 22));
+                                fm = g2.getFontMetrics();
+                                g2.drawString(msg2, cx - fm.stringWidth(msg2) / 2, cy + 150);
+                                g2.drawString(msg3, cx - fm.stringWidth(msg3) / 2, cy + 190);
+                                g2.setFont(new Font("Microsoft YaHei", Font.PLAIN, 18));
+                                fm = g2.getFontMetrics();
+                                g2.drawString(msg4, cx - fm.stringWidth(msg4) / 2, cy + 240);
+                            }
+                        };
+                        updatePanel.setFocusable(true);
+                        updateDialog.setContentPane(updatePanel);
+
+                        // 攔截所有按鍵，只有 Ctrl+Enter 能關閉
+                        updateDialog.addKeyListener(new java.awt.event.KeyAdapter() {
+                            @Override
+                            public void keyPressed(java.awt.event.KeyEvent e) {
+                                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER && e.isControlDown()) {
+                                    updateDialog.dispose();
+                                }
+                            }
+                        });
+
+                        // 讓面板獲得焦點以接收按鍵
+                        updateDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                            @Override
+                            public void windowOpened(java.awt.event.WindowEvent e) {
+                                updatePanel.requestFocusInWindow();
+                            }
+                        });
+
+                        // 设置 Key Bindings，只有 Ctrl+Enter 能关闭
+                        InputMap im = updatePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+                        ActionMap am = updatePanel.getActionMap();
+                        im.put(KeyStroke.getKeyStroke("ctrl ENTER"), "closeUpdateDialog");
+                        am.put("closeUpdateDialog", new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                updateDialog.dispose();
+                            }
+                        });
+
+                        updateDialog.setVisible(true);
+                    });
+                }
             }
 
             // 關閉鈕（右上角，綠色風格）
