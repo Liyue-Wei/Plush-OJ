@@ -913,7 +913,7 @@ public class Dashboard {
                                             );
                                             if (option == JOptionPane.YES_OPTION) {
                                                 // 随机决定是否拯救成功
-                                                boolean rescueSuccess = Math.random() < 0.25;  // 25% 概率成功
+                                                boolean rescueSuccess = Math.random() < 0.5;  // 50% 概率
                                                 if (rescueSuccess) {
                                                     JOptionPane.showMessageDialog(this, "你成功拯救了DORO！");
                                                     // 重新加载DORO圖片並放到右下角
