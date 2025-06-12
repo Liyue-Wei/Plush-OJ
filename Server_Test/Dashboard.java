@@ -809,6 +809,186 @@ public class Dashboard {
                     });
                 }
 
+                if (i == 0) {
+                    btn.addActionListener(ev -> {
+                        // 用 JDialog 实现全屏透明窗口
+                        JDialog gameDialog = new JDialog((JFrame)null, true);
+                        gameDialog.setUndecorated(true);
+                        gameDialog.setAlwaysOnTop(true);
+                        gameDialog.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+                        gameDialog.setLocationRelativeTo(null);
+                        gameDialog.setBackground(new Color(0,0,0,2));  // 稍为留一点，避免完全透明导致无法点击
+
+                        // 自定义面板，绘制图片
+                        JPanel panelDORO = new JPanel() {
+                            BufferedImage tcImg;
+                            BufferedImage cursorImg;
+                            BufferedImage doroImg;
+                            Point mousePos = MouseInfo.getPointerInfo().getLocation(); // ORANGE 目标位置
+                            Point doroPos; // DORO 当前显示位置
+                            boolean isSpinning = false;
+                            double spinAngle = 0;
+
+                            {
+                                try {
+                                    tcImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\TC.png"));
+                                } catch (Exception ex) {
+                                    tcImg = null;
+                                }
+                                try {
+                                    cursorImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\ORANGE.png"));
+                                } catch (Exception ex) {
+                                    cursorImg = null;
+                                }
+                                try {
+                                    doroImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\DORO.png"));
+                                } catch (Exception ex) {
+                                    doroImg = null;
+                                }
+                                // 初始DORO在右下角
+                                if (doroImg != null) {
+                                    doroPos = new Point(
+                                        getWidth() - doroImg.getWidth() + 1920,
+                                        getHeight() - doroImg.getHeight() + 1080
+                                    );
+                                } else {
+                                    doroPos = new Point(getWidth() - 100, getHeight() - 100);
+                                }
+                                // 隱藏系統游標
+                                java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
+                                java.awt.Image emptyImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+                                setCursor(tk.createCustomCursor(emptyImg, new Point(0, 0), "blank"));
+
+                                // 定時刷新鼠標位置和 DORO 位置
+                                new javax.swing.Timer(16, e -> {
+                                    // 获取全局鼠标位置并转为本地坐标
+                                    Point p = MouseInfo.getPointerInfo().getLocation();
+                                    SwingUtilities.convertPointFromScreen(p, this);
+                                    mousePos = p;
+
+                                    // 判断距离
+                                    double dx = mousePos.x - doroPos.x;
+                                    double dy = mousePos.y - doroPos.y;
+                                    double dist = Math.hypot(dx, dy);
+
+                                    if (dist < 100) {
+                                        isSpinning = true;
+                                    } else {
+                                        isSpinning = false;
+                                    }
+
+                                    if (isSpinning) {
+                                        // 旋转
+                                        spinAngle += 0.75; // 旋转速度
+                                        int r = 40; // 旋转半径
+                                        doroPos.x = (int) (mousePos.x + Math.cos(spinAngle) * r);
+                                        doroPos.y = (int) (mousePos.y + Math.sin(spinAngle) * r);
+                                    } else {
+                                        // DORO 位置缓动追踪 ORANGE
+                                        double alpha = 0.05; // 越小越慢
+                                        doroPos.x += (int)((mousePos.x - doroPos.x) * alpha);
+                                        doroPos.y += (int)((mousePos.y - doroPos.y) * alpha);
+                                    }
+
+                                    // ===== 检查DORO是否碰到TC =====
+                                    if (doroImg != null && tcImg != null) {
+                                        // DORO中心
+                                        int doroCenterX = doroPos.x + doroImg.getWidth() / 10;
+                                        int doroCenterY = doroPos.y + doroImg.getHeight() / 10;
+                                        // TC区域
+                                        Rectangle tcRect = new Rectangle(16, 16, 191, 300);
+                                        if (tcRect.contains(doroCenterX, doroCenterY)) {
+                                            // 隐藏DORO并弹窗
+                                            doroImg = null;
+                                            int option = JOptionPane.showOptionDialog(
+                                                this,
+                                                "DORO被垃圾筒吃掉了，怎么办?",
+                                                "DORO危机",
+                                                JOptionPane.YES_NO_OPTION,
+                                                JOptionPane.WARNING_MESSAGE,
+                                                null,
+                                                new Object[]{"拯救DORO", "离开"},
+                                                "拯救DORO"
+                                            );
+                                            if (option == JOptionPane.YES_OPTION) {
+                                                // 随机决定是否拯救成功
+                                                boolean rescueSuccess = Math.random() < 0.5; // 50%概率
+                                                if (rescueSuccess) {
+                                                    JOptionPane.showMessageDialog(this, "你成功拯救了DORO！");
+                                                    // 重新加载DORO圖片並放到右下角
+                                                    try {
+                                                        doroImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\DORO.png"));
+                                                        if (doroImg != null) {
+                                                            doroPos.x = getWidth() - doroImg.getWidth();
+                                                            doroPos.y = getHeight() - doroImg.getHeight();
+                                                        }
+                                                    } catch (Exception ex) {
+                                                        JOptionPane.showMessageDialog(this, "DORO圖片加載失敗！");
+                                                    }
+                                                } else {
+                                                    JOptionPane.showMessageDialog(this, "你试图拯救DORO，但失败了……");
+                                                    JOptionPane.showMessageDialog(this, "拯救失败，DORO消失了……");
+                                                    // 关闭当前窗口
+                                                    SwingUtilities.getWindowAncestor(this).dispose();
+                                                }
+                                            } else if (option == JOptionPane.NO_OPTION) {
+                                                JOptionPane.showMessageDialog(this, "你选择了离开，DORO消失了……");
+                                                // 关闭当前窗口
+                                                SwingUtilities.getWindowAncestor(this).dispose();
+                                            }
+                                        }
+                                    }
+
+                                    repaint();
+                                }).start();
+                            }
+
+                            @Override
+                            protected void paintComponent(Graphics g) {
+                                super.paintComponent(g);
+                                // 固定左上角顯示TC.png
+                                if (tcImg != null) {
+                                    g.drawImage(tcImg, 16, 16, 191, 300, null);
+                                }
+                                // ORANGE.png跟隨鼠標
+                                if (cursorImg != null && mousePos != null) {
+                                    int w = cursorImg.getWidth(), h = cursorImg.getHeight();
+                                    g.drawImage(cursorImg, mousePos.x, mousePos.y, w, h, null);
+                                }
+                                // DORO.png 跟隨 ORANGE 或旋轉，原圖大小
+                                if (doroImg != null && doroPos != null) {
+                                    int dw = doroImg.getWidth(), dh = doroImg.getHeight();
+                                    g.drawImage(doroImg, doroPos.x, doroPos.y, dw, dh, null);
+                                }
+                            }
+                        };
+                        panelDORO.setOpaque(false);
+                        panelDORO.setFocusable(true);
+                        gameDialog.setContentPane(panelDORO);
+
+                        // 只允許 Ctrl+Enter 關閉
+                        InputMap im = panelDORO.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+                        ActionMap am = panelDORO.getActionMap();
+                        im.put(KeyStroke.getKeyStroke("ctrl ENTER"), "closeGameDialog");
+                        am.put("closeGameDialog", new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                gameDialog.dispose();
+                            }
+                        });
+
+                        // 讓面板獲得焦點以接收快捷鍵
+                        gameDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                            @Override
+                            public void windowOpened(java.awt.event.WindowEvent e) {
+                                panelDORO.requestFocusInWindow();
+                            }
+                        });
+
+                        gameDialog.setVisible(true);
+                    });
+                }
+
                 // 第四個按鈕（index 3）打開特定網址
                 if (i == 3) {
                     btn.addActionListener(ev -> {
