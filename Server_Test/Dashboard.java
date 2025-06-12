@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Dashboard {
+    @SuppressWarnings("UseSpecificCatch")
     public static void main(String[] args) {
         // 可調整參數
         int frameWidth = 1280;
@@ -520,6 +521,7 @@ public class Dashboard {
             // 網路（僅顯示本機流量，簡易版）
             long netSpeed = 0;
             try {
+                @SuppressWarnings("unused")
                 java.net.NetworkInterface ni = java.net.NetworkInterface.getNetworkInterfaces().nextElement();
                 long bytes = 0;
                 for (java.util.Enumeration<java.net.NetworkInterface> en = java.net.NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -568,5 +570,18 @@ public class Dashboard {
             }
         });
         panel.add(logoBtn);
+
+        funcBtns[0].addActionListener(e -> {
+            try {
+                // 用 start 讓 bat 在新視窗獨立執行
+                ProcessBuilder pb = new ProcessBuilder(
+                    "cmd", "/c", "start", "\"runServer\"", "C:\\Users\\eric2\\Desktop\\Plush-OJ\\Server_Test\\runServer.bat"
+                );
+                pb.directory(new File("C:\\Users\\eric2\\Desktop\\Plush-OJ\\Server_Test"));
+                pb.start();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "無法啟動伺服器: " + ex.getMessage());
+            }
+        });
     }
 }
