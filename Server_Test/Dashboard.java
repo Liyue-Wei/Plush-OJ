@@ -507,7 +507,12 @@ public class Dashboard {
             try {
                 com.sun.management.OperatingSystemMXBean osBean =
                     (com.sun.management.OperatingSystemMXBean) java.lang.management.ManagementFactory.getOperatingSystemMXBean();
-                cpuLoad = osBean.getSystemCpuLoad();
+                // 优先使用 getCpuLoad()，如果不可用则回退
+                try {
+                    cpuLoad = osBean.getCpuLoad();
+                } catch (NoSuchMethodError err) {
+                    cpuLoad = osBean.getSystemCpuLoad(); // 兼容旧JDK
+                }
                 if (cpuLoad < 0) cpuLoad = 0;
             } catch (Exception ex) {}
             cpuLabel.setText(String.format("CPU: %.1f%%", cpuLoad * 100));
