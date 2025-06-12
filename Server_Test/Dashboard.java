@@ -633,7 +633,7 @@ public class Dashboard {
             }
         });
 
-        String[] toolboxBtnNames = {"桌宠", "更新?", "坤球", "这啥?"};
+        String[] toolboxBtnNames = {"DORO", "更新?", "坤球", "这啥?"};
         // Toolbox 彈窗
         funcBtns[5].addActionListener(e -> {
             JDialog dialog = new JDialog(frame, "Toolbox", true);
@@ -806,6 +806,17 @@ public class Dashboard {
                         });
 
                         updateDialog.setVisible(true);
+                    });
+                }
+
+                // 第四個按鈕（index 3）打開特定網址
+                if (i == 3) {
+                    btn.addActionListener(ev -> {
+                        try {
+                            java.awt.Desktop.getDesktop().browse(new java.net.URI("http://192.168.1.233:8554/"));
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null, "无法打开网址: " + ex.getMessage());
+                        }
                     });
                 }
             }
