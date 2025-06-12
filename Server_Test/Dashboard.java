@@ -633,7 +633,7 @@ public class Dashboard {
             }
         });
 
-        String[] toolboxBtnNames = {"DORO", "更新?", "坤球", "这啥?"};
+        String[] toolboxBtnNames = {"欧润吉", "更新?", "坤球", "这啥?"};
         // Toolbox 彈窗
         funcBtns[5].addActionListener(e -> {
             JDialog dialog = new JDialog(frame, "Toolbox", true);
@@ -834,6 +834,10 @@ public class Dashboard {
                             boolean isSpinning = false;
                             double spinAngle = 0;
 
+                            // 在panelDORO类成员变量中添加
+                            Point lastDoroPos = null; // 记录上一次DORO位置
+                            boolean doroFaceLeft = false;
+
                             {
                                 try {
                                     tcImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\TC.png"));
@@ -891,6 +895,14 @@ public class Dashboard {
                                         doroPos.y += (int)((mousePos.y - doroPos.y) * alpha);
                                     }
 
+                                    // 判断方向
+                                    if (lastDoroPos != null && doroPos != null) {
+                                        doroFaceLeft = doroPos.x > lastDoroPos.x;
+                                    }
+                                    if (doroPos != null) {
+                                        lastDoroPos = new Point(doroPos.x, doroPos.y);
+                                    }
+
                                     // ===== 检查DORO是否碰到TC =====
                                     if (doroImg != null && tcImg != null) {
                                         // DORO中心
@@ -899,7 +911,7 @@ public class Dashboard {
                                         // TC区域
                                         Rectangle tcRect = new Rectangle(16, 16, 191, 300);
                                         if (tcRect.contains(doroCenterX, doroCenterY)) {
-                                            // 隐藏DORO并弹窗
+                                            // 隱藏DORO並彈窗
                                             doroImg = null;
                                             int option = JOptionPane.showOptionDialog(
                                                 this,
@@ -912,11 +924,11 @@ public class Dashboard {
                                                 "拯救DORO"
                                             );
                                             if (option == JOptionPane.YES_OPTION) {
-                                                // 随机决定是否拯救成功
+                                                // 隨機決定是否拯救成功
                                                 boolean rescueSuccess = Math.random() < 0.5;  // 50% 概率
                                                 if (rescueSuccess) {
                                                     JOptionPane.showMessageDialog(this, "你成功拯救了DORO！");
-                                                    // 重新加载DORO圖片並放到右下角
+                                                    // 重新加載DORO圖片並放到右下角
                                                     try {
                                                         doroImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\DORO.png"));
                                                         if (doroImg != null) {
@@ -929,12 +941,12 @@ public class Dashboard {
                                                 } else {
                                                     JOptionPane.showMessageDialog(this, "你试图拯救DORO，但失败了……");
                                                     JOptionPane.showMessageDialog(this, "拯救失败，DORO消失了……");
-                                                    // 关闭当前窗口
+                                                    // 關閉當前窗口
                                                     SwingUtilities.getWindowAncestor(this).dispose();
                                                 }
                                             } else if (option == JOptionPane.NO_OPTION) {
                                                 JOptionPane.showMessageDialog(this, "你选择了离开，DORO消失了……");
-                                                // 关闭当前窗口
+                                                // 關閉當前窗口
                                                 SwingUtilities.getWindowAncestor(this).dispose();
                                             }
                                         }
@@ -959,7 +971,14 @@ public class Dashboard {
                                 // DORO.png 跟隨 ORANGE 或旋轉，原圖大小
                                 if (doroImg != null && doroPos != null) {
                                     int dw = doroImg.getWidth(), dh = doroImg.getHeight();
-                                    g.drawImage(doroImg, doroPos.x, doroPos.y, dw, dh, null);
+                                    Graphics2D g2 = (Graphics2D) g.create();
+                                    if (doroFaceLeft) {
+                                        // 镜像绘制
+                                        g2.drawImage(doroImg, doroPos.x + dw, doroPos.y, -dw, dh, null);
+                                    } else {
+                                        g2.drawImage(doroImg, doroPos.x, doroPos.y, dw, dh, null);
+                                    }
+                                    g2.dispose();
                                 }
                             }
                         };
