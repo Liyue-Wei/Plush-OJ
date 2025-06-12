@@ -672,6 +672,9 @@ public class Dashboard {
                         updateDialog.setSize(Toolkit.getDefaultToolkit().getScreenSize());
                         updateDialog.setLocationRelativeTo(null);
 
+                        // 用于旋转的角度变量
+                        final int[] angle = {0};
+
                         JPanel updatePanel = new JPanel() {
                             @Override
                             protected void paintComponent(Graphics g) {
@@ -680,14 +683,14 @@ public class Dashboard {
                                 g2.setColor(new Color(0, 120, 215)); // Windows 10 藍
                                 g2.fillRect(0, 0, getWidth(), getHeight());
 
-                                // 画圆形 loading
-                                int cx = getWidth() / 2, cy = getHeight() / 2 - 80; // 整体上移
+                                // 画圆形 loading（会转）
+                                int cx = getWidth() / 2, cy = getHeight() / 2 - 80;
                                 g2.setColor(Color.WHITE);
                                 for (int j = 0; j < 12; j++) {
-                                    double angle = Math.toRadians(j * 30);
+                                    double angleRad = Math.toRadians((j + angle[0]) * 30);
                                     int r = 40, dotR = 8;
-                                    int dx = (int) (Math.cos(angle) * r);
-                                    int dy = (int) (Math.sin(angle) * r);
+                                    int dx = (int) (Math.cos(angleRad) * r);
+                                    int dy = (int) (Math.sin(angleRad) * r);
                                     float alpha = 0.2f + 0.8f * j / 12f;
                                     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
                                     g2.fillOval(cx + dx - dotR, cy + dy - dotR, dotR * 2, dotR * 2);
@@ -713,6 +716,21 @@ public class Dashboard {
                         };
                         updatePanel.setFocusable(true);
                         updateDialog.setContentPane(updatePanel);
+
+                        // 定时器让 loading 转动
+                        Timer timer = new Timer(80, e2 -> {
+                            angle[0] = (angle[0] + 1) % 12;
+                            updatePanel.repaint();
+                        });
+                        timer.start();
+
+                        // 关闭窗口时停止动画
+                        updateDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                            @Override
+                            public void windowClosed(java.awt.event.WindowEvent e) {
+                                timer.stop();
+                            }
+                        });
 
                         // 攔截所有按鍵，只有 Ctrl+Enter 能關閉
                         updateDialog.addKeyListener(new java.awt.event.KeyAdapter() {
