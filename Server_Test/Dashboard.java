@@ -589,25 +589,88 @@ public class Dashboard {
             }
         });
 
-        String[] toolboxBtnNames = {"工具一", "工具二", "工具三", "工具四"};
+        String[] toolboxBtnNames = {"桌宠", "更新?", "坤球", "这啥?"};
+        // Toolbox 彈窗
         funcBtns[5].addActionListener(e -> {
             JDialog dialog = new JDialog(frame, "Toolbox", true);
-            dialog.setSize(400, 260);
+            dialog.setSize(400, 220);
+            dialog.setUndecorated(true); // 無邊框
             dialog.setLayout(null);
             dialog.setLocationRelativeTo(frame);
+            dialog.setBackground(new Color(0,0,0,0)); // 讓JDialog背景真正透明
 
-            // 四個功能按鈕
+            // 自訂面板做斜切與半透明背景
+            JPanel content = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    Graphics2D g2 = (Graphics2D) g;
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                    int w = getWidth(), h = getHeight();
+                    int cut = 40; // 斜切長度
+
+                    // 半透明深色背景
+                    g2.setColor(new Color(40, 40, 40, 230));
+                    g2.fillRect(0, 0, w, h);
+
+                    // 左上斜切（透明）
+                    Polygon leftTop = new Polygon();
+                    leftTop.addPoint(0, 0);
+                    leftTop.addPoint(cut, 0);
+                    leftTop.addPoint(0, cut);
+                    g2.setComposite(AlphaComposite.Clear);
+                    g2.fillPolygon(leftTop);
+                    g2.setComposite(AlphaComposite.SrcOver);
+
+                    // 右下斜切（透明）
+                    Polygon rightBottom = new Polygon();
+                    rightBottom.addPoint(w, h);
+                    rightBottom.addPoint(w - cut, h);
+                    rightBottom.addPoint(w, h - cut);
+                    g2.setComposite(AlphaComposite.Clear);
+                    g2.fillPolygon(rightBottom);
+                    g2.setComposite(AlphaComposite.SrcOver);
+                }
+            };
+            content.setOpaque(false); // 讓JPanel也透明
+            content.setLayout(null);
+            dialog.setContentPane(content);
+
+            // ====== 中間對齊設定 ======
+            int sub_paddingLeft = 48; // 左側 padding
+            int sub_contentWidth = 400 - sub_paddingLeft * 2;
+
+            // 標題（綠色）
+            JLabel sub_title = new JLabel("神奇妙妙工具", SwingConstants.CENTER);
+            sub_title.setForeground(new Color(80, 255, 80));
+            sub_title.setFont(new Font("Microsoft YaHei", Font.BOLD, 26));
+            sub_title.setBounds(sub_paddingLeft, 22, sub_contentWidth, 36);
+            content.add(sub_title);
+
+            // 四個功能按鈕（綠色系）
+            int sub_btnW = 120, sub_btnH = 40, sub_btnGapX = 24, sub_btnGapY = 18;
+            int sub_btnStartX = sub_paddingLeft + (sub_contentWidth - sub_btnW * 2 - sub_btnGapX) / 2;
+            int sub_btnStartY = 70;
             for (int i = 0; i < 4; i++) {
                 JButton btn = new JButton(toolboxBtnNames[i]);
-                btn.setBounds(40 + (i % 2) * 160, 60 + (i / 2) * 60, 120, 40);
-                dialog.add(btn);
+                btn.setFont(new Font("Microsoft YaHei", Font.BOLD, 18));
+                btn.setForeground(new Color(80, 255, 80));
+                btn.setBackground(new Color(30, 50, 30, 220));
+                btn.setFocusPainted(false);
+                btn.setBorder(BorderFactory.createLineBorder(new Color(80, 255, 80, 180), 2, true));
+                int x = sub_btnStartX + (i % 2) * (sub_btnW + sub_btnGapX);
+                int y = sub_btnStartY + (i / 2) * (sub_btnH + sub_btnGapY);
+                btn.setBounds(x, y, sub_btnW, sub_btnH);
+                content.add(btn);
             }
 
-            // 關閉鈕
-            JButton SUBcloseBtn = new JButton("關閉");
-            SUBcloseBtn.setBounds(150, 170, 100, 36);
-            SUBcloseBtn.addActionListener(ev -> dialog.dispose());
-            dialog.add(SUBcloseBtn);
+            // 關閉鈕（右上角，綠色風格）
+            TechButton closeBtn_sub = new TechButton("x",
+                new Color(80, 255, 80), new Color(180, 255, 180), new Color(0, 255, 128, 120));
+            closeBtn_sub.setToolTipText("close");
+            closeBtn_sub.setBounds(350, 18, 36, 36);
+            closeBtn_sub.addActionListener(ev -> dialog.dispose());
+            content.add(closeBtn_sub);
 
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
