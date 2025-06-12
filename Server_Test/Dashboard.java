@@ -9,6 +9,50 @@ import javax.swing.*;
 public class Dashboard {
     @SuppressWarnings("UseSpecificCatch")
     public static void main(String[] args) {
+        // 启动动画步骤
+        String[] bootSteps = {"系统启动中...", "资料库启动中...", "网络服务启动中...", "Ollama自检中...", "FOFE自检中..."};
+        JDialog bootDialog = new JDialog((Frame)null, true);
+        bootDialog.setUndecorated(true);
+        bootDialog.setSize(400, 120);
+        bootDialog.setLocationRelativeTo(null);
+        bootDialog.setBackground(new Color(0,0,0,0));
+
+        JPanel bootPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setColor(new Color(30, 30, 30, 230));
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 24, 24);
+            }
+        };
+        bootPanel.setOpaque(false);
+        bootPanel.setLayout(null);
+
+        JLabel bootLabel = new JLabel(bootSteps[0], SwingConstants.CENTER);
+        bootLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 24));
+        bootLabel.setForeground(new Color(80, 255, 80));
+        bootLabel.setBounds(0, 30, 400, 40);
+        bootPanel.add(bootLabel);
+
+        bootDialog.setContentPane(bootPanel);
+
+        // 定时切换步骤
+        Timer bootTimer = new Timer(1250, null);
+        final int[] step = {0};
+        bootTimer.addActionListener(e3 -> {
+            step[0]++;
+            if (step[0] < bootSteps.length) {
+                bootLabel.setText(bootSteps[step[0]]);
+            } else {
+                bootTimer.stop();
+                bootDialog.dispose();
+            }
+        });
+        bootTimer.setInitialDelay(0);
+        bootTimer.start();
+        bootDialog.setVisible(true);
+
         // 可調整參數
         int frameWidth = 1280;
         int frameHeight = 720;
