@@ -716,6 +716,11 @@ public class Dashboard {
                         updateDialog.setSize(Toolkit.getDefaultToolkit().getScreenSize());
                         updateDialog.setLocationRelativeTo(null);
 
+                        // 隱藏系統游標
+                        java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
+                        java.awt.Image emptyImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+                        updateDialog.setCursor(tk.createCustomCursor(emptyImg, new Point(0, 0), "blank"));
+
                         // 用于旋转的角度变量
                         final int[] angle = {0};
 
