@@ -833,10 +833,13 @@ public class Dashboard {
                             Point doroPos; // DORO 当前显示位置
                             boolean isSpinning = false;
                             double spinAngle = 0;
+                            Point lastDoroPos = null;      // 记录上一次DORO位置
+                            boolean doroFaceLeft = false;  // DORO是否朝左
 
                             // 在panelDORO类成员变量中添加
-                            Point lastDoroPos = null; // 记录上一次DORO位置
-                            boolean doroFaceLeft = false;
+                            int spinCount = 0; // 已转圈数
+                            double lastSpinAngle = 0; // 上一帧角度
+                            boolean doroEaten = false; // 是否已被吃掉
 
                             {
                                 try {
@@ -857,8 +860,8 @@ public class Dashboard {
                                 // 初始DORO在右下角
                                 if (doroImg != null) {
                                     doroPos = new Point(
-                                        getWidth() - doroImg.getWidth() + 1920,
-                                        getHeight() - doroImg.getHeight() + 1080
+                                        getWidth() - doroImg.getWidth() + 2560,
+                                        getHeight() - doroImg.getHeight() + 1440
                                     );
                                 } else {
                                     doroPos = new Point(getWidth() - 100, getHeight() - 100);
@@ -888,11 +891,49 @@ public class Dashboard {
                                         int r = 45; // 旋转半径
                                         doroPos.x = (int) (mousePos.x + Math.cos(spinAngle) * r);
                                         doroPos.y = (int) (mousePos.y + Math.sin(spinAngle) * r);
+
+                                        // 计算转圈数
+                                        if (spinAngle - lastSpinAngle > 2 * Math.PI) {
+                                            spinCount++;
+                                            lastSpinAngle = spinAngle;
+                                        }
+                                        // 满10圈弹窗
+                                        if (spinCount >= 10 && !doroEaten) {
+                                            doroEaten = true;
+                                            cursorImg = null; // 隐藏 ORANGE
+                                            repaint(); // 立即重绘
+                                            int option = JOptionPane.showOptionDialog(
+                                                this,
+                                                "欧润吉被吃掉了，怎么办？",
+                                                "欧润吉危机",
+                                                JOptionPane.YES_NO_OPTION,
+                                                JOptionPane.WARNING_MESSAGE,
+                                                null,
+                                                new Object[]{"再来一颗", "离开"},
+                                                "再来一颗"
+                                            );
+                                            if (option == JOptionPane.YES_OPTION) {
+                                                // 再来一颗，重置圈数和状态
+                                                spinCount = 0;
+                                                doroEaten = false;
+                                                // 可重置DORO位置或圖片等
+                                                try {
+                                                    cursorImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\ORANGE.png"));
+                                                } catch (Exception ex) {
+                                                    JOptionPane.showMessageDialog(this, "ORANGE图片加载失败！");
+                                                }
+                                            } else if (option == JOptionPane.NO_OPTION) {
+                                                // 离开，关闭窗口
+                                                SwingUtilities.getWindowAncestor(this).dispose();
+                                            }
+                                        }
                                     } else {
                                         // DORO 位置缓动追踪 ORANGE
                                         double alpha = 0.05; // 越小越慢
                                         doroPos.x += (int)((mousePos.x - doroPos.x) * alpha);
                                         doroPos.y += (int)((mousePos.y - doroPos.y) * alpha);
+                                        // 只要不是转圈就重置角度基准
+                                        lastSpinAngle = spinAngle;
                                     }
 
                                     // 判断方向
@@ -911,8 +952,8 @@ public class Dashboard {
                                         // TC区域
                                         Rectangle tcRect = new Rectangle(16, 16, 191, 300);
                                         if (tcRect.contains(doroCenterX, doroCenterY)) {
-                                            // 隱藏DORO並彈窗
-                                            doroImg = null;
+                                            // 隐藏 ORANGE（欧润吉）
+                                            cursorImg = null;
                                             int option = JOptionPane.showOptionDialog(
                                                 this,
                                                 "DORO被垃圾筒吃掉了，怎么办?",
@@ -924,29 +965,25 @@ public class Dashboard {
                                                 "拯救DORO"
                                             );
                                             if (option == JOptionPane.YES_OPTION) {
-                                                // 隨機決定是否拯救成功
+                                                // 随机决定是否拯救成功
                                                 boolean rescueSuccess = Math.random() < 0.5;  // 50% 概率
                                                 if (rescueSuccess) {
                                                     JOptionPane.showMessageDialog(this, "你成功拯救了DORO！");
-                                                    // 重新加載DORO圖片並放到右下角
+                                                    // 重新加载 ORANGE 图片
                                                     try {
-                                                        doroImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\DORO.png"));
-                                                        if (doroImg != null) {
-                                                            doroPos.x = getWidth() - doroImg.getWidth();
-                                                            doroPos.y = getHeight() - doroImg.getHeight();
-                                                        }
+                                                        cursorImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\ORANGE.png"));
                                                     } catch (Exception ex) {
-                                                        JOptionPane.showMessageDialog(this, "DORO圖片加載失敗！");
+                                                        JOptionPane.showMessageDialog(this, "ORANGE图片加载失败！");
                                                     }
                                                 } else {
                                                     JOptionPane.showMessageDialog(this, "你试图拯救DORO，但失败了……");
                                                     JOptionPane.showMessageDialog(this, "拯救失败，DORO消失了……");
-                                                    // 關閉當前窗口
+                                                    // 关闭当前窗口
                                                     SwingUtilities.getWindowAncestor(this).dispose();
                                                 }
                                             } else if (option == JOptionPane.NO_OPTION) {
                                                 JOptionPane.showMessageDialog(this, "你选择了离开，DORO消失了……");
-                                                // 關閉當前窗口
+                                                // 关闭当前窗口
                                                 SwingUtilities.getWindowAncestor(this).dispose();
                                             }
                                         }
