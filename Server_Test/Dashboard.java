@@ -952,8 +952,8 @@ public class Dashboard {
                                         // TC区域
                                         Rectangle tcRect = new Rectangle(16, 16, 191, 300);
                                         if (tcRect.contains(doroCenterX, doroCenterY)) {
-                                            // 隐藏 ORANGE（欧润吉）
-                                            cursorImg = null;
+                                            doroImg = null; // DORO被垃圾筒吃掉
+                                            repaint(); // 立即重绘
                                             int option = JOptionPane.showOptionDialog(
                                                 this,
                                                 "DORO被垃圾筒吃掉了，怎么办?",
@@ -969,11 +969,17 @@ public class Dashboard {
                                                 boolean rescueSuccess = Math.random() < 0.5;  // 50% 概率
                                                 if (rescueSuccess) {
                                                     JOptionPane.showMessageDialog(this, "你成功拯救了DORO！");
-                                                    // 重新加载 ORANGE 图片
+                                                    // 重置DORO位置和状态
                                                     try {
-                                                        cursorImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\ORANGE.png"));
+                                                        doroImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\DORO.png"));
+                                                        doroPos = new Point(
+                                                            getWidth() - doroImg.getWidth() + 2560,
+                                                            getHeight() - doroImg.getHeight() + 1440
+                                                        );
+                                                        spinCount = 0; // 重置圈数
+                                                        isSpinning = false; // 停止旋转
                                                     } catch (Exception ex) {
-                                                        JOptionPane.showMessageDialog(this, "ORANGE图片加载失败！");
+                                                        JOptionPane.showMessageDialog(this, "DORO图片加载失败！");
                                                     }
                                                 } else {
                                                     JOptionPane.showMessageDialog(this, "你试图拯救DORO，但失败了……");
