@@ -1059,7 +1059,7 @@ public class Dashboard {
                         kunDialog.setAlwaysOnTop(true);
                         kunDialog.setSize(Toolkit.getDefaultToolkit().getScreenSize());
                         kunDialog.setLocationRelativeTo(null);
-                        kunDialog.setBackground(new Color(0,0,0,2));  // 透明背景
+                        kunDialog.setBackground(new Color(0,0,0,32));  // 透明背景
 
                         JPanel gamePanel = new JPanel() {
                             int width = kunDialog.getWidth();
