@@ -10,7 +10,7 @@ public class Dashboard {
     @SuppressWarnings("UseSpecificCatch")
     public static void main(String[] args) {
         // 启动动画步骤
-        String[] bootSteps = {"系统启动中...", "资料库启动中...", "网络服务启动中...", "Ollama自检中...", "FOFE自检中..."};
+        String[] bootSteps = {"系统启动中...", "资料库启动中...", "网络服务启动中...", "Ollama自检中...", "FOFE FW自检中..."};
         JDialog bootDialog = new JDialog((Frame)null, true);
         bootDialog.setUndecorated(true);
         bootDialog.setSize(400, 120);
