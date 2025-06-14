@@ -1052,6 +1052,185 @@ public class Dashboard {
                     });
                 }
 
+                if (i == 2) {
+                    btn.addActionListener(ev -> {
+                        JDialog kunDialog = new JDialog((JFrame)null, true);
+                        kunDialog.setUndecorated(true);
+                        kunDialog.setAlwaysOnTop(true);
+                        kunDialog.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+                        kunDialog.setLocationRelativeTo(null);
+                        kunDialog.setBackground(new Color(0,0,0,2));  // 透明背景
+
+                        JPanel gamePanel = new JPanel() {
+                            int width = kunDialog.getWidth();
+                            int height = kunDialog.getHeight();
+                            int ballSize = 32;
+                            int ballX = width / 2, ballY = height / 2;
+                            int ballSpeedX = 6 * 10, ballSpeedY = -8 * 10;
+                            int paddleW = 160, paddleH = 18;
+                            int paddleX = width / 2 - paddleW / 2;
+                            int paddleY = height - 540;
+                            boolean running = true;
+                            boolean gameOver = false;
+                            BufferedImage ballImg;
+                            BufferedImage paddleImg;
+                            BufferedImage paddleImgGameOver; // 新增
+
+                            // 新增旋转动画变量
+                            double paddleAngle = 0;
+                            boolean rotating = false;
+                            long rotateStartTime = 0;
+                            final int ROTATE_DURATION = 120; // 动画持续时间（毫秒）
+
+                            {
+                                setOpaque(false);
+                                // 加载球图片
+                                try {
+                                    ballImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\BALL.png"));
+                                    ballSize = ballImg.getWidth();
+                                } catch (Exception ex) {
+                                    ballImg = null;
+                                }
+                                // 加载板子图片
+                                try {
+                                    paddleImg = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\KUN.png"));
+                                    paddleW = paddleImg.getWidth();
+                                    paddleH = paddleImg.getHeight();
+                                } catch (Exception ex) {
+                                    paddleImg = null;
+                                }
+                                // 加载游戏结束时的板子图片
+                                try {
+                                    paddleImgGameOver = javax.imageio.ImageIO.read(new java.io.File("C:\\Users\\eric2\\Downloads\\PET\\KUN2.png"));
+                                } catch (Exception ex) {
+                                    paddleImgGameOver = null;
+                                }
+                                setFocusable(true);
+                                addKeyListener(new java.awt.event.KeyAdapter() {
+                                    @Override
+                                    public void keyPressed(java.awt.event.KeyEvent e) {
+                                        if (!running) return;
+                                        if (e.getKeyCode() == java.awt.event.KeyEvent.VK_LEFT) {
+                                            paddleX -= 40;
+                                            if (paddleX < 0) paddleX = 0;
+                                        } else if (e.getKeyCode() == java.awt.event.KeyEvent.VK_RIGHT) {
+                                            paddleX += 40;
+                                            if (paddleX > width - paddleW) paddleX = width - paddleW;
+                                        }
+                                    }
+                                });
+                                addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+                                    @Override
+                                    public void mouseMoved(java.awt.event.MouseEvent e) {
+                                        if (!running) return;
+                                        paddleX = e.getX() - paddleW / 2;
+                                        if (paddleX < 0) paddleX = 0;
+                                        if (paddleX > width - paddleW) paddleX = width - paddleW;
+                                    }
+                                });
+                                new javax.swing.Timer(16, e -> {
+                                    if (!running) return;
+                                    ballX += ballSpeedX;
+                                    ballY += ballSpeedY;
+                                    if (ballX <= 0 || ballX >= width - ballSize) ballSpeedX = -ballSpeedX;
+                                    if (ballY <= 0) ballSpeedY = -ballSpeedY;
+                                    if (ballY > height - ballSize) {
+                                        running = false;
+                                        gameOver = true;
+                                        repaint();
+                                        javax.swing.SwingUtilities.invokeLater(() -> {
+                                            JOptionPane.showMessageDialog(this, "尼干麻 害海唉呦!", "小黑子胜利!", JOptionPane.INFORMATION_MESSAGE);
+                                            kunDialog.dispose();
+                                        });
+                                        return;
+                                    }
+                                    Rectangle ballRect = new Rectangle(ballX, ballY, ballSize, ballSize);
+                                    Rectangle paddleRect = new Rectangle(paddleX, paddleY, paddleW, paddleH);
+                                    if (ballRect.intersects(paddleRect) && ballSpeedY > 0) {
+                                        ballSpeedY = -ballSpeedY;
+                                        int hitPos = ballX + ballSize / 2 - paddleX;
+                                        double ratio = (hitPos - paddleW / 2) / (double)(paddleW / 2);
+                                        ballSpeedX = (int)(ratio * 10);
+
+                                        // 撞击时触发旋转动画
+                                        paddleAngle = -15.0;
+                                        rotating = true;
+                                        rotateStartTime = System.currentTimeMillis();
+                                    }
+                                    // 旋转动画处理
+                                    if (rotating) {
+                                        long now = System.currentTimeMillis();
+                                        long elapsed = now - rotateStartTime;
+                                        if (elapsed >= ROTATE_DURATION) {
+                                            paddleAngle = 0;
+                                            rotating = false;
+                                        } else {
+                                            paddleAngle = -15.0 * (1 - elapsed / (double)ROTATE_DURATION);
+                                        }
+                                    }
+                                    repaint();
+                                }).start();
+                            }
+
+                            @Override
+                            protected void paintComponent(Graphics g) {
+                                super.paintComponent(g);
+                                // 画球（用图片）
+                                if (ballImg != null) {
+                                    g.drawImage(ballImg, ballX, ballY, ballSize, ballSize, null);
+                                } else {
+                                    g.setColor(new Color(80,255,80,220));
+                                    g.fillOval(ballX, ballY, ballSize, ballSize);
+                                }
+                                // 画板子（用图片+旋转），游戏结束时换图
+                                BufferedImage showPaddle = (!gameOver) ? paddleImg : paddleImgGameOver;
+                                if (showPaddle != null) {
+                                    Graphics2D g2d = (Graphics2D) g.create();
+                                    int cx = paddleX + paddleW / 2;
+                                    int cy = paddleY + paddleH / 2;
+                                    g2d.rotate(Math.toRadians(paddleAngle), cx, cy);
+                                    g2d.drawImage(showPaddle, paddleX, paddleY, paddleW, paddleH, null);
+                                    g2d.dispose();
+                                } else {
+                                    g.setColor(new Color(80,200,255,220));
+                                    g.fillRoundRect(paddleX, paddleY, paddleW, paddleH, 12, 12);
+                                }
+                                // 画边界
+                                g.setColor(new Color(255,255,255,60));
+                                g.fillRect(0, 0, width, 8);
+                                g.fillRect(0, 0, 8, height);
+                                g.fillRect(width-8, 0, 8, height);
+                                // if (gameOver) {
+                                //     g.setFont(new Font("微软雅黑", Font.BOLD, 64));
+                                //     g.setColor(new Color(255,80,80,200));
+                                //     g.drawString("Game Over", width/2-180, height/2);
+                                // }
+                            }
+                        };
+                        gamePanel.setOpaque(false);
+                        kunDialog.setContentPane(gamePanel);
+
+                        InputMap im = gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+                        ActionMap am = gamePanel.getActionMap();
+                        im.put(KeyStroke.getKeyStroke("ctrl ENTER"), "closeKunDialog");
+                        am.put("closeKunDialog", new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                kunDialog.dispose();
+                            }
+                        });
+
+                        kunDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                            @Override
+                            public void windowOpened(java.awt.event.WindowEvent e) {
+                                gamePanel.requestFocusInWindow();
+                            }
+                        });
+
+                        kunDialog.setVisible(true);
+                    });
+                }
+
                 // 第四個按鈕（index 3）打開特定網址
                 if (i == 3) {
                     btn.addActionListener(ev -> {
