@@ -63,7 +63,7 @@ public class Dashboard {
         Color bgColor = new Color(r, g, b, a);
 
         // LOGO 相關參數
-        String logoPath = "C:\\Users\\eric2\\Downloads\\PlushOJ Final (2).png";
+        String logoPath = "C:\\Users\\eric2\\Downloads\\PlushOJ_LOGO.png";
         int logoWidth = 599;   // LOGO寬度，可自行調整
         int logoHeight = 60;  // LOGO高度，可自行調整
 
