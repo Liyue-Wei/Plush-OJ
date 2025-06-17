@@ -898,7 +898,7 @@ public class Dashboard {
                                             lastSpinAngle = spinAngle;
                                         }
                                         // 满10圈弹窗
-                                        if (spinCount >= 10 && !doroEaten) {
+                                        if (spinCount >= 8 && !doroEaten) {
                                             doroEaten = true;
                                             cursorImg = null; // 隐藏 ORANGE
                                             repaint(); // 立即重绘
@@ -1235,7 +1235,7 @@ public class Dashboard {
                 if (i == 3) {
                     btn.addActionListener(ev -> {
                         try {
-                            java.awt.Desktop.getDesktop().browse(new java.net.URI("http://192.168.1.233:8554/"));
+                            java.awt.Desktop.getDesktop().browse(new java.net.URI("http://192.168.1.232:8554/"));
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(null, "无法打开网址: " + ex.getMessage());
                         }
