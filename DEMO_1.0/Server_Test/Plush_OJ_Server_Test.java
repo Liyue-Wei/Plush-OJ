@@ -93,7 +93,7 @@ public class Plush_OJ_Server_Test {
 
     public static void main(String[] args) throws Exception {
         int port = 8080;
-        String baseDir = "WebPages";
+        String baseDir = "DEMO_1.0/Server_Test/WebPages";
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/", new StaticFileHandler(baseDir));
         server.createContext("/signup", new SignupHandler());
