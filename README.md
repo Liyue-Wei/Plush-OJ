@@ -23,8 +23,6 @@
 
 ## Server 
 
-## Dashboard
-
 ## Web UI Design
 
 ## System Requirement
