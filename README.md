@@ -21,7 +21,7 @@
 
 ### Docker
 
-## Main Server Application
+## MSA - Main Server Application
 
 ## Web UI Design
 
