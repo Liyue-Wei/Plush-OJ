@@ -7,6 +7,7 @@ namespace Plush_OJ
     {
         static void Processor_SET()
         {
+#pragma warning disable CA1416
             int countProcessors = Environment.ProcessorCount;
             Console.WriteLine($"Number of processors: {countProcessors}");
             if (countProcessors < 8)
@@ -18,6 +19,7 @@ namespace Plush_OJ
             currentProcess.ProcessorAffinity = (IntPtr)0xFF;    // 0xF = 1111 in binary
 
             Console.WriteLine($"Affinity Mask: {currentProcess.ProcessorAffinity}");
+#pragma warning restore CA1416
         }
         public static void Main(string[] args)
         {
