@@ -1,10 +1,37 @@
-﻿namespace Plush_OJ
+﻿using System;
+using System.Diagnostics;
+
+namespace Plush_OJ
 {
     class MSA
     {
+        static void Processor_SET()
+        {
+            int countProcessors = Environment.ProcessorCount;
+            Console.WriteLine($"Number of processors: {countProcessors}");
+            if (countProcessors < 16)
+            {
+                Console.WriteLine("Under 16 Processors, Application running on low performance mode.");
+            }
+
+            Process currentProcess = Process.GetCurrentProcess();
+            currentProcess.ProcessorAffinity = (IntPtr)0xF;    // 0xF = 1111 in binary
+
+            Console.WriteLine($"Affinity Mask: {currentProcess.ProcessorAffinity}");
+        }
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello");
+            if (!OperatingSystem.IsLinux() && !OperatingSystem.IsWindows())
+            {
+                Console.WriteLine("System Unsupported, Terminated...");
+                return;
+            }
+            Processor_SET();
+            Console.WriteLine(@"
+============================================================= 
+      Welcome to Plush::OJ Server Commandline Interface
+=============================================================
+            ");
         }
     }
 }
