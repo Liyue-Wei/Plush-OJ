@@ -21,7 +21,7 @@
 
 ### Docker
 
-## Server 
+## Main Server Application
 
 ## Web UI Design
 
