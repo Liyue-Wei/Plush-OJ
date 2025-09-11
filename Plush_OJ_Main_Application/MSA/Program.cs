@@ -11,7 +11,7 @@ namespace Plush_OJ
             Console.WriteLine($"Number of processors: {countProcessors}");
             if (countProcessors < 8)
             {
-                Console.WriteLine("Under 8 Processors, Application running on low performance mode.");
+                Console.WriteLine("Under 8 Processors, Terminated...\n");
             }
 
             Process currentProcess = Process.GetCurrentProcess();
@@ -23,7 +23,7 @@ namespace Plush_OJ
         {
             if (!OperatingSystem.IsLinux() && !OperatingSystem.IsWindows())
             {
-                Console.WriteLine("System Unsupported, Terminated...");
+                Console.WriteLine("System Unsupported, Terminated...\n");
                 return;
             }
             Processor_SET();
