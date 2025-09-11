@@ -9,13 +9,13 @@ namespace Plush_OJ
         {
             int countProcessors = Environment.ProcessorCount;
             Console.WriteLine($"Number of processors: {countProcessors}");
-            if (countProcessors < 16)
+            if (countProcessors < 8)
             {
-                Console.WriteLine("Under 16 Processors, Application running on low performance mode.");
+                Console.WriteLine("Under 8 Processors, Application running on low performance mode.");
             }
 
             Process currentProcess = Process.GetCurrentProcess();
-            currentProcess.ProcessorAffinity = (IntPtr)0xF;    // 0xF = 1111 in binary
+            currentProcess.ProcessorAffinity = (IntPtr)0xFF;    // 0xF = 1111 in binary
 
             Console.WriteLine($"Affinity Mask: {currentProcess.ProcessorAffinity}");
         }
