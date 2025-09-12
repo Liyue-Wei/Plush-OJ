@@ -11,6 +11,7 @@ namespace Plush_OJ
         {
 #pragma warning disable CA1416
             int countProcessors = Environment.ProcessorCount;
+            Process currentProcess = Process.GetCurrentProcess();
             Console.WriteLine($"Number of processors: {countProcessors}");
             if (countProcessors < 8)
             {
@@ -19,13 +20,8 @@ namespace Plush_OJ
             }
 
             string? lowPerfModeWarning = countProcessors < 16 ? "Warning : Under 16 Processors, Application running on low performance mode." : null;
-            if (lowPerfModeWarning != null)
-            {
-                Console.WriteLine(lowPerfModeWarning);
-            }
-
-            Process currentProcess = Process.GetCurrentProcess();
-            currentProcess.ProcessorAffinity = (IntPtr)0xFF;    // 0xFF = 11111111 in binary
+            if (lowPerfModeWarning != null) Console.WriteLine(lowPerfModeWarning);
+            currentProcess.ProcessorAffinity = (lowPerfModeWarning != null) ? (IntPtr)0xFF : (IntPtr)0xFFFF;    // 0xFF = 11111111 in binary
 
             Console.WriteLine($"Affinity Mask: {currentProcess.ProcessorAffinity}");
 #pragma warning restore CA1416
