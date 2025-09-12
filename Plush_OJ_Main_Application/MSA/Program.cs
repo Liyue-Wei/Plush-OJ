@@ -5,7 +5,7 @@ using System.Net;
 
 namespace Plush_OJ
 {
-    class MSA
+    class MSA    // Main Server Application
     {
         static void ProcessorSet()
         {
@@ -26,6 +26,7 @@ namespace Plush_OJ
             Console.WriteLine($"Affinity Mask: {currentProcess.ProcessorAffinity}");
 #pragma warning restore CA1416
         }
+
         public static void Main(string[] args)
         {
             if (!OperatingSystem.IsLinux() && !OperatingSystem.IsWindows())
@@ -35,9 +36,9 @@ namespace Plush_OJ
             }
             ProcessorSet();
             Console.WriteLine(@"
-============================================================= 
-      Welcome to Plush::OJ Server Commandline Interface
-=============================================================
+================================================================= 
+        Welcome to Plush::OJ Server Commandline Interface
+=================================================================
             ");
         }
     }
