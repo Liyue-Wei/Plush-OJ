@@ -25,7 +25,7 @@ namespace Plush_OJ
             }
 
             Process currentProcess = Process.GetCurrentProcess();
-            currentProcess.ProcessorAffinity = (IntPtr)0xFF;    // 0xFFFF = 11111111 in binary
+            currentProcess.ProcessorAffinity = (IntPtr)0xFF;    // 0xFF = 11111111 in binary
 
             Console.WriteLine($"Affinity Mask: {currentProcess.ProcessorAffinity}");
 #pragma warning restore CA1416
