@@ -41,4 +41,9 @@ namespace Plush_OJ
             ");
         }
     }
+
+    class API
+    {
+        
+    }
 }
