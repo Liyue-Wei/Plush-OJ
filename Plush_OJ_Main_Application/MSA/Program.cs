@@ -35,6 +35,8 @@ namespace Plush_OJ
                 return;
             }
             ProcessorSet();
+
+            #region initScreen 
             Console.WriteLine(@"
 ========================================================================================================================
              ______________   ___                                                                                       
@@ -52,6 +54,8 @@ namespace Plush_OJ
                                    Welcome to Plush::OJ Server Commandline Interface                                    
 ======================================================================================================================== 
             ");
+            Console.WriteLine("");
+            #endregion
 
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
