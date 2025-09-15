@@ -94,6 +94,19 @@ namespace Plush_OJ
 
     class API
     {
-        
+        private static void connDB()    // Database Connecter
+        {
+
+        }
+
+        private static void connFF()    // FOFE FW Connecter
+        {
+
+        }
+
+        static void connWE()    // Web Engine Connecter
+        {
+            
+        }
     }
 }
