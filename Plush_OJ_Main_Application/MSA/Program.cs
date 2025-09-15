@@ -36,7 +36,6 @@ namespace Plush_OJ
             }
             ProcessorSet();
 
-        initScreen:
             #region initScreen 
             Console.WriteLine(@"
 ========================================================================================================================
@@ -54,8 +53,10 @@ namespace Plush_OJ
                                                                                                                         
                                    Welcome to Plush::OJ Server Commandline Interface                                    
 ======================================================================================================================== 
-
-
+            ");
+            Thread.Sleep(1000);
+        MainMenu:
+            Console.WriteLine(@"
     ┌──────────────────────────────────┐
     │            MAIN MENU             │
     ├──────────────────────────────────┤
@@ -82,7 +83,10 @@ namespace Plush_OJ
                     return;
 
                 default:
-                    goto initScreen;
+                    Console.WriteLine("Unknow command, Please try again.");
+                    Thread.Sleep(750);
+                    Console.Clear();
+                    goto MainMenu;
             }
             #endregion
         }
