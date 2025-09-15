@@ -53,11 +53,19 @@ namespace Plush_OJ
                                                                                                                         
                                    Welcome to Plush::OJ Server Commandline Interface                                    
 ======================================================================================================================== 
+
+
+    ┌──────────────────────────────────┐
+    │            MAIN MENU             │
+    ├──────────────────────────────────┤
+    │ [1] View System Statistics       │
+    │ [2] Administrator Login          │
+    │                                  │
+    │ [0] Exit                         │
+    └──────────────────────────────────┘
             ");
-            Console.WriteLine("");
             #endregion
 
-            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
     }
