@@ -64,9 +64,18 @@ namespace Plush_OJ
     │ [0] Exit                         │
     └──────────────────────────────────┘
             ");
-            #endregion
 
-            Console.ReadKey();
+            string? initFunc = Console.ReadLine();
+            switch (initFunc)
+            {
+                case "1":
+                    break;
+                case "2":
+                    break;
+                default:
+                    break;
+            }
+            #endregion
         }
     }
 
