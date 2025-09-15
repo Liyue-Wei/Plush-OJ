@@ -36,6 +36,7 @@ namespace Plush_OJ
             }
             ProcessorSet();
 
+        initScreen:
             #region initScreen 
             Console.WriteLine(@"
 ========================================================================================================================
@@ -69,11 +70,19 @@ namespace Plush_OJ
             switch (initFunc)
             {
                 case "1":
+                    Console.WriteLine("View System Statistics\n");
                     break;
+
                 case "2":
+                    Console.WriteLine("Administrator  Login\n");
                     break;
+
+                case "0":
+                    Console.WriteLine("Exit...");
+                    return;
+
                 default:
-                    break;
+                    goto initScreen;
             }
             #endregion
         }
