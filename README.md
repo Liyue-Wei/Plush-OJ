@@ -26,15 +26,15 @@
 ## Web UI Design
 
 ## System Requirement
-**CPU**: 8 Cores Minimum, 16 Logical Processors recommended. (e.g. 8 Cores with SMT/Hyper-Threading) 
+**CPU** : 8 Cores Minimum, 16 Logical Processors recommended. (e.g. 8 Cores with SMT/Hyper-Threading) 
 
-**RAM**: 8 GB Minimum, 64 GB recommended.
+**RAM** : 8 GB Minimum, 64 GB recommended.
 
-**Storage**: Minimum 1 GB for application files. Additional space for the database will vary based on usage.
+**Storage** : Minimum 1 GB for application files. Additional space for the database will vary based on usage.
 
-**Network (Port Speed)**: 1 Gbps Minimum, 2.5Gbps recommended.
+**Network (Port Speed)** : 1 Gbps Minimum, 2.5Gbps recommended.
 
-**Operating System**: Windows 11 24H2 with WSL2 (Ubuntu 24.04 LTS) or Red Hat Enterprise Linux 9.6.
+**Operating System** : Windows 11 24H2 with WSL2 (Ubuntu 24.04 LTS) or Red Hat Enterprise Linux 9.6.
 
 ---
 ### Developed by [Liyue Wei](https://github.com/Liyue-Wei) on GitHub.
