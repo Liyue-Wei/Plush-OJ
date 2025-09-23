@@ -27,6 +27,42 @@ namespace Plush_OJ
 #pragma warning restore CA1416
         }
 
+        private static bool loginMGT()
+        {
+            string? adminACC, passWD = string.Empty;
+            Console.Write("Enter Administrator Account: ");
+            adminACC = Console.ReadLine();
+            Console.Write("\nEnter Password: ");
+            
+            ConsoleKeyInfo key;
+            do
+            {
+                key = Console.ReadKey(true); 
+                if (!char.IsControl(key.KeyChar))
+                {
+                    passWD += key.KeyChar;
+                    Console.Write("*"); 
+                }
+                else
+                {
+                    if (key.Key == ConsoleKey.Backspace && passWD.Length > 0)
+                    {
+                        passWD = passWD.Substring(0, passWD.Length - 1);
+                        Console.Write("\b \b"); 
+                    }
+                }
+            } while (key.Key != ConsoleKey.Enter); 
+
+            Console.WriteLine(); 
+
+            if (string.IsNullOrEmpty(adminACC) || string.IsNullOrEmpty(passWD))
+            {
+                Console.WriteLine("\nAdministrator Account or Password cannot be Null or Empty, Login Terminated...");
+                return false;
+            }
+            return false;
+        } 
+
         public static void Main(string[] args)
         {
             if (!OperatingSystem.IsLinux() && !OperatingSystem.IsWindows())
@@ -70,7 +106,16 @@ namespace Plush_OJ
             switch (initFunc)
             {
                 case "1":
-                    Console.WriteLine("Administrator  Login\n");
+                    Console.WriteLine("Administrator Login: \n");
+                    if (loginMGT())
+                    {
+                        Console.WriteLine("Login succeed.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Login failed, Terminated...");
+                        return;
+                    }
                     break;
 
                 case "0":
