@@ -60,8 +60,7 @@ namespace Plush_OJ
     ┌──────────────────────────────────┐
     │            MAIN MENU             │
     ├──────────────────────────────────┤
-    │ [1] View System Statistics       │
-    │ [2] Administrator Login          │
+    │ [1] Administrator Login          │
     │                                  │
     │ [0] Exit                         │
     └──────────────────────────────────┘
@@ -71,10 +70,6 @@ namespace Plush_OJ
             switch (initFunc)
             {
                 case "1":
-                    Console.WriteLine("View System Statistics\n");
-                    break;
-
-                case "2":
                     Console.WriteLine("Administrator  Login\n");
                     break;
 
