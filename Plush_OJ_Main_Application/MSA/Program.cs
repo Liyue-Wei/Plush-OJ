@@ -2,6 +2,9 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 
 namespace Plush_OJ
 {
@@ -26,38 +29,38 @@ namespace Plush_OJ
             Console.WriteLine($"Affinity Mask: {currentProcess.ProcessorAffinity}");
 #pragma warning restore CA1416
         }
-
+        
         private static bool loginMGT()
         {
             string? adminACC, passWD = string.Empty;
             Console.Write("Enter Administrator Account: ");
             adminACC = Console.ReadLine();
             Console.Write("\nEnter Password: ");
-            
+
             ConsoleKeyInfo key;
             do
             {
-                key = Console.ReadKey(true); 
+                key = Console.ReadKey(true);
                 if (!char.IsControl(key.KeyChar))
                 {
                     passWD += key.KeyChar;
-                    Console.Write("*"); 
+                    Console.Write("*");
                 }
                 else
                 {
                     if (key.Key == ConsoleKey.Backspace && passWD.Length > 0)
                     {
                         passWD = passWD.Substring(0, passWD.Length - 1);
-                        Console.Write("\b \b"); 
+                        Console.Write("\b \b");
                     }
                 }
-            } while (key.Key != ConsoleKey.Enter); 
+            } while (key.Key != ConsoleKey.Enter);
 
-            Console.WriteLine(); 
+            Console.WriteLine();
 
             if (string.IsNullOrEmpty(adminACC) || string.IsNullOrEmpty(passWD))
             {
-                Console.WriteLine("\nAdministrator Account or Password cannot be Null or Empty, Login Terminated...");
+                Console.WriteLine("\nAdministrator Account or Password cannot be Null or Empty, Login access denied...\n");
                 return false;
             }
             return true;
@@ -132,6 +135,13 @@ namespace Plush_OJ
         }
     }
 
+    public class AppConfig
+    {
+        public string? adminACC { get; set; }
+        public string? passwdHash { get; set; }
+        public string? salt { get; set; }
+    }
+
     class API
     {
         private static void ConnDB()    // Database Connecter
@@ -146,7 +156,7 @@ namespace Plush_OJ
 
         static void ConnWE()    // Web Engine Connecter
         {
-            
+
         }
     }
 }
