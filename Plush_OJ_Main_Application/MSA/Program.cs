@@ -60,7 +60,7 @@ namespace Plush_OJ
                 Console.WriteLine("\nAdministrator Account or Password cannot be Null or Empty, Login Terminated...");
                 return false;
             }
-            return false;
+            return true;
         } 
 
         public static void Main(string[] args)
