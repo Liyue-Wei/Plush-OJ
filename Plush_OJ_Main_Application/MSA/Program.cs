@@ -142,6 +142,21 @@ namespace Plush_OJ
             {
                 Console.Clear();
                 Console.WriteLine(@"
+========================================================================================================================
+             ______________   ___                                                                                       
+            /_________    /  /  /                                                                                       
+                     /   /  /  /                                                                                        
+                    /   /  /  /                                                                                         
+         __________/   /  /  /     ________   __                           __                  __________         __    
+        /  ___________/  /  /     |   __   | |  |                         |  |         _  _   |   ____   |       |  |   
+       /  /   _______   /  /      |  |__|  | |  |  __    __       ______  |  |        |_||_|  |  |    |  |       |  |   
+      /  /   /  __  /  /  /       |   _____| |  | |  |  |  |     |   ___| |  |_____           |  |    |  |       |  |   
+     /  /   /  / /_/  /  /        |  |       |  | |  |  |  |     |  |     |   __   |   _  _   |  |    |  |       |  |   
+    /  /   /  /______/  /         |  |       |  | |  |__|  |  ___|  |     |  |  |  |  |_||_|  |  |____|  |  _____|  |   
+   /__/   /____________/          |__|       |__| |________| |______|     |__|  |__|          |__________| |________|   
+                                                                                                                        
+======================================================================================================================== 
+
     ┌──────────────────────────────────┐
     │        ADMINISTRATOR MENU        │
     ├──────────────────────────────────┤
@@ -157,13 +172,16 @@ namespace Plush_OJ
                 {
                     case "1":
                         Console.WriteLine("\nReset Password function is not implemented yet.");
+                        Thread.Sleep(750);
                         break;
                     case "0":
                         exitAdminMenu = true;
                         Console.WriteLine("\nLogging out...");
+                        Thread.Sleep(750);
                         break;
                     default:
                         Console.WriteLine("\nUnknown command, Please try again.");
+                        Thread.Sleep(750);
                         break;
                 }
             }
@@ -216,14 +234,17 @@ namespace Plush_OJ
                     Console.WriteLine("Administrator Login: \n");
                     if (LoginMGT())
                     {
-                        ShowAdminMenu(); // 登录成功后调用管理员菜单
+                        Console.WriteLine("Login succeed.\n");
+                        Thread.Sleep(750);
+                        ShowAdminMenu();
+                        Console.Clear();
+                        goto MainMenu;
                     }
                     else
                     {
                         Console.WriteLine("Login failed, Terminated...");
                         return;
                     }
-                    break;
 
                 case "0":
                     Console.WriteLine("Exit...");
