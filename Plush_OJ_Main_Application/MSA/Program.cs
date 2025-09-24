@@ -301,6 +301,7 @@ namespace Plush_OJ
     │            MAIN MENU             │
     ├──────────────────────────────────┤
     │ [1] Administrator Login          │
+    | [2] Start Server
     │                                  │
     │ [0] Exit                         │
     └──────────────────────────────────┘
@@ -325,6 +326,10 @@ namespace Plush_OJ
                         Console.WriteLine("Login failed, Terminated...");
                         return;
                     }
+
+                case "2":
+                    Console.WriteLine("Server not avaliable...");
+                    break;
 
                 case "0":
                     Console.WriteLine("Exit...");
