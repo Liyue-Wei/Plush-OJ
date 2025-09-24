@@ -59,11 +59,12 @@ namespace Plush_OJ
             if (!File.Exists(configPath))
             {
                 Console.WriteLine("Configuration file not found, creating...");
+                const string defPassWD = "Plush_OJ_Default_Password";
                 string defSalt = GenerateSalt();
                 cfg = new AppConfig
                 {
-                    AdminACC = "admin",
-                    PasswdHash = ComputeHash("admin", defSalt),
+                    AdminACC = defPassWD,
+                    PasswdHash = ComputeHash(defPassWD, defSalt),
                     Salt = defSalt
                 };
 
@@ -72,9 +73,15 @@ namespace Plush_OJ
                 {
                     Directory.CreateDirectory(directoryPath);
                 }
-                
+
                 string jsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(configPath, jsonString);
+                Console.WriteLine($"Default Administrator Account created : admin\nDefault Password created : {defPassWD}\nPlease change the password after your first login for security reasons.\n");
+            }
+            else
+            {
+                string jsonString = File.ReadAllText(configPath);
+                cfg = JsonSerializer.Deserialize<AppConfig>(jsonString);
             }
 
             string? adminACC, passWD = string.Empty;
