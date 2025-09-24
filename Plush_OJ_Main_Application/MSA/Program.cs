@@ -67,7 +67,7 @@ namespace Plush_OJ
                 string defSalt = GenerateSalt();
                 cfg = new AppConfig
                 {
-                    AdminACC = defPassWD,
+                    AdminACC = "admin",
                     PasswdHash = ComputeHash(defPassWD, defSalt),
                     Salt = defSalt
                 };
@@ -80,7 +80,7 @@ namespace Plush_OJ
 
                 string jsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(configPath, jsonString);
-                Console.WriteLine($"Default Administrator Account created : admin\nDefault Password created : {defPassWD}\nPlease change the password after your first login for security reasons.\n");
+                Console.WriteLine($"\nDefault Administrator Account created: admin\nDefault Password created: {defPassWD}\nPlease change the password after your first login for security reasons.\n\n");
             }
             else
             {
@@ -121,6 +121,7 @@ namespace Plush_OJ
             string inputHash = ComputeHash(passWD, cfg.Salt);
             if (adminACC == cfg.AdminACC && inputHash == cfg.PasswdHash)
             {
+                Console.WriteLine("\n");
                 return true;
             }
             else
