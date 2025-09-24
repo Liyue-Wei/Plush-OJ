@@ -135,6 +135,40 @@ namespace Plush_OJ
 #pragma warning restore CS8604
         } 
 
+        private static void ShowAdminMenu()
+        {
+            bool exitAdminMenu = false;
+            while (!exitAdminMenu)
+            {
+                Console.Clear();
+                Console.WriteLine(@"
+    ┌──────────────────────────────────┐
+    │        ADMINISTRATOR MENU        │
+    ├──────────────────────────────────┤
+    │ [1] Reset Password               │
+    │                                  │
+    │ [0] Logout                       │
+    └──────────────────────────────────┘
+                ");
+                Console.Write("Select an option: ");
+                string? choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("\nReset Password function is not implemented yet.");
+                        break;
+                    case "0":
+                        exitAdminMenu = true;
+                        Console.WriteLine("\nLogging out...");
+                        break;
+                    default:
+                        Console.WriteLine("\nUnknown command, Please try again.");
+                        break;
+                }
+            }
+        }
+
         public static void Main(string[] args)
         {
             if (!OperatingSystem.IsLinux() && !OperatingSystem.IsWindows())
@@ -174,6 +208,7 @@ namespace Plush_OJ
     └──────────────────────────────────┘
             ");
 
+            Console.Write("Select an option: ");
             string? initFunc = Console.ReadLine();
             switch (initFunc)
             {
@@ -181,7 +216,7 @@ namespace Plush_OJ
                     Console.WriteLine("Administrator Login: \n");
                     if (LoginMGT())
                     {
-                        Console.WriteLine("Login succeed.");
+                        ShowAdminMenu(); // 登录成功后调用管理员菜单
                     }
                     else
                     {
