@@ -55,6 +55,9 @@ namespace Plush_OJ
         private protected static bool LoginMGT()
         {
 #pragma warning disable CS8600
+#pragma warning disable CS8602
+#pragma warning disable CS8604
+
             AppConfig cfg;
             string configPath = "Plush_OJ_Main_Application/Config/config.json";
             if (!File.Exists(configPath))
@@ -115,8 +118,20 @@ namespace Plush_OJ
                 return false;
             }
 
-            return false;
+            string inputHash = ComputeHash(passWD, cfg.Salt);
+            if (adminACC == cfg.AdminACC && inputHash == cfg.PasswdHash)
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Wrong Administrator Account or Password, Login access denied...\n");
+                return false;
+            }
+
 #pragma warning restore CS8600
+#pragma warning restore CS8602
+#pragma warning restore CS8604
         } 
 
         public static void Main(string[] args)
