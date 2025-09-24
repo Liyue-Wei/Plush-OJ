@@ -88,29 +88,12 @@ namespace Plush_OJ
                 cfg = JsonSerializer.Deserialize<AppConfig>(jsonString);
             }
 
-            string? adminACC, passWD = string.Empty;
+            string? adminACC, passWD;
             Console.Write("Enter Administrator Account: ");
             adminACC = Console.ReadLine();
             Console.Write("\nEnter Password: ");
-
-            ConsoleKeyInfo key;
-            do
-            {
-                key = Console.ReadKey(true);
-                if (!char.IsControl(key.KeyChar))
-                {
-                    passWD += key.KeyChar;
-                    Console.Write("*");
-                }
-                else
-                {
-                    if (key.Key == ConsoleKey.Backspace && passWD.Length > 0)
-                    {
-                        passWD = passWD.Substring(0, passWD.Length - 1);
-                        Console.Write("\b \b");
-                    }
-                }
-            } while (key.Key != ConsoleKey.Enter);
+            passWD = ReadPassword();
+            Console.WriteLine();
 
             if (string.IsNullOrEmpty(adminACC) || string.IsNullOrEmpty(passWD))
             {
@@ -134,6 +117,76 @@ namespace Plush_OJ
 #pragma warning restore CS8602
 #pragma warning restore CS8604
         } 
+
+        private static void ResetPassword()
+        {
+            Console.Clear();
+            Console.WriteLine("--- Password Reset ---");
+            Console.Write("Enter new password: ");
+            string newPassword1 = ReadPassword();
+
+            Console.Write("\nConfirm new password: ");
+            string newPassword2 = ReadPassword();
+            Console.WriteLine();
+            if (string.IsNullOrEmpty(newPassword1))
+            {
+                Console.WriteLine("\nPassword cannot be empty. Reset failed.");
+                Thread.Sleep(750);
+                return;
+            }
+
+            if (newPassword1 != newPassword2)
+            {
+                Console.WriteLine("\nPasswords do not match. Reset failed.");
+                Thread.Sleep(750);
+                return;
+            }
+
+            try
+            {
+                string configPath = "Config/config.json";
+                string jsonString = File.ReadAllText(configPath);
+                AppConfig cfg = JsonSerializer.Deserialize<AppConfig>(jsonString)!;
+
+                string newSalt = GenerateSalt();
+                string newHash = ComputeHash(newPassword1, newSalt);
+
+                cfg.Salt = newSalt;
+                cfg.PasswdHash = newHash;
+
+                string updatedJsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(configPath, updatedJsonString);
+
+                Console.WriteLine("\nPassword has been reset successfully.");
+                Thread.Sleep(750);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nAn error occurred while resetting the password: {ex.Message}");
+                Thread.Sleep(2000);
+            }
+        }
+
+        private static string ReadPassword()
+        {
+            string password = string.Empty;
+            ConsoleKeyInfo key;
+            do
+            {
+                key = Console.ReadKey(true);
+                if (!char.IsControl(key.KeyChar))
+                {
+                    password += key.KeyChar;
+                    Console.Write("*");
+                }
+                else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+                {
+                    password = password.Substring(0, password.Length - 1);
+                    Console.Write("\b \b");
+                }
+            } while (key.Key != ConsoleKey.Enter);
+            return password;
+        }
 
         private static void ShowAdminMenu()
         {
@@ -171,8 +224,7 @@ namespace Plush_OJ
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine("\nReset Password function is not implemented yet.");
-                        Thread.Sleep(750);
+                        ResetPassword();
                         break;
                     case "0":
                         exitAdminMenu = true;
