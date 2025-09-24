@@ -122,6 +122,34 @@ namespace Plush_OJ
         {
             Console.Clear();
             Console.WriteLine("--- Reset Administrator ---");
+
+            string configPath = "Config/config.json";
+            AppConfig cfg;
+            try
+            {
+                string jsonString = File.ReadAllText(configPath);
+                cfg = JsonSerializer.Deserialize<AppConfig>(jsonString)!;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nAn error occurred while loading configuration: {ex.Message}");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.Write("Enter CURRENT password to continue: ");
+            string currentPassword = ReadPassword();
+            Console.WriteLine();
+
+            string currentInputHash = ComputeHash(currentPassword, cfg.Salt!);
+            if (currentInputHash != cfg.PasswdHash)
+            {
+                Console.WriteLine("\nIncorrect current password. Reset failed.");
+                Thread.Sleep(750);
+                return; 
+            }
+
+            Console.WriteLine("\nVerification successful. Please enter new credentials.");
             Console.Write("Enter new Administrator Account: ");
             string? newAdminACC = Console.ReadLine();
             
@@ -147,10 +175,6 @@ namespace Plush_OJ
 
             try
             {
-                string configPath = "Config/config.json";
-                string jsonString = File.ReadAllText(configPath);
-                AppConfig cfg = JsonSerializer.Deserialize<AppConfig>(jsonString)!;
-
                 string newSalt = GenerateSalt();
                 string newHash = ComputeHash(newPassword1, newSalt);
 
@@ -162,12 +186,12 @@ namespace Plush_OJ
                 File.WriteAllText(configPath, updatedJsonString);
 
                 Console.WriteLine("\nAdministrator account has been reset successfully.");
-                Thread.Sleep(750);
+                Thread.Sleep(1500);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"\nAn error occurred while resetting the administrator account: {ex.Message}");
-                Thread.Sleep(750);
+                Thread.Sleep(1500);
             }
         }
 
