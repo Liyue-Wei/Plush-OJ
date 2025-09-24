@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.IO;
 
 namespace Plush_OJ
 {
@@ -77,14 +78,19 @@ namespace Plush_OJ
                 }
             } while (key.Key != ConsoleKey.Enter);
 
-            Console.WriteLine();
-
             if (string.IsNullOrEmpty(adminACC) || string.IsNullOrEmpty(passWD))
             {
                 Console.WriteLine("\nAdministrator Account or Password cannot be Null or Empty, Login access denied...\n");
                 return false;
             }
-            return true;
+
+            AppConfig cfg;
+            string configPath = "Plush_OJ_Main_Application/Config/config.json";
+            if (!File.Exists(configPath))
+            {
+                Console.WriteLine("Configuration file not found, creating...");
+                string sefSalt = GenerateSalt();
+            }
         } 
 
         public static void Main(string[] args)
