@@ -118,19 +118,22 @@ namespace Plush_OJ
 #pragma warning restore CS8604
         } 
 
-        private static void ResetPassword()
+        private static void ResetAdmin()
         {
             Console.Clear();
-            Console.WriteLine("--- Password Reset ---");
+            Console.WriteLine("--- Reset Administrator ---");
+            Console.Write("Enter new Administrator Account: ");
+            string? newAdminACC = Console.ReadLine();
+            
             Console.Write("Enter new password: ");
             string newPassword1 = ReadPassword();
 
             Console.Write("\nConfirm new password: ");
             string newPassword2 = ReadPassword();
             Console.WriteLine();
-            if (string.IsNullOrEmpty(newPassword1))
+            if (string.IsNullOrEmpty(newAdminACC) || string.IsNullOrEmpty(newPassword1))
             {
-                Console.WriteLine("\nPassword cannot be empty. Reset failed.");
+                Console.WriteLine("\nAdministrator Account and Password cannot be empty. Reset failed.");
                 Thread.Sleep(750);
                 return;
             }
@@ -151,19 +154,20 @@ namespace Plush_OJ
                 string newSalt = GenerateSalt();
                 string newHash = ComputeHash(newPassword1, newSalt);
 
+                cfg.AdminACC = newAdminACC;
                 cfg.Salt = newSalt;
                 cfg.PasswdHash = newHash;
 
                 string updatedJsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(configPath, updatedJsonString);
 
-                Console.WriteLine("\nPassword has been reset successfully.");
+                Console.WriteLine("\nAdministrator account has been reset successfully.");
                 Thread.Sleep(750);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nAn error occurred while resetting the password: {ex.Message}");
-                Thread.Sleep(2000);
+                Console.WriteLine($"\nAn error occurred while resetting the administrator account: {ex.Message}");
+                Thread.Sleep(750);
             }
         }
 
@@ -213,7 +217,7 @@ namespace Plush_OJ
     ┌──────────────────────────────────┐
     │        ADMINISTRATOR MENU        │
     ├──────────────────────────────────┤
-    │ [1] Reset Password               │
+    │ [1] Reset Administrator          │
     │                                  │
     │ [0] Logout                       │
     └──────────────────────────────────┘
@@ -224,7 +228,7 @@ namespace Plush_OJ
                 switch (choice)
                 {
                     case "1":
-                        ResetPassword();
+                        ResetAdmin();
                         break;
                     case "0":
                         exitAdminMenu = true;
