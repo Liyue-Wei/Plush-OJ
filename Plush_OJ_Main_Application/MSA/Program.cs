@@ -54,6 +54,7 @@ namespace Plush_OJ
         #endregion
         private protected static bool LoginMGT()
         {
+#pragma warning disable CS8600
             AppConfig cfg;
             string configPath = "Plush_OJ_Main_Application/Config/config.json";
             if (!File.Exists(configPath))
@@ -115,6 +116,7 @@ namespace Plush_OJ
             }
 
             return false;
+#pragma warning restore CS8600
         } 
 
         public static void Main(string[] args)
