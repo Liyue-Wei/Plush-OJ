@@ -29,8 +29,29 @@ namespace Plush_OJ
             Console.WriteLine($"Affinity Mask: {currentProcess.ProcessorAffinity}");
 #pragma warning restore CA1416
         }
-        
-        private static bool loginMGT()
+
+        #region Password Hashing
+        private protected static string GenerateSalt()
+        {
+            byte[] saltBytes = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(saltBytes);
+            }
+            return Convert.ToBase64String(saltBytes);
+        }
+
+        private protected static string ComputeHash(string password, string salt)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] saltedPassword = Encoding.UTF8.GetBytes(password + salt);
+                byte[] hashBytes = sha256.ComputeHash(saltedPassword);
+                return Convert.ToBase64String(hashBytes);
+            }
+        }
+        #endregion
+        private protected static bool LoginMGT()
         {
             string? adminACC, passWD = string.Empty;
             Console.Write("Enter Administrator Account: ");
@@ -110,7 +131,7 @@ namespace Plush_OJ
             {
                 case "1":
                     Console.WriteLine("Administrator Login: \n");
-                    if (loginMGT())
+                    if (LoginMGT())
                     {
                         Console.WriteLine("Login succeed.");
                     }
