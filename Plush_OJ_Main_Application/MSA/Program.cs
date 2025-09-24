@@ -345,7 +345,7 @@ namespace Plush_OJ
         }
     }
 
-    public class AppConfig
+    public class AppConfig    // DTO
     {
         public string? AdminACC { get; set; }
         public string? PasswdHash { get; set; }
