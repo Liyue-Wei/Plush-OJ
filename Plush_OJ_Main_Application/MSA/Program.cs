@@ -59,7 +59,7 @@ namespace Plush_OJ
 #pragma warning disable CS8604
 
             AppConfig cfg;
-            string configPath = "Plush_OJ_Main_Application/Config/config.json";
+            string configPath = "Config/config.json";
             if (!File.Exists(configPath))
             {
                 Console.WriteLine("Configuration file not found, creating...");
