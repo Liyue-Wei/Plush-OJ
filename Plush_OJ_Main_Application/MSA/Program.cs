@@ -54,6 +54,14 @@ namespace Plush_OJ
         #endregion
         private protected static bool LoginMGT()
         {
+            AppConfig cfg;
+            string configPath = "Plush_OJ_Main_Application/Config/config.json";
+            if (!File.Exists(configPath))
+            {
+                Console.WriteLine("Configuration file not found, creating...");
+                string sefSalt = GenerateSalt();
+            }
+
             string? adminACC, passWD = string.Empty;
             Console.Write("Enter Administrator Account: ");
             adminACC = Console.ReadLine();
@@ -84,13 +92,7 @@ namespace Plush_OJ
                 return false;
             }
 
-            AppConfig cfg;
-            string configPath = "Plush_OJ_Main_Application/Config/config.json";
-            if (!File.Exists(configPath))
-            {
-                Console.WriteLine("Configuration file not found, creating...");
-                string sefSalt = GenerateSalt();
-            }
+            return false;
         } 
 
         public static void Main(string[] args)
