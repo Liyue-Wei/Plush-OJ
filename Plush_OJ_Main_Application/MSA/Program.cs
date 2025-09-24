@@ -59,7 +59,22 @@ namespace Plush_OJ
             if (!File.Exists(configPath))
             {
                 Console.WriteLine("Configuration file not found, creating...");
-                string sefSalt = GenerateSalt();
+                string defSalt = GenerateSalt();
+                cfg = new AppConfig
+                {
+                    AdminACC = "admin",
+                    PasswdHash = ComputeHash("admin", defSalt),
+                    Salt = defSalt
+                };
+
+                string? directoryPath = Path.GetDirectoryName(configPath);
+                if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                
+                string jsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(configPath, jsonString);
             }
 
             string? adminACC, passWD = string.Empty;
@@ -166,9 +181,9 @@ namespace Plush_OJ
 
     public class AppConfig
     {
-        public string? adminACC { get; set; }
-        public string? passwdHash { get; set; }
-        public string? salt { get; set; }
+        public string? AdminACC { get; set; }
+        public string? PasswdHash { get; set; }
+        public string? Salt { get; set; }
     }
 
     class API
