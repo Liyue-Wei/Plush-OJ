@@ -474,5 +474,10 @@ namespace Plush_OJ
         {
 
         }
+
+        static void Cluster()    // Cluster Connector
+        {
+            
+        }
     }
 }
