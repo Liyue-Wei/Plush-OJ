@@ -333,6 +333,8 @@ namespace Plush_OJ
     ├──────────────────────────────────┤
     │ [1] Reset Administrator          │
     | [2] Set Administrator Email      |
+    | [3] Change System Configuration  |
+    | [4] Add Moderator                |
     │                                  │
     │ [0] Logout                       │
     └──────────────────────────────────┘
@@ -347,6 +349,14 @@ namespace Plush_OJ
                         break;
                     case "2":
                         SetAdminEmail();
+                        break;
+                    case "3":
+                        Console.WriteLine("\nNot available...");
+                        Thread.Sleep(750);
+                        break;
+                    case "4":
+                        Console.WriteLine("\nNot available...");
+                        Thread.Sleep(750);
                         break;
                     case "0":
                         exitAdminMenu = true;
@@ -395,7 +405,7 @@ namespace Plush_OJ
     │            MAIN MENU             │
     ├──────────────────────────────────┤
     │ [1] Administrator Login          │
-    | [2] Start Server
+    | [2] Start Server                 |
     │                                  │
     │ [0] Exit                         │
     └──────────────────────────────────┘
