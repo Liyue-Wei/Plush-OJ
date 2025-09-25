@@ -34,7 +34,7 @@
 
 **Network (Port Speed)** : 1 Gbps Minimum, 2.5Gbps recommended.
 
-**Operating System** : Windows 11 24H2 with WSL2 (Ubuntu 24.04 LTS) or Red Hat Enterprise Linux 9.6.
+**Operating System** : Windows 11 24H2 with WSL2 (Ubuntu 24.04 LTS)
 
 ---
 ### Developed by [Liyue Wei](https://github.com/Liyue-Wei) on GitHub.
