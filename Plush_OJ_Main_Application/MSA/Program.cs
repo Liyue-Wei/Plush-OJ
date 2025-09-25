@@ -78,8 +78,8 @@ namespace Plush_OJ
                     Directory.CreateDirectory(directoryPath);
                 }
 
-                string jsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(configPath, jsonString);
+                string jsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });    // formate as json file
+                File.WriteAllText(configPath, jsonString);    // write into json file
                 Console.WriteLine($"\nDefault Administrator Account created: admin\nDefault Password created: {defPassWD}\nPlease change the password after your first login for security reasons.\n\n");
             }
             else
@@ -195,6 +195,96 @@ namespace Plush_OJ
             }
         }
 
+        private static void SetAdminEmail()
+        {
+            Console.Clear();
+            Console.WriteLine("--- Set Administrator Email ---");
+
+            string configPath = "Config/config.json";
+            AppConfig cfg;
+            try
+            {
+                string jsonString = File.ReadAllText(configPath);
+                cfg = JsonSerializer.Deserialize<AppConfig>(jsonString)!;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nAn error occurred while loading configuration: {ex.Message}");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.Write("Enter password to continue: ");
+            string Password = ReadPassword();
+            Console.WriteLine();
+
+            string InputHash = ComputeHash(Password, cfg.Salt!);
+            if (InputHash != cfg.PasswdHash)
+            {
+                Console.WriteLine("\nIncorrect password. Operation failed...");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.WriteLine("\nVerification successful.");
+            Console.Write("Enter new Administrator Email: ");
+            string? newAdminEmail = Console.ReadLine();
+
+            Console.Write("Enter Email Application Password: ");
+            string newEmailPassword = ReadPassword();
+            Console.WriteLine();
+
+            if (string.IsNullOrEmpty(newAdminEmail) || string.IsNullOrEmpty(newEmailPassword))
+            {
+                Console.WriteLine("\nEmail and Email Password cannot be empty. Operation failed.");
+                Thread.Sleep(750);
+                return;
+            }
+
+            try
+            {
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(newEmailPassword);
+                string encodedPassword = Convert.ToBase64String(passwordBytes);    // Encrypted by Base64
+
+                cfg.AdminEmail = newAdminEmail;
+                cfg.EmailPasswd = encodedPassword; 
+
+                string updatedJsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(configPath, updatedJsonString);
+
+                Console.WriteLine("\nAdministrator email has been set successfully.");
+                Thread.Sleep(750);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nAn error occurred while saving the configuration: {ex.Message}");
+                Thread.Sleep(750);
+            }
+        }
+
+        private static string? GetDecryptedEmailPassword(AppConfig cfg)
+        {
+            if (string.IsNullOrEmpty(cfg.EmailPasswd))
+            {
+                return null;
+            }
+
+            try
+            {
+                byte[] encodedPasswordBytes = Convert.FromBase64String(cfg.EmailPasswd);
+                return Encoding.UTF8.GetString(encodedPasswordBytes);
+            }
+            catch (FormatException)
+            {
+                return cfg.EmailPasswd;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to decode email password: {ex.Message}");
+                return null;
+            }
+        }
+
         private static string ReadPassword()
         {
             string password = string.Empty;
@@ -254,6 +344,9 @@ namespace Plush_OJ
                 {
                     case "1":
                         ResetAdmin();
+                        break;
+                    case "2":
+                        SetAdminEmail();
                         break;
                     case "0":
                         exitAdminMenu = true;
