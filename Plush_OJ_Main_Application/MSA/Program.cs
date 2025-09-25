@@ -242,6 +242,7 @@ namespace Plush_OJ
     │        ADMINISTRATOR MENU        │
     ├──────────────────────────────────┤
     │ [1] Reset Administrator          │
+    | [2] Set Administrator Email      |
     │                                  │
     │ [0] Logout                       │
     └──────────────────────────────────┘
@@ -269,7 +270,7 @@ namespace Plush_OJ
 
         public static void Main(string[] args)
         {
-            if (!OperatingSystem.IsLinux() && !OperatingSystem.IsWindows())
+            if (!OperatingSystem.IsWindows())
             {
                 Console.WriteLine("Error : System Unsupported, Terminated...\n");
                 return;
@@ -350,6 +351,8 @@ namespace Plush_OJ
         public string? AdminACC { get; set; }
         public string? PasswdHash { get; set; }
         public string? Salt { get; set; }
+        public string? AdminEmail { get; set; }
+        public string? EmailPasswd { get; set; }
     }
 
     class API
