@@ -11,7 +11,7 @@ namespace Plush_OJ
 {
     class MSA    // Main Server Application
     {
-        static void ProcessorSet()
+        static void ProcessorSet()    // Only for Windows Platform
         {
 #pragma warning disable CA1416
             int countProcessors = Environment.ProcessorCount;
@@ -116,7 +116,7 @@ namespace Plush_OJ
 #pragma warning restore CS8600
 #pragma warning restore CS8602
 #pragma warning restore CS8604
-        } 
+        }
 
         private static void ResetAdmin()
         {
@@ -146,13 +146,13 @@ namespace Plush_OJ
             {
                 Console.WriteLine("\nIncorrect current password. Reset failed.");
                 Thread.Sleep(750);
-                return; 
+                return;
             }
 
             Console.WriteLine("\nVerification successful. Please enter new credentials.");
             Console.Write("Enter new Administrator Account: ");
             string? newAdminACC = Console.ReadLine();
-            
+
             Console.Write("Enter new password: ");
             string newPassword1 = ReadPassword();
 
@@ -247,7 +247,7 @@ namespace Plush_OJ
                 string encodedPassword = Convert.ToBase64String(passwordBytes);    // Encrypted by Base64
 
                 cfg.AdminEmail = newAdminEmail;
-                cfg.EmailPasswd = encodedPassword; 
+                cfg.EmailPasswd = encodedPassword;
 
                 string updatedJsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(configPath, updatedJsonString);
@@ -477,7 +477,7 @@ namespace Plush_OJ
 
         static void Cluster()    // Cluster Connector
         {
-            
+
         }
     }
 }
