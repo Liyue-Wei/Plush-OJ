@@ -79,7 +79,8 @@ namespace Plush_OJ
                         { "TestDataDB", "Data Source = Database/TestDataDB.db" },
                         { "SubmitLogDB", "Data Source = Database/SubmitLogDB.db" },
                         { "SystemLogDB", "Data Source = Database/SystemLogDB.db" },
-                        { "DiscussionForumDB", "Data Source = Database/DiscussionForumDB.db" }
+                        { "DiscussionForumDB", "Data Source = Database/DiscussionForumDB.db" },
+                        { "CompInfoDB", "Data Source = Database/CompInfoDB.db"}
                     }
                 };
 
@@ -344,8 +345,9 @@ namespace Plush_OJ
     ├──────────────────────────────────┤
     │ [1] Reset Administrator          │
     | [2] Set Administrator Email      |
-    | [3] Change System Configuration  |
+    | [3] Reset Database (Dangerous)   |
     | [4] Add Moderator                |
+    | [5]                              |
     │                                  │
     │ [0] Logout                       │
     └──────────────────────────────────┘
@@ -502,5 +504,5 @@ namespace Plush_OJ
 }
 
 /*
-Database: QuestionDB, UserDB, TestDATA_DB, SubmitLOG_DB, SystemLOG, DiscussionForum_DB; --> Polymorphism
+Database: QuestionDB, UserDB, TestDATA_DB, SubmitLOG_DB, SystemLOG, DiscussionForum_DB, CompInfoDB; --> Polymorphism
 */
