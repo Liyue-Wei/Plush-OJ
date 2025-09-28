@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.IO;
 using Microsoft.Data.Sqlite;
+using System.Data.Common;
 
 namespace Plush_OJ
 {
@@ -70,7 +71,16 @@ namespace Plush_OJ
                 {
                     AdminACC = "admin",
                     PasswdHash = ComputeHash(defPassWD, defSalt),
-                    Salt = defSalt
+                    Salt = defSalt,
+                    ConnectionStrings = new Dictionary<string, string>
+                    {
+                        { "QuestionDB", "Data Source = Database/QuestionDB.db" },
+                        { "UserDB", "Data Source = Database/UserDB.db" },
+                        { "TestDataDB", "Data Source = Database/TestDataDB.db" },
+                        { "SubmitLogDB", "Data Source = Database/SubmitLogDB.db" },
+                        { "SystemLogDB", "Data Source = Database/SystemLogDB.db" },
+                        { "DiscussionForumDB", "Data Source = Database/DiscussionForumDB.db" }
+                    }
                 };
 
                 string? directoryPath = Path.GetDirectoryName(configPath);
@@ -457,11 +467,12 @@ namespace Plush_OJ
         public string? Salt { get; set; }
         public string? AdminEmail { get; set; }
         public string? EmailPasswd { get; set; }
+        public Dictionary<string, string>? ConnectionStrings { get; set; }   
     }
 
     public interface ConnDB    // Database Connector --> Polymorphism
     {
-        
+        DbConnection Connect();
     }
 
     class API
