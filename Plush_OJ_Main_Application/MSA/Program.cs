@@ -261,7 +261,7 @@ namespace Plush_OJ
                 Thread.Sleep(750);
             }
         }
-
+        
         private static string? GetDecryptedEmailPassword(AppConfig cfg)
         {
             if (string.IsNullOrEmpty(cfg.EmailPasswd))
