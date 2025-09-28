@@ -460,7 +460,7 @@ namespace Plush_OJ
         }
     }
 
-    public class AppConfig    // DTO
+    public class AppConfig    // DTO: Data Transfer Object
     {
         public string? AdminACC { get; set; }
         public string? PasswdHash { get; set; }
