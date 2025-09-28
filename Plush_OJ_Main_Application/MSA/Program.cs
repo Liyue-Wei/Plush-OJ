@@ -346,7 +346,7 @@ namespace Plush_OJ
     │ [1] Reset Administrator          │
     | [2] Set Administrator Email      |
     | [3] Reset Database (Dangerous)   |
-    | [4] Add Moderator                |
+    | [4] Add Modlerator               |
     | [5]                              |
     │                                  │
     │ [0] Logout                       │
