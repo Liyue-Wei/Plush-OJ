@@ -261,7 +261,7 @@ namespace Plush_OJ
                 Thread.Sleep(750);
             }
         }
-        
+
         private static string? GetDecryptedEmailPassword(AppConfig cfg)
         {
             if (string.IsNullOrEmpty(cfg.EmailPasswd))
@@ -458,12 +458,19 @@ namespace Plush_OJ
         public string? EmailPasswd { get; set; }
     }
 
+    public interface ConnDB    // Database Connector --> Polymorphism
+    {
+        
+    }
+
     class API
     {
+        /*
         private static void ConnDB()    // Database Connecter
         {
 
         }
+        */
 
         private static void ConnFF()    // FOFE FW Connecter
         {
@@ -481,3 +488,7 @@ namespace Plush_OJ
         }
     }
 }
+
+/*
+Database : QuestionDB, UserDB, TestDATA_DB, SubmitLOG_DB, SystemLOG, DiscussionForum_DB; --> Polymorphism
+*/
