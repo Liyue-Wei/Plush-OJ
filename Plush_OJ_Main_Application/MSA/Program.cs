@@ -490,5 +490,5 @@ namespace Plush_OJ
 }
 
 /*
-Database : QuestionDB, UserDB, TestDATA_DB, SubmitLOG_DB, SystemLOG, DiscussionForum_DB; --> Polymorphism
+Database: QuestionDB, UserDB, TestDATA_DB, SubmitLOG_DB, SystemLOG, DiscussionForum_DB; --> Polymorphism
 */
