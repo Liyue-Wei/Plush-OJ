@@ -591,6 +591,37 @@ namespace Plush_OJ
             }
         }
 
+        public IConnDB? GetConnector(string dbName)
+        {
+            if (cfg?.ConnectionStrings == null || !cfg.ConnectionStrings.ContainsKey(dbName))
+            {
+                Console.WriteLine($"Connection string for '{dbName}' not found in config.json.");
+                return null;
+            }
+            
+            string connectionString = cfg.ConnectionStrings[dbName];
+            switch (dbName)
+            {
+                case "UserDB":
+                    return new UserDbConnector(connectionString);
+                case "QuestionDB":
+                    return new QuestionDbConnector(connectionString);
+                case "TestDataDB":
+                    return new TestDataDbConnector(connectionString);
+                case "SubmitLogDB":
+                    return new SubmitLogDbConnector(connectionString);
+                case "SystemLogDB":
+                    return new SystemLogDbConnector(connectionString);
+                case "DiscussionForumDB":
+                    return new DiscussionForumDbConnector(connectionString);
+                case "CompInfoDB":
+                    return new CompInfoDbConnector(connectionString);
+                default:
+                    Console.WriteLine($"No connector available for '{dbName}'.");
+                    return null;
+            }
+        }
+
         static void ConnFF()    // FOFE FW Connecter
         {
 
