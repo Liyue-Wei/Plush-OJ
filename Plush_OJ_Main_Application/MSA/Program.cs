@@ -472,10 +472,21 @@ namespace Plush_OJ
         public Dictionary<string, string>? ConnectionStrings { get; set; }   
     }
 
+    #region Database Connector
     public interface ConnDB    // Database Connector --> Polymorphism
     {
         DbConnection Connect();
     }
+
+    public class UserDbConnector : ConnDB
+    {
+        private readonly string? _connectionString;
+        public DbConnection Connect()    // 逻辑尚未编写
+        {
+            return null!;
+        }
+    }
+    #endregion
 
     class API
     {
