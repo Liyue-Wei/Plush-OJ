@@ -572,12 +572,7 @@ namespace Plush_OJ
 
     class API
     {
-        /*
-        private static void ConnDB()    // Database Connecter
-        {
-
-        }
-        */
+        private static AppConfig? _config;
 
         private static void ConnFF()    // FOFE FW Connecter
         {
