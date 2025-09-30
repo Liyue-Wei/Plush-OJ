@@ -469,7 +469,7 @@ namespace Plush_OJ
         public string? Salt { get; set; }
         public string? AdminEmail { get; set; }
         public string? EmailPasswd { get; set; }
-        public Dictionary<string, string>? ConnectionStrings { get; set; }   
+        public Dictionary<string, string>? ConnectionStrings { get; set; }    // Database connection string
     }
 
     #region Database Connector
@@ -572,9 +572,26 @@ namespace Plush_OJ
 
     class API
     {
-        private static AppConfig? _config;
+        private readonly AppConfig? cfg;
+        public API()
+        {
+            try
+            {
+                string cfgPath = "Config/config.json";
+                if (File.Exists(cfgPath))
+                {
+                    string jsonString = File.ReadAllText(cfgPath);
+                    cfg = JsonSerializer.Deserialize<AppConfig>(jsonString);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Configuration file not found, Terminated...");
+                Environment.Exit(-1);    // Force Terminate
+            }
+        }
 
-        private static void ConnFF()    // FOFE FW Connecter
+        static void ConnFF()    // FOFE FW Connecter
         {
 
         }
