@@ -411,7 +411,7 @@ namespace Plush_OJ
                                    Welcome to Plush::OJ Server Commandline Interface                                    
 ======================================================================================================================== 
             ");
-            Thread.Sleep(1000);
+            Thread.Sleep(750);
         MainMenu:
             Console.WriteLine(@"
     ┌──────────────────────────────────┐
