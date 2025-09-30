@@ -473,15 +473,93 @@ namespace Plush_OJ
     }
 
     #region Database Connector
-    public interface ConnDB    // Database Connector --> Polymorphism
+    public interface IConnDB    // Database Connector --> Polymorphism
     {
         DbConnection Connect();
     }
 
-    public class UserDbConnector : ConnDB
+    public class UserDbConnector : IConnDB
     {
         private readonly string? _connectionString;
         public UserDbConnector(string connectionString)    // Construtor
+        {
+            _connectionString = connectionString;
+        }
+        public DbConnection Connect()    // 逻辑尚未编写
+        {
+            return null!;
+        }
+    }
+
+    public class QuestionDbConnector : IConnDB
+    {
+        private readonly string? _connectionString;
+        public QuestionDbConnector(string connectionString)    // Construtor
+        {
+            _connectionString = connectionString;
+        }
+        public DbConnection Connect()    // 逻辑尚未编写
+        {
+            return null!;
+        }
+    }
+
+    public class TestDataDbConnector : IConnDB
+    {
+        private readonly string? _connectionString;
+        public TestDataDbConnector(string connectionString)    // Construtor
+        {
+            _connectionString = connectionString;
+        }
+        public DbConnection Connect()    // 逻辑尚未编写
+        {
+            return null!;
+        }
+    }
+
+    public class SubmitLogDbConnector : IConnDB
+    {
+        private readonly string? _connectionString;
+        public SubmitLogDbConnector(string connectionString)    // Construtor
+        {
+            _connectionString = connectionString;
+        }
+        public DbConnection Connect()    // 逻辑尚未编写
+        {
+            return null!;
+        }
+    }
+
+    public class SystemLogDbConnector : IConnDB
+    {
+        private readonly string? _connectionString;
+        public SystemLogDbConnector(string connectionString)    // Construtor
+        {
+            _connectionString = connectionString;
+        }
+        public DbConnection Connect()    // 逻辑尚未编写
+        {
+            return null!;
+        }
+    }
+
+    public class DiscussionForumDbConnector : IConnDB
+    {
+        private readonly string? _connectionString;
+        public DiscussionForumDbConnector(string connectionString)    // Construtor
+        {
+            _connectionString = connectionString;
+        }
+        public DbConnection Connect()    // 逻辑尚未编写
+        {
+            return null!;
+        }
+    }
+
+    public class CompInfoDbConnector : IConnDB
+    {
+        private readonly string? _connectionString;
+        public CompInfoDbConnector(string connectionString)    // Construtor
         {
             _connectionString = connectionString;
         }
