@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* Copyright (c) 2024 Zhang Zhewei (Liyue-Wei) - Licensed under the MIT License. */
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
