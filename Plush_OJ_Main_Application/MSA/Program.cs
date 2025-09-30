@@ -481,6 +481,10 @@ namespace Plush_OJ
     public class UserDbConnector : ConnDB
     {
         private readonly string? _connectionString;
+        public UserDbConnector(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
         public DbConnection Connect()    // 逻辑尚未编写
         {
             return null!;
