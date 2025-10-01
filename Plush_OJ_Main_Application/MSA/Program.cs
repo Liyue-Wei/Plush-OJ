@@ -448,7 +448,8 @@ namespace Plush_OJ
 
                 case "2":
                     Console.WriteLine("Server not avaliable...");
-                    break;
+                    Thread.Sleep(750);
+                    goto MainMenu;
 
                 case "0":
                     Console.WriteLine("Exit...");
