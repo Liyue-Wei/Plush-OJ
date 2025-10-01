@@ -74,16 +74,7 @@ namespace Plush_OJ
                     AdminACC = "admin",
                     PasswdHash = ComputeHash(defPassWD, defSalt),
                     Salt = defSalt,
-                    ConnectionStrings = new Dictionary<string, string>
-                    {
-                        { "QuestionDB", "Data Source = Database/QuestionDB.db" },
-                        { "UserDB", "Data Source = Database/UserDB.db" },
-                        { "TestDataDB", "Data Source = Database/TestDataDB.db" },
-                        { "SubmitLogDB", "Data Source = Database/SubmitLogDB.db" },
-                        { "SystemLogDB", "Data Source = Database/SystemLogDB.db" },
-                        { "DiscussionForumDB", "Data Source = Database/DiscussionForumDB.db" },
-                        { "CompInfoDB", "Data Source = Database/CompInfoDB.db"}
-                    }
+                    ConnectionStrings = "Data Source = Database/PlushOJ_Main.db"
                 };
 
                 string? directoryPath = Path.GetDirectoryName(configPath);
@@ -472,7 +463,7 @@ namespace Plush_OJ
         public string? Salt { get; set; }
         public string? AdminEmail { get; set; }
         public string? EmailPasswd { get; set; }
-        public Dictionary<string, string>? ConnectionStrings { get; set; }    // Database connection string
+        public string? ConnectionStrings { get; set; }    // Database connection string
     }
 
     #region Database Connector
@@ -481,91 +472,9 @@ namespace Plush_OJ
         DbConnection Connect();
     }
 
-    public class UserDbConnector : IConnDB
+    public class MainDbConnector(string connectionString) : IConnDB    // Main Database Connector
     {
-        private readonly string? _connectionString;
-        public UserDbConnector(string connectionString)    // Construtor
-        {
-            _connectionString = connectionString;
-        }
-        public DbConnection Connect()    // 逻辑尚未编写
-        {
-            return null!;
-        }
-    }
-
-    public class QuestionDbConnector : IConnDB
-    {
-        private readonly string? _connectionString;
-        public QuestionDbConnector(string connectionString)    // Construtor
-        {
-            _connectionString = connectionString;
-        }
-        public DbConnection Connect()    // 逻辑尚未编写
-        {
-            return null!;
-        }
-    }
-
-    public class TestDataDbConnector : IConnDB
-    {
-        private readonly string? _connectionString;
-        public TestDataDbConnector(string connectionString)    // Construtor
-        {
-            _connectionString = connectionString;
-        }
-        public DbConnection Connect()    // 逻辑尚未编写
-        {
-            return null!;
-        }
-    }
-
-    public class SubmitLogDbConnector : IConnDB
-    {
-        private readonly string? _connectionString;
-        public SubmitLogDbConnector(string connectionString)    // Construtor
-        {
-            _connectionString = connectionString;
-        }
-        public DbConnection Connect()    // 逻辑尚未编写
-        {
-            return null!;
-        }
-    }
-
-    public class SystemLogDbConnector : IConnDB
-    {
-        private readonly string? _connectionString;
-        public SystemLogDbConnector(string connectionString)    // Construtor
-        {
-            _connectionString = connectionString;
-        }
-        public DbConnection Connect()    // 逻辑尚未编写
-        {
-            return null!;
-        }
-    }
-
-    public class DiscussionForumDbConnector : IConnDB
-    {
-        private readonly string? _connectionString;
-        public DiscussionForumDbConnector(string connectionString)    // Construtor
-        {
-            _connectionString = connectionString;
-        }
-        public DbConnection Connect()    // 逻辑尚未编写
-        {
-            return null!;
-        }
-    }
-
-    public class CompInfoDbConnector : IConnDB
-    {
-        private readonly string? _connectionString;
-        public CompInfoDbConnector(string connectionString)    // Construtor
-        {
-            _connectionString = connectionString;
-        }
+        private readonly string? _connectionString = connectionString;
         public DbConnection Connect()    // 逻辑尚未编写
         {
             return null!;
@@ -596,33 +505,13 @@ namespace Plush_OJ
 
         public IConnDB? GetConnector(string dbName)
         {
-            if (cfg?.ConnectionStrings == null || !cfg.ConnectionStrings.ContainsKey(dbName))
+            if (string.IsNullOrEmpty(cfg?.ConnectionStrings))
             {
-                Console.WriteLine($"Connection string for '{dbName}' not found in config.json.");
+                Console.WriteLine("Main database connection string not found in config.json.");
                 return null;
             }
             
-            string connectionString = cfg.ConnectionStrings[dbName];
-            switch (dbName)
-            {
-                case "UserDB":
-                    return new UserDbConnector(connectionString);
-                case "QuestionDB":
-                    return new QuestionDbConnector(connectionString);
-                case "TestDataDB":
-                    return new TestDataDbConnector(connectionString);
-                case "SubmitLogDB":
-                    return new SubmitLogDbConnector(connectionString);
-                case "SystemLogDB":
-                    return new SystemLogDbConnector(connectionString);
-                case "DiscussionForumDB":
-                    return new DiscussionForumDbConnector(connectionString);
-                case "CompInfoDB":
-                    return new CompInfoDbConnector(connectionString);
-                default:
-                    Console.WriteLine($"No connector available for '{dbName}'.");
-                    return null;
-            }
+            return new MainDbConnector(cfg.ConnectionStrings);
         }
 
         static void ConnFF()    // FOFE FW Connecter
