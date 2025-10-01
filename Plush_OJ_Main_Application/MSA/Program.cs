@@ -440,6 +440,7 @@ namespace Plush_OJ
                 case "2":
                     Console.WriteLine("Server not avaliable...");
                     Thread.Sleep(750);
+                    Console.Clear();
                     goto MainMenu;
 
                 case "0":
