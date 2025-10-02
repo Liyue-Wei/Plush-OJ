@@ -20,18 +20,18 @@ namespace Plush_OJ
 #pragma warning disable CA1416
             int countProcessors = Environment.ProcessorCount;
             Process currentProcess = Process.GetCurrentProcess();
-            Console.WriteLine($"Number of processors: {countProcessors}");
+            Console.WriteLine($"SYSTEM: Number of processors: {countProcessors}");
             if (countProcessors < 8)
             {
-                Console.WriteLine("Error : Under 8 Processors, Terminated...\n");
+                Console.WriteLine("ERROR: Under 8 Processors, Terminated...\n");
                 Environment.Exit(1);
             }
 
-            string? lowPerfModeWarning = countProcessors < 16 ? "Warning : Under 16 Processors, Application running on low performance mode." : null;
+            string? lowPerfModeWarning = countProcessors < 16 ? "SYSTEM: Warning : Under 16 Processors, Application running on low performance mode." : null;
             if (lowPerfModeWarning != null) Console.WriteLine(lowPerfModeWarning);
             currentProcess.ProcessorAffinity = (lowPerfModeWarning != null) ? (IntPtr)0xFF : (IntPtr)0xFFFF;    // 0xFF = 11111111 in binary
 
-            Console.WriteLine($"Affinity Mask: {currentProcess.ProcessorAffinity}");
+            Console.WriteLine($"SYSTEM: Affinity Mask: {currentProcess.ProcessorAffinity}");
 #pragma warning restore CA1416
         }
 
@@ -66,7 +66,7 @@ namespace Plush_OJ
             string configPath = "Config/config.json";
             if (!File.Exists(configPath))
             {
-                Console.WriteLine("Configuration file not found, creating...");
+                Console.WriteLine("SYSTEM: Configuration file not found, creating...");
                 const string defPassWD = "Plush_OJ_Default_Password";
                 string defSalt = GenerateSalt();
                 cfg = new AppConfig
@@ -85,7 +85,7 @@ namespace Plush_OJ
 
                 string jsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });    // formate as json file
                 File.WriteAllText(configPath, jsonString);    // write into json file
-                Console.WriteLine($"\nDefault Administrator Account created: admin\nDefault Password created: {defPassWD}\nPlease change the password after your first login for security reasons.\n\n");
+                Console.WriteLine($"\nSYSTEM: Default Administrator Account created: admin\nSYSTEM: Default Password created: {defPassWD}\nSYSTEM: Please change the password after your first login for security reasons.\n\n");
             }
             else
             {
@@ -102,7 +102,7 @@ namespace Plush_OJ
 
             if (string.IsNullOrEmpty(adminACC) || string.IsNullOrEmpty(passWD))
             {
-                Console.WriteLine("\nAdministrator Account or Password cannot be Null or Empty, Login access denied...\n");
+                Console.WriteLine("\nERROR: Administrator Account or Password cannot be Null or Empty, Login access denied...\n");
                 return false;
             }
 
@@ -114,7 +114,7 @@ namespace Plush_OJ
             }
             else
             {
-                Console.WriteLine("Wrong Administrator Account or Password, Login access denied...\n");
+                Console.WriteLine("ERROR: Wrong Administrator Account or Password, Login access denied...\n");
                 return false;
             }
 
@@ -137,7 +137,7 @@ namespace Plush_OJ
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nAn error occurred while loading configuration: {ex.Message}");
+                Console.WriteLine($"\nERROR: An error occurred while loading configuration: {ex.Message}");
                 Thread.Sleep(750);
                 return;
             }
@@ -149,12 +149,12 @@ namespace Plush_OJ
             string currentInputHash = ComputeHash(currentPassword, cfg.Salt!);
             if (currentInputHash != cfg.PasswdHash)
             {
-                Console.WriteLine("\nIncorrect current password. Reset failed.");
+                Console.WriteLine("\nERROR: Incorrect current password. Reset failed.");
                 Thread.Sleep(750);
                 return;
             }
 
-            Console.WriteLine("\nVerification successful. Please enter new credentials.");
+            Console.WriteLine("\nSYSTEM: Verification successful. Please enter new credentials.");
             Console.Write("Enter new Administrator Account: ");
             string? newAdminACC = Console.ReadLine();
 
@@ -166,14 +166,14 @@ namespace Plush_OJ
             Console.WriteLine();
             if (string.IsNullOrEmpty(newAdminACC) || string.IsNullOrEmpty(newPassword1))
             {
-                Console.WriteLine("\nAdministrator Account and Password cannot be empty. Reset failed.");
+                Console.WriteLine("\nERROR: Administrator Account and Password cannot be empty. Reset failed.");
                 Thread.Sleep(750);
                 return;
             }
 
             if (newPassword1 != newPassword2)
             {
-                Console.WriteLine("\nPasswords do not match. Reset failed.");
+                Console.WriteLine("\nERROR: Passwords do not match. Reset failed.");
                 Thread.Sleep(750);
                 return;
             }
@@ -190,12 +190,12 @@ namespace Plush_OJ
                 string updatedJsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(configPath, updatedJsonString);
 
-                Console.WriteLine("\nAdministrator account has been reset successfully.");
+                Console.WriteLine("\nSYSTEM: Administrator account has been reset successfully.");
                 Thread.Sleep(1500);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nAn error occurred while resetting the administrator account: {ex.Message}");
+                Console.WriteLine($"\nERROR: An error occurred while resetting the administrator account: {ex.Message}");
                 Thread.Sleep(1500);
             }
         }
@@ -214,7 +214,7 @@ namespace Plush_OJ
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nAn error occurred while loading configuration: {ex.Message}");
+                Console.WriteLine($"\nERROR: An error occurred while loading configuration: {ex.Message}");
                 Thread.Sleep(750);
                 return;
             }
@@ -226,12 +226,12 @@ namespace Plush_OJ
             string InputHash = ComputeHash(Password, cfg.Salt!);
             if (InputHash != cfg.PasswdHash)
             {
-                Console.WriteLine("\nIncorrect password. Operation failed...");
+                Console.WriteLine("\nERROR: Incorrect password. Operation failed...");
                 Thread.Sleep(750);
                 return;
             }
 
-            Console.WriteLine("\nVerification successful.");
+            Console.WriteLine("\nSYSTEM: Verification successful.");
             Console.Write("Enter new Administrator Email: ");
             string? newAdminEmail = Console.ReadLine();
 
@@ -241,7 +241,7 @@ namespace Plush_OJ
 
             if (string.IsNullOrEmpty(newAdminEmail) || string.IsNullOrEmpty(newEmailPassword))
             {
-                Console.WriteLine("\nEmail and Email Password cannot be empty. Operation failed.");
+                Console.WriteLine("\nERROR: Email and Email Password cannot be empty. Operation failed.");
                 Thread.Sleep(750);
                 return;
             }
@@ -257,12 +257,12 @@ namespace Plush_OJ
                 string updatedJsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(configPath, updatedJsonString);
 
-                Console.WriteLine("\nAdministrator email has been set successfully.");
+                Console.WriteLine("\nSYSTEM: Administrator email has been set successfully.");
                 Thread.Sleep(750);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nAn error occurred while saving the configuration: {ex.Message}");
+                Console.WriteLine($"\nERROR: An error occurred while saving the configuration: {ex.Message}");
                 Thread.Sleep(750);
             }
         }
@@ -285,7 +285,7 @@ namespace Plush_OJ
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to decode email password: {ex.Message}");
+                Console.WriteLine($"ERROR: Failed to decode email password: {ex.Message}");
                 return null;
             }
         }
@@ -357,20 +357,20 @@ namespace Plush_OJ
                         SetAdminEmail();
                         break;
                     case "3":
-                        Console.WriteLine("\nNot available...");
+                        Console.WriteLine("\nSYSTEM: Not available...");
                         Thread.Sleep(750);
                         break;
                     case "4":
-                        Console.WriteLine("\nNot available...");
+                        Console.WriteLine("\nSYSTEM: Not available...");
                         Thread.Sleep(750);
                         break;
                     case "0":
                         exitAdminMenu = true;
-                        Console.WriteLine("\nLogging out...");
+                        Console.WriteLine("\nSYSTEM: Logging out...");
                         Thread.Sleep(750);
                         break;
                     default:
-                        Console.WriteLine("\nUnknown command, Please try again.");
+                        Console.WriteLine("\nERROR: Unknown command, Please try again.");
                         Thread.Sleep(750);
                         break;
                 }
@@ -381,7 +381,7 @@ namespace Plush_OJ
         {
             if (!OperatingSystem.IsWindows())
             {
-                Console.WriteLine("Error : System Unsupported, Terminated...\n");
+                Console.WriteLine("ERROR: System Unsupported, Terminated...\n");
                 return;
             }
             ProcessorSet();
@@ -425,7 +425,7 @@ namespace Plush_OJ
                     Console.WriteLine("Administrator Login: \n");
                     if (LoginMGT())
                     {
-                        Console.WriteLine("Login succeed.\n");
+                        Console.WriteLine("SYSTEM: Login succeed.\n");
                         Thread.Sleep(750);
                         ShowAdminMenu();
                         Console.Clear();
@@ -433,22 +433,22 @@ namespace Plush_OJ
                     }
                     else
                     {
-                        Console.WriteLine("Login failed, Terminated...");
+                        Console.WriteLine("ERROR: Login failed, Terminated...");
                         return;
                     }
 
                 case "2":
-                    Console.WriteLine("Server not avaliable...");
+                    Console.WriteLine("SYSTEM: Server not avaliable...");
                     Thread.Sleep(750);
                     Console.Clear();
                     goto MainMenu;
 
                 case "0":
-                    Console.WriteLine("Exit...");
+                    Console.WriteLine("SYSTEM: Exit...");
                     return;
 
                 default:
-                    Console.WriteLine("Unknow command, Please try again.");
+                    Console.WriteLine("ERROR: Unknow command, Please try again.");
                     Thread.Sleep(750);
                     Console.Clear();
                     goto MainMenu;
@@ -487,7 +487,7 @@ namespace Plush_OJ
             }
             catch
             {
-                Console.WriteLine("Configuration file not found, Terminated...");
+                Console.WriteLine("ERROR: Configuration file not found, Terminated...");
                 Environment.Exit(-1);    // Force Terminate
             }
         }
