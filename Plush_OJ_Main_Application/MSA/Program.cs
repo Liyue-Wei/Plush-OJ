@@ -311,7 +311,7 @@ namespace Plush_OJ
             return password;
         }
 
-        private static void ResetDB()    // 功能尚未编写
+        private static void ResetDB()    // 功能尚未编写,等待DB
         {
             Console.Clear();
             Console.WriteLine("--- Reset Database (DANGEROUS) ---");
@@ -393,6 +393,41 @@ namespace Plush_OJ
 
             Console.WriteLine("\nSYSTEM: Verification successful. Function not yet implemented...");
             Thread.Sleep(750);
+        }
+
+        private static void AddModlerator()    // 功能尚未编写,等待DB
+        {
+            Console.Clear();
+            Console.WriteLine("--- Add Modlerator  ---");
+
+            string configPath = "Config/config.json";
+            AppConfig cfg;
+            try
+            {
+                string jsonString = File.ReadAllText(configPath);
+                cfg = JsonSerializer.Deserialize<AppConfig>(jsonString)!;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nERROR: An error occurred while loading configuration: {ex.Message}");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.Write("Enter password to continue: ");
+            string Password = ReadPassword();
+            Console.WriteLine();
+
+            string InputHash = ComputeHash(Password, cfg.Salt!);
+            if (InputHash != cfg.PasswdHash)
+            {
+                Console.WriteLine("\nERROR: Incorrect password. Operation failed...");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.WriteLine("\nSYSTEM: Verification successful. Function not yet implemented...");
+            Thread.Sleep(750); 
         }
 
         private static void ShowAdminMenu()
