@@ -360,7 +360,7 @@ namespace Plush_OJ
             Thread.Sleep(750);
         }
 
-        private static void SysConfig()    // 功能尚未编写
+        private static void SysConfig()
         {
             Console.Clear();
             Console.WriteLine("--- System Configuration ---");
@@ -391,8 +391,85 @@ namespace Plush_OJ
                 return;
             }
 
-            Console.WriteLine("\nSYSTEM: Verification successful. Function not yet implemented...");
+            Console.WriteLine("\nSYSTEM: Verification successful.");
             Thread.Sleep(750);
+
+            bool exitConfigMenu = false;
+            while (!exitConfigMenu)
+            {
+                Console.Clear();
+                Console.WriteLine("--- System Configuration ---");
+                Console.WriteLine("\nCurrent settings:");
+                Console.WriteLine($"  > Localhost IP         : {cfg.LocalhostIP ?? "Not Set"}");
+                Console.WriteLine($"  > FOFE FW Server IP    : {cfg.FFServerIP ?? "Not Set"}");
+                Console.WriteLine($"  > XingHuo Web Engine IP: {cfg.WebEngIP ?? "Not Set"}");
+                Console.WriteLine($"  > Database Path        : {cfg.DatabasePath ?? "Not Set"}");
+                Console.WriteLine($"  > Connection String    : {cfg.ConnectionStrings ?? "Not Set"}");
+
+                Console.WriteLine(@"
+    ┌──────────────────────────────────┐
+    │        Modify Configuration      │
+    ├──────────────────────────────────┤
+    │ [1] Edit Localhost IP            │
+    │ [2] Edit FOFE FW Server IP       │
+    │ [3] Edit XingHuo Web Engine IP   │
+    │ [4] Edit Database Path           │
+    │ [5] Edit Connection String       │
+    │                                  │
+    │ [S] Save and Exit                │
+    │ [0] Exit without Saving          │
+    └──────────────────────────────────┘
+");
+                Console.Write("Select an option: ");
+
+                switch (Console.ReadLine()?.ToUpper())
+                {
+                    case "1":
+                        Console.Write("Enter new Localhost IP: ");
+                        cfg.LocalhostIP = Console.ReadLine();
+                        break;
+                    case "2":
+                        Console.Write("Enter new FOFE FW Server IP: ");
+                        cfg.FFServerIP = Console.ReadLine();
+                        break;
+                    case "3":
+                        Console.Write("Enter new XingHuo Web Engine IP: ");
+                        cfg.WebEngIP = Console.ReadLine();
+                        break;
+                    case "4":
+                        Console.Write("Enter new Database Path: ");
+                        cfg.DatabasePath = Console.ReadLine();
+                        break;
+                    case "5":
+                        Console.Write("Enter new Connection String: ");
+                        cfg.ConnectionStrings = Console.ReadLine();
+                        break;
+                    case "S":
+                        try
+                        {
+                            string updatedJsonString = JsonSerializer.Serialize(cfg, new JsonSerializerOptions { WriteIndented = true });
+                            File.WriteAllText(configPath, updatedJsonString);
+                            Console.WriteLine("\nSYSTEM: Configuration saved successfully.");
+                            Thread.Sleep(750);
+                            exitConfigMenu = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"\nERROR: Failed to save configuration: {ex.Message}");
+                            Thread.Sleep(750);
+                        }
+                        break;
+                    case "0":
+                        Console.WriteLine("\nSYSTEM: Exiting without saving changes.");
+                        Thread.Sleep(750);
+                        exitConfigMenu = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nERROR: Invalid option.");
+                        Thread.Sleep(750);
+                        break;
+                }
+            }
         }
 
         private static void AddModlerator()    // 功能尚未编写,等待DB
@@ -458,7 +535,7 @@ namespace Plush_OJ
     │ [1] Reset Administrator          │
     | [2] Set Administrator Email      |
     | [3] Reset Database (Dangerous)   |
-    | [4] System Configuration         |    ** include: [FOFE FW Server IP], [XingHuo Web Engine IP], [Database Path] **
+    | [4] System Configuration         |
     | [5] Add Modlerator               |
     │                                  │
     │ [0] Logout                       │
@@ -582,6 +659,10 @@ namespace Plush_OJ
         public string? AdminEmail { get; set; }
         public string? EmailPasswd { get; set; }
         public string? ConnectionStrings { get; set; }    // Database connection string
+        public string? LocalhostIP { get; set; }
+        public string? FFServerIP { get; set; }
+        public string? WebEngIP { get; set; }
+        public string? DatabasePath { get; set; }
     }
 
     #region Database Connector
