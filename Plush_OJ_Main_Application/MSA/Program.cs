@@ -468,19 +468,7 @@ namespace Plush_OJ
     }
 
     #region Database Connector
-    public interface IConnDB    // Database Connector --> Polymorphism
-    {
-        DbConnection Connect();
-    }
-
-    public class MainDbConnector(string connectionString) : IConnDB    // Main Database Connector
-    {
-        private readonly string? _connectionString = connectionString;
-        public DbConnection Connect()    // 逻辑尚未编写
-        {
-            return null!;
-        }
-    }
+    /* 还没写 */
     #endregion
 
     class API
@@ -504,15 +492,9 @@ namespace Plush_OJ
             }
         }
 
-        public IConnDB? GetConnector(string dbName)
+        static void ConnDB()    // Database Connecter
         {
-            if (string.IsNullOrEmpty(cfg?.ConnectionStrings))
-            {
-                Console.WriteLine("Main database connection string not found in config.json.");
-                return null;
-            }
             
-            return new MainDbConnector(cfg.ConnectionStrings);
         }
 
         static void ConnFF()    // FOFE FW Connecter
