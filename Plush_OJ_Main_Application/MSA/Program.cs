@@ -74,7 +74,8 @@ namespace Plush_OJ
                     AdminACC = "admin",
                     PasswdHash = ComputeHash(defPassWD, defSalt),
                     Salt = defSalt,
-                    ConnectionStrings = "Data Source = Database/PlushOJ_Main.db"
+                    ConnectionStrings = "Data Source = Database/PlushOJ_Main.db", 
+                    DatabasePath = "Plush_OJ_Main_Application/Database/MainDB.db"
                 };
 
                 string? directoryPath = Path.GetDirectoryName(configPath);
