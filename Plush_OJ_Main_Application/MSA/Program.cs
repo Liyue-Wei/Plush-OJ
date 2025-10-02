@@ -472,10 +472,10 @@ namespace Plush_OJ
             }
         }
 
-        private static void AddModlerator()    // 功能尚未编写,等待DB
+        private static void AddModerator()    // 功能尚未编写,等待DB
         {
             Console.Clear();
-            Console.WriteLine("--- Add Modlerator  ---");
+            Console.WriteLine("--- Add Moderator  ---");
 
             string configPath = "Config/config.json";
             AppConfig cfg;
@@ -536,7 +536,7 @@ namespace Plush_OJ
     | [2] Set Administrator Email      |
     | [3] Reset Database (Dangerous)   |
     | [4] System Configuration         |
-    | [5] Add Modlerator               |
+    | [5] Add Moderator               |
     │                                  │
     │ [0] Logout                       │
     └──────────────────────────────────┘
@@ -557,6 +557,9 @@ namespace Plush_OJ
                         break;
                     case "4":
                         SysConfig();
+                        break;
+                    case "5":
+                        AddModerator();
                         break;
                     case "0":
                         exitAdminMenu = true;
