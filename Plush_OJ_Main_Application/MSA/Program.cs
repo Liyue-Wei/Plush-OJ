@@ -311,6 +311,90 @@ namespace Plush_OJ
             return password;
         }
 
+        private static void ResetDB()    // 功能尚未编写
+        {
+            Console.Clear();
+            Console.WriteLine("--- Reset Database (DANGEROUS) ---");
+
+            string configPath = "Config/config.json";
+            AppConfig cfg;
+            try
+            {
+                string jsonString = File.ReadAllText(configPath);
+                cfg = JsonSerializer.Deserialize<AppConfig>(jsonString)!;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nERROR: An error occurred while loading configuration: {ex.Message}");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.Write("Enter password to continue: ");
+            string Password = ReadPassword();
+            Console.WriteLine();
+
+            string InputHash = ComputeHash(Password, cfg.Salt!);
+            if (InputHash != cfg.PasswdHash)
+            {
+                Console.WriteLine("\nERROR: Incorrect password. Operation failed...");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.WriteLine("\nSYSTEM: Verification successful.");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\nWARNING: This action is irreversible and will permanently delete all data.");
+            Console.ResetColor();
+            Console.Write("To proceed, type \"YES, I AM SURE\" and press Enter: ");
+
+            string? confirmation = Console.ReadLine();
+            if (confirmation != "YES, I AM SURE")
+            {
+                Console.WriteLine("\nERROR: Confirmation incorrect. Database reset has been cancelled.");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.WriteLine("\nSYSTEM: Confirmation received. Function not yet implemented...");
+            Thread.Sleep(750);
+        }
+
+        private static void SysConfig()    // 功能尚未编写
+        {
+            Console.Clear();
+            Console.WriteLine("--- System Configuration ---");
+
+            string configPath = "Config/config.json";
+            AppConfig cfg;
+            try
+            {
+                string jsonString = File.ReadAllText(configPath);
+                cfg = JsonSerializer.Deserialize<AppConfig>(jsonString)!;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nERROR: An error occurred while loading configuration: {ex.Message}");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.Write("Enter password to continue: ");
+            string Password = ReadPassword();
+            Console.WriteLine();
+
+            string InputHash = ComputeHash(Password, cfg.Salt!);
+            if (InputHash != cfg.PasswdHash)
+            {
+                Console.WriteLine("\nERROR: Incorrect password. Operation failed...");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.WriteLine("\nSYSTEM: Verification successful. Function not yet implemented...");
+            Thread.Sleep(750);
+        }
+
         private static void ShowAdminMenu()
         {
             bool exitAdminMenu = false;
@@ -339,8 +423,8 @@ namespace Plush_OJ
     │ [1] Reset Administrator          │
     | [2] Set Administrator Email      |
     | [3] Reset Database (Dangerous)   |
-    | [4] Add Modlerator               |
-    | [5]                              |
+    | [4] System Configuration         |    ** include: [FOFE FW Server IP], [XingHuo Web Engine IP], [Database Path] **
+    | [5] Add Modlerator               |
     │                                  │
     │ [0] Logout                       │
     └──────────────────────────────────┘
@@ -357,12 +441,10 @@ namespace Plush_OJ
                         SetAdminEmail();
                         break;
                     case "3":
-                        Console.WriteLine("\nSYSTEM: Not available...");
-                        Thread.Sleep(750);
+                        ResetDB();
                         break;
                     case "4":
-                        Console.WriteLine("\nSYSTEM: Not available...");
-                        Thread.Sleep(750);
+                        SysConfig();
                         break;
                     case "0":
                         exitAdminMenu = true;
@@ -444,7 +526,7 @@ namespace Plush_OJ
                     goto MainMenu;
 
                 case "0":
-                    Console.WriteLine("SYSTEM: Exit...");
+                    Console.WriteLine("Exit...");
                     return;
 
                 default:
