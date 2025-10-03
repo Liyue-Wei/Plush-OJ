@@ -1,4 +1,4 @@
-﻿/* Copyright (c) 2024 Zhang Zhewei (Liyue-Wei) - Licensed under the MIT License. */
+﻿/* Copyright (c) 2025 Zhang Zhewei (Liyue-Wei) - Licensed under the MIT License. */
 
 using System;
 using System.ComponentModel;
