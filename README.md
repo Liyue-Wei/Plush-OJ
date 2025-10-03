@@ -10,8 +10,6 @@
 
 ### Software as a Service 
 
-### Cluster Computing
-
 ### Database
 
 ### Plush AI - Powered by deepseek-coder
