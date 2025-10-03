@@ -36,4 +36,4 @@
 
 ---
 ### Developed by [Liyue Wei](https://github.com/Liyue-Wei) on GitHub.
-Copyright (c) 2024 Zhang Zhewei (Liyue-Wei) - Licensed under the [MIT License](LICENSE).
+Copyright (c) 2025 Zhang Zhewei (Liyue-Wei) - Licensed under the [MIT License](LICENSE).
