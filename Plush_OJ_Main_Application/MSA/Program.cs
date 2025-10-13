@@ -703,11 +703,6 @@ namespace Plush_OJ
         {
 
         }
-
-        static void ConnWE()    // Web Engine Connecter
-        {
-
-        }
     }
 }
 
