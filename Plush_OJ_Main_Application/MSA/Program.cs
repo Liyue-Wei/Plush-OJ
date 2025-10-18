@@ -11,7 +11,7 @@ using System.IO;
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
 
-namespace Plush_OJ
+namespace MSA
 {
     class MSA    // Main Server Application
     {
