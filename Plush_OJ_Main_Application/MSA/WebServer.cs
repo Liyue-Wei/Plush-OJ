@@ -12,5 +12,10 @@ namespace MSA
     {
         private readonly HttpListener _listener = new HttpListener();
         private readonly string? urlPath;    // Web Pages URL Path
+
+        public WebServer(string prefix, string url)
+        {
+            
+        }
     }
 }
