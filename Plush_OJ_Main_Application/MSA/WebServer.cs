@@ -10,6 +10,7 @@ namespace MSA
 {
     class WebServer
     {
-        
+        private readonly HttpListener _listener = new HttpListener();
+        private readonly string? urlPath;    // Web Pages URL Path
     }
 }
