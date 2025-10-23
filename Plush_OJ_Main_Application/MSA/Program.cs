@@ -503,6 +503,36 @@ namespace MSA
             Thread.Sleep(750); 
         }
 
+        private static void WebServerTest()
+        {
+            Console.Clear();
+            Console.WriteLine("--- Web Server Test ---");
+
+            string configPath = "Config/config.json";
+            AppConfig cfg;
+            try
+            {
+                string jsonString = File.ReadAllText(configPath);
+                cfg = JsonSerializer.Deserialize<AppConfig>(jsonString)!;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nERROR: An error occurred while loading configuration: {ex.Message}");
+                Thread.Sleep(750);
+                return;
+            }
+
+            if (cfg.WebServerURL == null)
+            {
+                Console.WriteLine($"\nERROR: Web Server URL can not be Null, Operation failed...");
+                Thread.Sleep(750);
+                return;
+            }
+
+            Console.WriteLine("\nSYSTEM: Function not yet implemented...");
+            Thread.Sleep(750);
+        }
+
         private static void ShowAdminMenu()
         {
             bool exitAdminMenu = false;
@@ -533,6 +563,7 @@ namespace MSA
     | [3] Reset Database (Dangerous)   |
     | [4] System Configuration         |
     | [5] Add Moderator                |
+    | [6] Web Server Test              |
     │                                  │
     │ [0] Logout                       │
     └──────────────────────────────────┘
@@ -556,6 +587,9 @@ namespace MSA
                         break;
                     case "5":
                         AddModerator();
+                        break;
+                    case "6":
+                        WebServerTest();
                         break;
                     case "0":
                         exitAdminMenu = true;
