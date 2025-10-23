@@ -15,7 +15,8 @@ namespace MSA
 
         public WebServer(string prefix, string url)
         {
-            
+            _listener.Prefixes.Add(prefix);
+            urlPath = url;
         }
     }
 }
