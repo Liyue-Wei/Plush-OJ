@@ -75,7 +75,8 @@ namespace MSA
                     PasswdHash = ComputeHash(defPassWD, defSalt),
                     Salt = defSalt,
                     ConnectionStrings = "Data Source = Database/PlushOJ_Main.db", 
-                    DatabasePath = "Plush_OJ_Main_Application/Database/MainDB.db"
+                    DatabasePath = "Plush_OJ_Main_Application/Database/MainDB.db",
+                    WebServerURL = "http://localhost:8888/" 
                 };
 
                 string? directoryPath = Path.GetDirectoryName(configPath);
@@ -401,9 +402,8 @@ namespace MSA
                 Console.Clear();
                 Console.WriteLine("--- System Configuration ---");
                 Console.WriteLine("\nCurrent settings:");
-                Console.WriteLine($"  > Localhost IP         : {cfg.LocalhostIP ?? "Not Set"}");
+                Console.WriteLine($"  > Web Server URL       : {cfg.WebServerURL ?? "Not Set"}");
                 Console.WriteLine($"  > FOFE FW Server IP    : {cfg.FFServerIP ?? "Not Set"}");
-                Console.WriteLine($"  > XingHuo Web Engine IP: {cfg.WebEngIP ?? "Not Set"}");
                 Console.WriteLine($"  > Database Path        : {cfg.DatabasePath ?? "Not Set"}");
                 Console.WriteLine($"  > Connection String    : {cfg.ConnectionStrings ?? "Not Set"}");
 
@@ -411,11 +411,10 @@ namespace MSA
     ┌──────────────────────────────────┐
     │        Modify Configuration      │
     ├──────────────────────────────────┤
-    │ [1] Edit Localhost IP            │
+    │ [1] Edit Web Server URL          │
     │ [2] Edit FOFE FW Server IP       │
-    │ [3] Edit XingHuo Web Engine IP   │
-    │ [4] Edit Database Path           │
-    │ [5] Edit Connection String       │
+    │ [3] Edit Database Path           │
+    │ [4] Edit Connection String       │
     │                                  │
     │ [S] Save and Exit                │
     │ [0] Exit without Saving          │
@@ -426,22 +425,18 @@ namespace MSA
                 switch (Console.ReadLine()?.ToUpper())
                 {
                     case "1":
-                        Console.Write("Enter new Localhost IP: ");
-                        cfg.LocalhostIP = Console.ReadLine();
+                        Console.Write("Enter new Web Server URL (e.g., http://+:8080/): ");
+                        cfg.WebServerURL = Console.ReadLine();
                         break;
                     case "2":
                         Console.Write("Enter new FOFE FW Server IP: ");
                         cfg.FFServerIP = Console.ReadLine();
                         break;
                     case "3":
-                        Console.Write("Enter new XingHuo Web Engine IP: ");
-                        cfg.WebEngIP = Console.ReadLine();
-                        break;
-                    case "4":
                         Console.Write("Enter new Database Path: ");
                         cfg.DatabasePath = Console.ReadLine();
                         break;
-                    case "5":
+                    case "4":
                         Console.Write("Enter new Connection String: ");
                         cfg.ConnectionStrings = Console.ReadLine();
                         break;
@@ -663,9 +658,8 @@ namespace MSA
         public string? AdminEmail { get; set; }
         public string? EmailPasswd { get; set; }
         public string? ConnectionStrings { get; set; }    // Database connection string
-        public string? LocalhostIP { get; set; }
+        public string? WebServerURL { get; set; }
         public string? FFServerIP { get; set; }
-        public string? WebEngIP { get; set; }
         public string? DatabasePath { get; set; }
     }
 
